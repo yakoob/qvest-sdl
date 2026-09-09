@@ -1,6 +1,6 @@
 # ShelfMate
 
-Librarian-in-the-loop next-book assistant. Fictional Willow Bend School District extract. Built as a Sony EIP-style PoC: retrieve, eval, audit, human approve. Not a student app.
+Librarian-in-the-loop next-book assistant. Fictional Willow Bend School District extract. Built as a EIP-style PoC: retrieve, eval, audit, human approve. Not a student app.
 
 **Canonical path:** `/mnt/compeller/ai/school_district_reading`  
 (`/mnt/ai/...` is not writable on oc-lisa; this is the NAS folder Koob created.)

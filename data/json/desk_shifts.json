@@ -1,0 +1,112 @@
+[
+  {
+    "shift_id": "DS-01",
+    "staff_id": "L-002",
+    "weekday": "Monday",
+    "start_local": "07:40",
+    "end_local": "12:00",
+    "station": "circulation desk",
+    "covers": "before-school + morning specials checkout",
+    "shelfmate_use": "20-second student lookup"
+  },
+  {
+    "shift_id": "DS-02",
+    "staff_id": "L-001",
+    "weekday": "Monday",
+    "start_local": "08:00",
+    "end_local": "15:20",
+    "station": "teaching floor + desk",
+    "covers": "class visits 3A/4A/5A; solo desk after 12:00",
+    "shelfmate_use": "end-of-class next-book (3 min)"
+  },
+  {
+    "shift_id": "DS-03",
+    "staff_id": "L-002",
+    "weekday": "Tuesday",
+    "start_local": "07:40",
+    "end_local": "12:00",
+    "station": "circulation desk",
+    "covers": "before-school + morning specials checkout",
+    "shelfmate_use": "20-second student lookup"
+  },
+  {
+    "shift_id": "DS-04",
+    "staff_id": "L-001",
+    "weekday": "Tuesday",
+    "start_local": "08:00",
+    "end_local": "15:20",
+    "station": "teaching floor + desk",
+    "covers": "class visits 3B/4B/5B; Graphic Novel Club",
+    "shelfmate_use": "club picks + stretch toggle"
+  },
+  {
+    "shift_id": "DS-05",
+    "staff_id": "L-002",
+    "weekday": "Wednesday",
+    "start_local": "07:40",
+    "end_local": "12:00",
+    "station": "circulation desk",
+    "covers": "K-2 read-aloud support; no 3-5 specials",
+    "shelfmate_use": "low 3-5 volume"
+  },
+  {
+    "shift_id": "DS-06",
+    "staff_id": "L-001",
+    "weekday": "Wednesday",
+    "start_local": "08:00",
+    "end_local": "14:25",
+    "station": "teaching floor",
+    "covers": "K-2 read-alouds; PLC 14:30",
+    "shelfmate_use": "async teacher emails only"
+  },
+  {
+    "shift_id": "DS-07",
+    "staff_id": "L-002",
+    "weekday": "Thursday",
+    "start_local": "07:40",
+    "end_local": "12:00",
+    "station": "circulation desk",
+    "covers": "open circ + shelving",
+    "shelfmate_use": "walk-up lookup"
+  },
+  {
+    "shift_id": "DS-08",
+    "staff_id": "L-001",
+    "weekday": "Thursday",
+    "start_local": "08:00",
+    "end_local": "15:20",
+    "station": "desk + collab",
+    "covers": "teacher planning 10:00-11:00; open circ",
+    "shelfmate_use": "NL search for teacher requests"
+  },
+  {
+    "shift_id": "DS-09",
+    "staff_id": "L-002",
+    "weekday": "Friday",
+    "start_local": "07:40",
+    "end_local": "12:00",
+    "station": "circulation desk",
+    "covers": "before-school + inventory",
+    "shelfmate_use": "walk-up lookup"
+  },
+  {
+    "shift_id": "DS-10",
+    "staff_id": "L-001",
+    "weekday": "Friday",
+    "start_local": "08:00",
+    "end_local": "15:20",
+    "station": "desk",
+    "covers": "weekend checkout rush 14:20-15:20",
+    "shelfmate_use": "fast recs; availability filter matters"
+  },
+  {
+    "shift_id": "DS-11",
+    "staff_id": "L-003",
+    "weekday": "Tuesday",
+    "start_local": "09:00",
+    "end_local": "12:00",
+    "station": "on-site (pilot weeks only)",
+    "covers": "shadow Elena; privacy questions",
+    "shelfmate_use": "does not serve students"
+  }
+]

@@ -1,0 +1,46 @@
+book_id,isbn,title,author,year,pages,lexile_approx,grade_min,grade_max,genre,cluster,series,subjects,copies_total,copies_available,blurb
+B-001,978-0-00-000001-1,Dog Man,Dav Pilkey,2016,240,390,2,5,graphic,graphic,Dog Man,"graphic novel; humor; dogs; superheroes",6,2,A crime-biting cop who is part dog, part man, all chaos.
+B-002,978-0-00-000002-8,Diary of a Wimpy Kid,Jeff Kinney,2007,224,950,3,6,graphic,graphic,Wimpy Kid,"humor; school; diary; cartoons",8,3,Greg Heffley survives middle school in cartoons and complaints.
+B-003,978-0-00-000003-5,The Adventures of Captain Underpants,Dav Pilkey,1997,144,720,2,5,graphic,graphic,Captain Underpants,"humor; school; superheroes",4,1,Two kids hypnotize their principal into a waistbanded hero.
+B-004,978-0-00-000004-2,Big Nate: In a Class by Himself,Lincoln Peirce,2010,240,480,3,6,graphic,graphic,Big Nate,"humor; school; comics",3,2,Nate Wright is sure he is destined for greatness. School disagrees.
+B-005,978-0-00-000005-9,Lunch Lady and the Cyborg Substitute,Jarrett Krosoczka,2009,96,440,2,5,graphic,graphic,Lunch Lady,"graphic novel; humor; mystery; school",2,2,The lunch lady moonlights as a secret crime fighter.
+B-006,978-0-00-000006-6,Investigators,John Patrick Green,2020,208,550,2,5,graphic,graphic,Investigators,"graphic novel; humor; mystery; animals",3,1,Alligator detectives. That is the pitch. It works.
+B-007,978-0-00-000007-3,Cat Kid Comic Club,Dav Pilkey,2020,176,430,2,5,graphic,graphic,Cat Kid,"graphic novel; humor; making comics",3,3,Frog kids learn to make comics, badly and then better.
+B-008,978-0-00-000008-0,The Bad Guys,Aaron Blabey,2016,144,520,2,5,graphic,graphic,Bad Guys,"graphic novel; humor; animals; heist",4,0,Wolf wants to rebrand as good. Availability is zero this week.
+B-010,978-0-00-000010-3,The Lightning Thief,Rick Riordan,2005,377,740,4,8,fantasy,fantasy,Percy Jackson,"mythology; quest; humor; dyslexia",5,2,A sixth grader finds out the Greek gods are his actual problem.
+B-011,978-0-00-000011-0,Harry Potter and the Sorcerer's Stone,J.K. Rowling,1997,309,880,4,8,fantasy,fantasy,Harry Potter,"magic; boarding school; friendship",6,1,The boy who lived goes to a school that is definitely not Maple Street.
+B-012,978-0-00-000012-7,Wings of Fire: The Dragonet Prophecy,Tui T. Sutherland,2012,336,740,4,8,fantasy,fantasy,Wings of Fire,"dragons; prophecy; war; friendship",4,2,Five dragonets are supposed to save the world. They would rather not.
+B-013,978-0-00-000013-4,Gregor the Overlander,Suzanne Collins,2003,320,730,4,7,fantasy,fantasy,Underland Chronicles,"quest; siblings; underground; bats",2,2,A boy chasing his sister falls into a city under New York.
+B-014,978-0-00-000014-1,Dealing with Dragons,Patricia C. Wrede,1990,212,790,4,7,fantasy,fantasy,Enchanted Forest,"dragons; princess; humor; feminism",2,1,A princess runs away to work for a dragon on purpose.
+B-015,978-0-00-000015-8,The Wild Robot,Peter Brown,2016,288,740,3,6,fantasy,fantasy,Wild Robot,"robots; survival; nature; found family",4,3,A robot washes up on an island and has to learn the woods.
+B-016,978-0-00-000016-5,Amari and the Night Brothers,B.B. Alston,2021,416,700,4,8,fantasy,fantasy,Supernatural Investigations,"magic; mystery; bureau; sisters",2,2,A girl joins a secret bureau to find her missing brother.
+B-017,978-0-00-000017-2,Endling: The Last,Katherine Applegate,2018,400,690,4,8,fantasy,fantasy,Endling,"animals; quest; last of a kind",2,1,A hunting dog who is not a dog has to save her kind.
+B-020,978-0-00-000020-2,Holes,Louis Sachar,1998,233,660,4,8,realistic,realistic,,"friendship; mystery; justice; desert",5,2,A boy is sent to dig holes. The holes are not the point.
+B-021,978-0-00-000021-9,Wonder,R.J. Palacio,2012,315,790,4,7,realistic,realistic,,"school; kindness; disability; friendship",4,1,Auggie Pullman starts fifth grade. Faces are not the whole story.
+B-022,978-0-00-000022-6,Because of Winn-Dixie,Kate DiCamillo,2000,182,670,3,6,realistic,animals,,"dogs; friendship; small town; grief",3,2,A girl and a stray dog open a whole town up.
+B-023,978-0-00-000023-3,Bridge to Terabithia,Katherine Paterson,1977,163,810,4,7,realistic,realistic,,"friendship; imagination; loss",3,3,Two kids build a kingdom in the woods. It does not stay simple.
+B-024,978-0-00-000024-0,Front Desk,Kelly Yang,2018,298,640,4,7,realistic,realistic,Front Desk,"immigration; motel; family; justice",3,2,Mia helps run a motel desk and a lot more than that.
+B-025,978-0-00-000025-7,New Kid,Jerry Craft,2019,256,630,4,8,graphic,realistic,New Kid,"graphic novel; school; race; friendship",3,1,Jordan starts a new school where almost nobody looks like him.
+B-026,978-0-00-000026-4,Ghost,Jason Reynolds,2016,181,730,5,8,realistic,sports,Track,"track; anger; found family; running",3,2,Castle Cranshaw can run. Stopping is the hard part.
+B-027,978-0-00-000027-1,Amina's Voice,Hena Khan,2017,208,800,4,7,realistic,realistic,,"music; mosque; friendship; identity",2,2,Amina would rather sing than speak. Then the community needs her voice.
+B-030,978-0-00-000030-1,The Crossover,Kwame Alexander,2014,240,750,5,8,sports,sports,Crossover,"basketball; verse; brothers; family",3,2,Twin brothers on the court, in verse, under pressure.
+B-031,978-0-00-000031-8,Heat,Mike Lupica,2006,244,800,4,8,sports,sports,,"baseball; immigration; family; secrets",2,1,A pitcher with a fastball and a story he cannot tell.
+B-032,978-0-00-000032-5,Travel Team,Mike Lupica,2004,288,790,4,7,sports,sports,,"basketball; undersized; coaching; dad",2,2,Cut from the travel team, he builds another one.
+B-033,978-0-00-000033-2,Booked,Kwame Alexander,2016,320,660,5,8,sports,sports,,"soccer; verse; words; family",2,1,A soccer kid who hates dictionaries gets stuck with words anyway.
+B-034,978-0-00-000034-9,Soccer Sunday,R. Hale,2019,128,520,3,6,sports,sports,,"soccer; humor; team; short chapters",3,3,Invented high-interest short soccer chapters for the 3rd grade shelf.
+B-040,978-0-00-000040-0,Charlotte's Web,E.B. White,1952,192,680,3,6,animals,animals,,"pigs; spiders; farm; friendship",5,4,A pig, a spider, and a fair. Still the animal book they ask for.
+B-041,978-0-00-000041-7,Shiloh,Phyllis Reynolds Naylor,1991,144,890,3,6,animals,animals,Shiloh,"dogs; ethics; Appalachia",3,2,A boy hides a mistreated beagle and has to live with it.
+B-042,978-0-00-000042-4,The One and Only Ivan,Katherine Applegate,2012,305,570,3,6,animals,animals,,"gorillas; captivity; art; friendship",3,1,A gorilla who paints, and a promise he means to keep.
+B-043,978-0-00-000043-1,Mr. Popper's Penguins,Richard and Florence Atwater,1938,139,910,3,5,animals,animals,,"penguins; humor; family",2,2,A house painter acquires penguins. Logistics follow.
+B-044,978-0-00-000044-8,A Wolf Called Wander,Rosanne Parry,2019,256,670,4,7,animals,animals,,"wolves; survival; nature; journey",2,2,A young wolf walks hundreds of miles to find a home.
+B-045,978-0-00-000045-5,The Incredible Journey,Sheila Burnford,1961,168,860,4,7,animals,animals,,"dogs; cat; survival; wilderness",2,1,Two dogs and a cat cross the Canadian woods toward home.
+B-050,978-0-00-000050-9,Encyclopedia Brown, Boy Detective,Donald J. Sobol,1963,96,560,3,6,mystery,mystery,Encyclopedia Brown,"mystery; shorts; puzzles; humor",4,3,A kid detective in one-sitting cases. Good for reluctant mystery.
+B-051,978-0-00-000051-6,The Westing Game,Ellen Raskin,1978,182,750,5,8,mystery,mystery,,"puzzle; heirs; identity; humor",3,2,Sixteen heirs, one will, too many clues.
+B-052,978-0-00-000052-3,Book Scavenger,Jennifer Chambliss Bertman,2015,368,810,4,7,mystery,mystery,Book Scavenger,"books; puzzles; San Francisco; friendship",2,1,A game that hides books around the country turns real.
+B-053,978-0-00-000053-0,The Parker Inheritance,Varian Johnson,2018,352,730,4,8,mystery,mystery,,"letters; race; small town; history",2,2,A letter, a town secret, and a fortune with strings.
+B-054,978-0-00-000054-7,From the Mixed-Up Files of Mrs. Basil E. Frankweiler,E.L. Konigsburg,1967,162,700,4,7,mystery,mystery,,"museum; runaways; art; siblings",3,3,Claudia runs away to the Metropolitan Museum and finds a mystery.
+B-055,978-0-00-000055-4,The Mysterious Benedict Society,Trenton Lee Stewart,2007,485,890,5,8,mystery,mystery,Mysterious Benedict Society,"puzzles; gifted kids; orphan tropes; adventure",2,1,Kids who pass odd tests are asked to save a lot more than a school.
+B-060,978-0-00-000060-8,I Survived Hurricane Katrina 2005,Lauren Tarshis,2011,112,590,3,6,realistic,short,I Survived,"disaster; survival; history; short",4,4,High-interest short chapter disaster story. Weekend book.
+B-061,978-0-00-000061-5,Who Was Jackie Robinson,Gail Herman,2010,112,710,3,6,biography,short,Who Was,"biography; baseball; civil rights; short",3,3,A thin biography that sports kids will actually finish.
+B-062,978-0-00-000062-2,National Geographic Kids: Sharks,Anne Schreiber,2008,32,690,2,5,nonfiction,short,,"sharks; animals; photos; easy",5,4,Display book. Priya's only checkout. Not a cluster by itself.
+B-063,978-0-00-000063-9,Gravity in Pictures,L. Cho,2021,64,500,3,6,nonfiction,short,,"science; graphic; physics",2,2,Invented graphic science reader for the 'something nicer than Underpants' ask.

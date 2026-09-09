@@ -1,0 +1,47 @@
+{
+  "cases": [
+    {
+      "id": "mateo",
+      "student_id": "S-406",
+      "stretch": false,
+      "query": "",
+      "must_include_any": ["B-007", "B-006"],
+      "must_exclude": ["B-008"],
+      "notes": "Cat Kid / Investigators. Bad Guys is out of copies."
+    },
+    {
+      "id": "aisha_default",
+      "student_id": "S-402",
+      "stretch": false,
+      "query": "",
+      "cluster_any": ["fantasy"],
+      "must_exclude": ["B-051"],
+      "notes": "Do not jump to Westing Game on lexile alone."
+    },
+    {
+      "id": "aisha_stretch",
+      "student_id": "S-402",
+      "stretch": true,
+      "query": "",
+      "prefer_any": ["B-013", "B-016", "B-017"],
+      "notes": "Stretch may surface Gregor / Amari / Endling. Still catalog-closed."
+    },
+    {
+      "id": "priya_cold",
+      "student_id": "S-405",
+      "stretch": false,
+      "query": "funny, reluctant 4th, under 150 pages, we have copies",
+      "min_items": 3,
+      "max_pages": 160,
+      "notes": "CF empty. Content + NL must carry it. Short books only."
+    },
+    {
+      "id": "olivia_zero",
+      "student_id": "S-509",
+      "stretch": false,
+      "query": "",
+      "min_items": 3,
+      "notes": "True cold start. Grade-band popular, catalog-closed."
+    }
+  ]
+}

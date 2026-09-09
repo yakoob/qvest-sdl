@@ -1,0 +1,62 @@
+[
+  {
+    "staff_id": "L-001",
+    "full_name": "Elena Vasquez",
+    "role": "Library Media Specialist",
+    "site_id": "MSE",
+    "site_name": "Maple Street Elementary",
+    "fte": 1.0,
+    "email": "elena.vasquez@willowbend.k12.example.org",
+    "grades_served": "K-5",
+    "specialties": [
+      "graphic novels",
+      "reluctant readers",
+      "Spanish bilingual"
+    ],
+    "typical_days": "Mon-Fri",
+    "start_local": "08:00",
+    "end_local": "15:20",
+    "pilot_role": "primary user",
+    "notes": "Knows the graphic-novel kids by name. Current recs are sticky notes and memory. If she does not trust the why, the tool dies."
+  },
+  {
+    "staff_id": "L-002",
+    "full_name": "Tom Bradley",
+    "role": "Library Aide",
+    "site_id": "MSE",
+    "site_name": "Maple Street Elementary",
+    "fte": 0.5,
+    "email": "tom.bradley@willowbend.k12.example.org",
+    "grades_served": "K-5",
+    "specialties": [
+      "circulation desk",
+      "shelving",
+      "inventory"
+    ],
+    "typical_days": "Mon-Fri",
+    "start_local": "07:40",
+    "end_local": "12:00",
+    "pilot_role": "secondary user",
+    "notes": "Runs before-school and morning class-visit checkout. Needs a 20-second lookup, not a dashboard. Leaves at noon."
+  },
+  {
+    "staff_id": "L-003",
+    "full_name": "Priya Shah",
+    "role": "District Library Coordinator",
+    "site_id": "DO",
+    "site_name": "WBSD District Office",
+    "fte": 1.0,
+    "email": "priya.shah@willowbend.k12.example.org",
+    "grades_served": "K-12",
+    "specialties": [
+      "collection development",
+      "ILS",
+      "privacy"
+    ],
+    "typical_days": "Mon-Thu district / Tue on-site during pilot",
+    "start_local": "08:30",
+    "end_local": "16:30",
+    "pilot_role": "sponsor + data owner",
+    "notes": "Champion for the pro-bono pick. Will kill student-facing anything in year 1. Wants audit logs she can show the privacy officer."
+  }
+]

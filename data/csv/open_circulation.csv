@@ -1,0 +1,15 @@
+window_id,weekday,start_local,end_local,who_comes,est_checkouts,staff_id,volume,shelfmate_job
+OC-AM-M,Monday,07:40,08:15,bus kids + readers who finish homework,18,L-002,medium,lookup by student_id; no time for a conversation
+OC-AM-T,Tuesday,07:40,08:15,same,16,L-002,medium,same
+OC-AM-W,Wednesday,07:40,08:15,same,12,L-002,low,same
+OC-AM-R,Thursday,07:40,08:15,same,15,L-002,medium,same
+OC-AM-F,Friday,07:40,08:15,weekend grabbers start early,22,L-002,high,availability filter
+OC-LN-M,Monday,11:20,12:10,grade 3-4 lunch pass,28,L-002,high,Tom-only; 20-second path or they leave empty-handed
+OC-LN-T,Tuesday,11:20,12:10,grade 3-4 lunch pass,26,L-002,high,same
+OC-LN-W,Wednesday,11:20,12:10,grade 3-4 lunch pass,20,L-002,medium,same
+OC-LN-R,Thursday,11:20,12:10,grade 3-4 lunch pass,24,L-002,high,same
+OC-LN-F,Friday,11:20,12:10,grade 3-4 lunch pass,30,L-002,high,same
+OC-PM-M,Monday,14:50,15:20,after-school / pickup,14,L-001,medium,Elena can talk; 3-minute rec
+OC-PM-T,Tuesday,14:50,15:20,Graphic Novel Club overlap,10,L-001,low,club
+OC-PM-R,Thursday,14:50,15:20,after-school,12,L-001,medium,teacher-requested holds
+OC-PM-F,Friday,14:20,15:20,weekend checkout,40,L-001,peak,do not recommend copies_available=0 (Bad Guys is out)

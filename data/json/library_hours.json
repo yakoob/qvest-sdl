@@ -1,0 +1,58 @@
+[
+  {
+    "site_id": "MSE",
+    "weekday": "Monday",
+    "open_local": "07:40",
+    "close_local": "15:20",
+    "staff_on_open": "L-002",
+    "notes": "Before-school circ 07:40-08:15. Specials AM. Afternoon open circ after 13:50."
+  },
+  {
+    "site_id": "MSE",
+    "weekday": "Tuesday",
+    "open_local": "07:40",
+    "close_local": "15:20",
+    "staff_on_open": "L-002",
+    "notes": "Graphic Novel Club 14:50-15:20."
+  },
+  {
+    "site_id": "MSE",
+    "weekday": "Wednesday",
+    "open_local": "07:40",
+    "close_local": "15:20",
+    "staff_on_open": "L-002",
+    "notes": "K-2 read-aloud block 09:00-11:00 (out of pilot). Staff PLC 14:30-15:20 library closes to students."
+  },
+  {
+    "site_id": "MSE",
+    "weekday": "Thursday",
+    "open_local": "07:40",
+    "close_local": "15:20",
+    "staff_on_open": "L-002",
+    "notes": "Small-group / teacher collab 10:00-11:00. Open circ otherwise."
+  },
+  {
+    "site_id": "MSE",
+    "weekday": "Friday",
+    "open_local": "07:40",
+    "close_local": "15:20",
+    "staff_on_open": "L-002",
+    "notes": "Weekend checkout rush 14:20-15:20. Highest walk-up volume."
+  },
+  {
+    "site_id": "MSE",
+    "weekday": "Saturday",
+    "open_local": "closed",
+    "close_local": "closed",
+    "staff_on_open": null,
+    "notes": null
+  },
+  {
+    "site_id": "MSE",
+    "weekday": "Sunday",
+    "open_local": "closed",
+    "close_local": "closed",
+    "staff_on_open": null,
+    "notes": null
+  }
+]

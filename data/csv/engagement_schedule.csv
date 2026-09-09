@@ -1,0 +1,14 @@
+week,start,end,phase,owner,site_activity,elena_hours,tom_hours,priya_hours,exit_criteria
+0,2026-09-14,2026-10-02,privacy + data contract,L-003,sample CSV already in this folder; legal review of student_id + LLM off until signed,2,0,8,privacy officer written yes; Destiny export spec frozen
+1,2026-10-05,2026-10-09,discovery,L-001,shadow desk AM + Friday rush; 6 librarian interviews (Elena Tom + 4 peer sites),6,2,4,as-is journey map; success metric agreed (checkouts/student/month)
+2,2026-10-12,2026-10-16,discovery,L-003,in-service Mon 10-12 is a working session not a student day,4,0,6,data contract tested on a full (redacted) extract
+3,2026-10-19,2026-10-23,retrieval MVP,engineer,console on a laptop at Elena's desk; LLM off,3,1,2,Elena can look up 5 real students without us in the room
+4,2026-10-26,2026-10-30,retrieval MVP,engineer,Tom lunch-window test: 20-second path,2,3,1,Tom completes a lookup during OC-LN-F volume
+5,2026-11-02,2026-11-06,retrieval MVP,engineer,availability filter live (Bad Guys = 0 copies),2,1,1,zero recs with copies_available=0 in audit log
+6,2026-11-09,2026-11-13,grounded LLM,engineer,explanations on; prompts use student_id only,4,0,3,audit JSONL reviewed by Priya; no peer-child names in student slips
+7,2026-11-16,2026-11-20,grounded LLM,engineer,stretch toggle + NL query for teacher requests,4,1,2,Aisha-style stretch rec stays in catalog and grade band
+8,2026-11-23,2026-11-27,pause,L-003,Thanksgiving week; no on-site,0,0,0,eval job still runs on last extract
+9,2026-11-30,2026-12-04,desk pilot,L-001,4-6 librarians (Elena + itinerants); office hours Tue 09:00 with Priya,6,2,4,50 recs logged; conversion tracking starts
+10,2026-12-07,2026-12-11,desk pilot,L-001,Friday rush is the load test,5,2,2,p95 lookup under 3s on laptop
+11,2026-12-14,2026-12-18,measure,L-003,compare Nov vs last Nov checkouts/student (honest: directional only in 12 weeks),3,1,6,rec-to-checkout 14-day rate reported
+12,2026-12-21,2026-12-23,handoff,L-003,early close 12/21; runbook + binary + CSV contract to district IT,2,0,6,Elena can run with LLM off; Priya has the audit

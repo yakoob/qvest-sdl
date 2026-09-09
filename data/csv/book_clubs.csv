@@ -1,0 +1,4 @@
+club_id,name,weekday,start_local,end_local,grades,staff_id,room,active,notes
+BC-01,Graphic Novel Club,Tuesday,14:50,15:20,4-5,L-001,Room 12,true,Mateo S-406 and Tyler S-504 are regulars. Recs must stay graphic unless they ask to stretch.
+BC-02,Family Literacy Night,first Thursday,18:00,19:00,K-5,L-001,cafeteria,true,Monthly. Out of PoC scope. Do not put student recs on a public screen.
+BC-03,Battle of the Books (spring),Thursday,14:50,15:20,4-5,L-001,Room 12,false,Starts January. Do not train the model on a contest list in the fall pilot.

@@ -1,0 +1,7 @@
+homeroom_id,grade,teacher,room,class_size,library_weekday,library_start,library_end,lead_librarian
+H-3A,3,Ms. Anjali Patel,14,24,Monday,08:20,09:00,L-001
+H-3B,3,Mr. Minh Nguyen,15,23,Tuesday,08:20,09:00,L-001
+H-4A,4,Ms. Carmen Ruiz,21,25,Monday,10:05,10:45,L-001
+H-4B,4,Mr. David Cole,22,24,Tuesday,10:05,10:45,L-001
+H-5A,5,Ms. Chioma Okonkwo,30,26,Monday,13:05,13:45,L-001
+H-5B,5,Mr. Peter Barrett,31,25,Tuesday,13:05,13:45,L-001

@@ -1,0 +1,132 @@
+{
+  "district": "Willow Bend School District (fictional)",
+  "lighthouse": "Maple Street Elementary",
+  "extract_date": "2026-09-04",
+  "school_year": "2026-27",
+  "ferpa": {
+    "included": [
+      "opaque student_id",
+      "grade",
+      "homeroom",
+      "reading band",
+      "first name + last initial"
+    ],
+    "excluded": [
+      "last names",
+      "DOB",
+      "address",
+      "parent contact",
+      "state ID",
+      "free/reduced lunch",
+      "discipline"
+    ],
+    "llm_rule": "Prompts use student_id only. First names stay in the librarian console."
+  },
+  "files": [
+    {
+      "id": "district",
+      "json": "data/json/district.json",
+      "origin": "hand-authored",
+      "records": 1,
+      "description": "Site, year, ILS, data owner, privacy officer"
+    },
+    {
+      "id": "catalog",
+      "json": "data/json/catalog.json",
+      "csv": "data/csv/catalog.csv",
+      "records": 45,
+      "description": "Card catalog slice. Closed world for recommendations."
+    },
+    {
+      "id": "students",
+      "json": "data/json/students.json",
+      "csv": "data/csv/students.csv",
+      "records": 28,
+      "description": "Sample borrowers grades 3-5. Opaque IDs."
+    },
+    {
+      "id": "circulation",
+      "json": "data/json/circulation.json",
+      "csv": "data/csv/circulation.csv",
+      "records": 176,
+      "description": "Checkouts spring 2026 + first three weeks of fall. CF source."
+    },
+    {
+      "id": "librarians",
+      "json": "data/json/librarians.json",
+      "csv": "data/csv/librarians.csv",
+      "records": 3,
+      "description": "Staff who would actually touch the tool"
+    },
+    {
+      "id": "homerooms",
+      "json": "data/json/homerooms.json",
+      "csv": "data/csv/homerooms.csv",
+      "records": 6,
+      "description": "Grade 3-5 classes in the specials rotation"
+    },
+    {
+      "id": "library_hours",
+      "json": "data/json/library_hours.json",
+      "csv": "data/csv/library_hours.csv",
+      "records": 7,
+      "description": "Open/close"
+    },
+    {
+      "id": "class_visits",
+      "json": "data/json/class_visits.json",
+      "csv": "data/csv/class_visits.csv",
+      "records": 6,
+      "description": "Weekly specials when a whole class is in the room"
+    },
+    {
+      "id": "desk_shifts",
+      "json": "data/json/desk_shifts.json",
+      "csv": "data/csv/desk_shifts.csv",
+      "records": 11,
+      "description": "Who is on the desk"
+    },
+    {
+      "id": "open_circulation",
+      "json": "data/json/open_circulation.json",
+      "csv": "data/csv/open_circulation.csv",
+      "records": 14,
+      "description": "High-volume walk-up windows. ShelfMate's real job."
+    },
+    {
+      "id": "book_clubs",
+      "json": "data/json/book_clubs.json",
+      "csv": "data/csv/book_clubs.csv",
+      "records": 3,
+      "description": "Optional programs"
+    },
+    {
+      "id": "calendar_exceptions",
+      "json": "data/json/calendar_exceptions.json",
+      "csv": "data/csv/calendar_exceptions.csv",
+      "records": 10,
+      "description": "Closures"
+    },
+    {
+      "id": "engagement_schedule",
+      "json": "data/json/engagement_schedule.json",
+      "csv": "data/csv/engagement_schedule.csv",
+      "records": 13,
+      "description": "Proposed 12-week pro-bono lighthouse"
+    },
+    {
+      "id": "personas",
+      "json": "data/json/personas.json",
+      "notes": "data/notes/personas.md",
+      "records": 4,
+      "description": "Demo walkthrough (Mateo, Aisha, Priya, Olivia)"
+    },
+    {
+      "id": "as_is_notes",
+      "json": "data/json/as_is_notes.json",
+      "notes": "data/notes/as_is_notes.md",
+      "records": 1,
+      "description": "Elena's sticky notes and notebook. The system we are replacing."
+    }
+  ]
+}

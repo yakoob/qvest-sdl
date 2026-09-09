@@ -1,0 +1,29 @@
+student_id,grade,homeroom_id,reading_band,lexile_approx,cluster,page_comfort,english_learner,new_this_year,first_name,last_initial,demo_role,anecdote
+S-301,3,H-3A,below,380,graphic,short,false,false,Maya,G,reluctant_graphic,Will finish a graphic novel in one sitting. Walked out of Charlotte's Web. Elena's test case for funny and short.
+S-302,3,H-3A,below,410,graphic,short,true,false,Luis,T,,Same shelf as Maya. Spanish at home. Pictures first then speech bubbles then prose.
+S-303,3,H-3A,on,520,animals,medium,false,false,Chloe,P,,Asks for books with dogs. Returns them on time. Easy win not a stretch case.
+S-304,3,H-3B,on,500,sports,short,false,false,Aiden,R,,Soccer at recess. Cover-bias issue not a model issue. Collection still has to serve him.
+S-305,3,H-3B,above,640,fantasy,medium,false,false,Sofia,M,,Already through early chapter fantasy. Teachers worry she only reads series.
+S-306,3,H-3B,on,540,mystery,medium,false,false,Noah,B,,Likes riddles. Encyclopedia Brown repeats.
+S-307,3,H-3A,on,530,realistic,medium,false,false,Harper,L,,Quiet realistic fiction. Friends with Chloe. Sometimes crosses into animals.
+S-308,3,H-3B,below,360,graphic,short,false,false,Jayden,C,,Captain Underpants forever. Parents asked Elena for something nicer.
+S-401,4,H-4A,on,680,fantasy,medium,false,false,Jordan,K,fantasy_mid,Percy Jackson kid. Wants the next myth not a realistic school story.
+S-402,4,H-4A,above,820,fantasy,long,false,false,Aisha,B,stretch_case,Finished Wings of Fire 1 in two nights and asked for 2 and 3. Demo: toggle stretch.
+S-403,4,H-4B,on,640,sports,medium,false,false,DeShawn,M,sports,Basketball. Read Ghost because a friend had it. Adjacent to realistic.
+S-404,4,H-4A,on,700,realistic,medium,false,false,Emma,C,realistic,Wonder and Front Desk. Talks about characters like they are in her class.
+S-405,4,H-4B,on,610,unknown,medium,false,true,Priya,N,cold_start,Arrived 2026-08-25. One checkout: sharks display. No spring history. Cold start.
+S-406,4,H-4B,below,490,graphic,short,false,false,Mateo,S,demo_star,Wimpy Kid / Dog Man core. Lost him on a prose chapter book in March. Elena's Friday demo 1.
+S-407,4,H-4A,on,660,animals,medium,false,false,Lily,W,,Ivan and Charlotte's Web. Wants sad but OK at the end.
+S-408,4,H-4B,on,690,mystery,medium,false,false,Ethan,J,,Book Scavenger. Will hunt a series if you hand him number 1.
+S-409,4,H-4B,on,710,fantasy,medium,false,false,Zoe,F,,Wild Robot. Friends with Aisha. Slightly less voracious.
+S-410,4,H-4A,below,520,sports,short,false,false,Caleb,D,,Sports plus graphic. Good fusion test: two clusters.
+S-501,5,H-5A,on,780,realistic,medium,false,false,Nia,O,,New Kid and Amina's Voice. Notices who is on the cover.
+S-502,5,H-5A,above,940,fantasy,long,false,false,Samir,H,advanced_fantasy,Amari and Endling. Grade band still 4-7. Do not jump him to YA dystopia.
+S-503,5,H-5B,on,800,mystery,medium,false,false,Grace,Y,,Westing Game attempted then paused. Parker Inheritance next if we pace it.
+S-504,5,H-5B,below,540,graphic,short,false,false,Tyler,V,,Still in graphic novels in grade 5. Shame is the risk. Never call it easy.
+S-505,5,H-5A,on,760,animals,medium,false,false,Isabella,Q,,Wolf Called Wander. Wants survival not talking animals.
+S-506,5,H-5B,on,740,sports,medium,false,false,Marcus,E,,Crossover and Booked. Verse does not scare him.
+S-507,5,H-5B,on,810,fantasy,medium,false,false,Ava,Z,,Dragons and robots. Overlaps Aisha/Samir cluster.
+S-508,5,H-5A,on,770,realistic,medium,false,false,Ben,K,,Holes fan. Wants clever plots not feelings-forward books.
+S-509,5,H-5B,on,720,unknown,medium,true,true,Olivia,I,cold_start_5,Transferred 2026-09-02. Zero checkouts in this file. True cold start.
+S-510,5,H-5A,above,900,mystery,long,false,false,Chen,W,,Finished Mysterious Benedict. Wants harder puzzles still middle grade.

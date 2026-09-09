@@ -1,0 +1,126 @@
+{
+  "walkthrough_order": [
+    "S-406",
+    "S-402",
+    "S-405",
+    "S-509"
+  ],
+  "moments": [
+    {
+      "id": "tom_lookup",
+      "who": "L-002",
+      "when": "07:40-08:15 and lunch",
+      "job": "lookup by student, no conversation"
+    },
+    {
+      "id": "elena_specials",
+      "who": "L-001",
+      "when": "last 8 minutes of specials",
+      "job": "4-5 kids, 3-minute talks"
+    },
+    {
+      "id": "friday_rush",
+      "who": "L-001",
+      "when": "Friday 14:20",
+      "job": "weekend rush, availability is the feature"
+    }
+  ],
+  "personas": [
+    {
+      "student_id": "S-406",
+      "name": "Mateo S",
+      "role": "demo_star",
+      "why": "the thing librarians already do",
+      "grade": 4,
+      "homeroom_id": "H-4B",
+      "reading_band": "below",
+      "cluster": "graphic",
+      "history_titles": [
+        "Dog Man",
+        "Wimpy Kid",
+        "Captain Underpants",
+        "Big Nate",
+        "Lunch Lady"
+      ],
+      "lost_him_on": "prose chapter book in March",
+      "when": "Tuesday 10:05 class visit, or Friday 14:20 weekend rush",
+      "show": [
+        "item-item CF lands on Cat Kid / Investigators / Bad Guys",
+        "Bad Guys has copies_available=0 — it must not be the spoken rec",
+        "talking points Elena can say in 20 seconds"
+      ]
+    },
+    {
+      "student_id": "S-402",
+      "name": "Aisha B",
+      "role": "stretch_case",
+      "why": "stretch toggle",
+      "grade": 4,
+      "homeroom_id": "H-4A",
+      "reading_band": "above",
+      "cluster": "fantasy",
+      "history_titles": [
+        "Lightning Thief",
+        "Wings of Fire",
+        "Wild Robot",
+        "Dealing with Dragons"
+      ],
+      "show": [
+        "default recs stay in-series / adjacent fantasy",
+        "stretch toggle → Gregor, Amari, Endling — still catalog-closed",
+        "do not jump her to Westing Game just because lexile is high"
+      ]
+    },
+    {
+      "student_id": "S-405",
+      "name": "Priya N",
+      "role": "cold_start",
+      "why": "CF empty; content + NL query must carry it",
+      "grade": 4,
+      "homeroom_id": "H-4B",
+      "reading_band": "on",
+      "cluster": "unknown",
+      "history_titles": [
+        "National Geographic Kids: Sharks"
+      ],
+      "arrived": "2026-08-25",
+      "show": [
+        "librarian types: funny, reluctant 4th, under 150 pages, we have copies",
+        "if you only had CF, this child gets nothing useful"
+      ]
+    },
+    {
+      "student_id": "S-509",
+      "name": "Olivia I",
+      "role": "cold_start_5",
+      "why": "true cold start: zero checkouts",
+      "grade": 5,
+      "homeroom_id": "H-5B",
+      "reading_band": "on",
+      "cluster": "unknown",
+      "history_titles": [],
+      "arrived": "2026-09-02",
+      "show": [
+        "pure NL / grade-band popular",
+        "honest about the limit"
+      ]
+    }
+  ],
+  "partners": [
+    {
+      "staff_id": "L-001",
+      "name": "Elena",
+      "watches": "Does the why sound like her, or like a bot"
+    },
+    {
+      "staff_id": "L-002",
+      "name": "Tom",
+      "watches": "Can he do it in the lunch window without a training class"
+    },
+    {
+      "staff_id": "L-003",
+      "name": "Priya Shah",
+      "watches": "Is student_id the only thing that leaves the building toward a model"
+    }
+  ]
+}

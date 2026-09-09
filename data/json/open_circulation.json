@@ -1,0 +1,156 @@
+[
+  {
+    "window_id": "OC-AM-M",
+    "weekday": "Monday",
+    "start_local": "07:40",
+    "end_local": "08:15",
+    "who_comes": "bus kids + readers who finish homework",
+    "est_checkouts": 18,
+    "staff_id": "L-002",
+    "volume": "medium",
+    "shelfmate_job": "lookup by student_id; no time for a conversation"
+  },
+  {
+    "window_id": "OC-AM-T",
+    "weekday": "Tuesday",
+    "start_local": "07:40",
+    "end_local": "08:15",
+    "who_comes": "same",
+    "est_checkouts": 16,
+    "staff_id": "L-002",
+    "volume": "medium",
+    "shelfmate_job": "same"
+  },
+  {
+    "window_id": "OC-AM-W",
+    "weekday": "Wednesday",
+    "start_local": "07:40",
+    "end_local": "08:15",
+    "who_comes": "same",
+    "est_checkouts": 12,
+    "staff_id": "L-002",
+    "volume": "low",
+    "shelfmate_job": "same"
+  },
+  {
+    "window_id": "OC-AM-R",
+    "weekday": "Thursday",
+    "start_local": "07:40",
+    "end_local": "08:15",
+    "who_comes": "same",
+    "est_checkouts": 15,
+    "staff_id": "L-002",
+    "volume": "medium",
+    "shelfmate_job": "same"
+  },
+  {
+    "window_id": "OC-AM-F",
+    "weekday": "Friday",
+    "start_local": "07:40",
+    "end_local": "08:15",
+    "who_comes": "weekend grabbers start early",
+    "est_checkouts": 22,
+    "staff_id": "L-002",
+    "volume": "high",
+    "shelfmate_job": "availability filter"
+  },
+  {
+    "window_id": "OC-LN-M",
+    "weekday": "Monday",
+    "start_local": "11:20",
+    "end_local": "12:10",
+    "who_comes": "grade 3-4 lunch pass",
+    "est_checkouts": 28,
+    "staff_id": "L-002",
+    "volume": "high",
+    "shelfmate_job": "Tom-only; 20-second path or they leave empty-handed"
+  },
+  {
+    "window_id": "OC-LN-T",
+    "weekday": "Tuesday",
+    "start_local": "11:20",
+    "end_local": "12:10",
+    "who_comes": "grade 3-4 lunch pass",
+    "est_checkouts": 26,
+    "staff_id": "L-002",
+    "volume": "high",
+    "shelfmate_job": "same"
+  },
+  {
+    "window_id": "OC-LN-W",
+    "weekday": "Wednesday",
+    "start_local": "11:20",
+    "end_local": "12:10",
+    "who_comes": "grade 3-4 lunch pass",
+    "est_checkouts": 20,
+    "staff_id": "L-002",
+    "volume": "medium",
+    "shelfmate_job": "same"
+  },
+  {
+    "window_id": "OC-LN-R",
+    "weekday": "Thursday",
+    "start_local": "11:20",
+    "end_local": "12:10",
+    "who_comes": "grade 3-4 lunch pass",
+    "est_checkouts": 24,
+    "staff_id": "L-002",
+    "volume": "high",
+    "shelfmate_job": "same"
+  },
+  {
+    "window_id": "OC-LN-F",
+    "weekday": "Friday",
+    "start_local": "11:20",
+    "end_local": "12:10",
+    "who_comes": "grade 3-4 lunch pass",
+    "est_checkouts": 30,
+    "staff_id": "L-002",
+    "volume": "high",
+    "shelfmate_job": "same"
+  },
+  {
+    "window_id": "OC-PM-M",
+    "weekday": "Monday",
+    "start_local": "14:50",
+    "end_local": "15:20",
+    "who_comes": "after-school / pickup",
+    "est_checkouts": 14,
+    "staff_id": "L-001",
+    "volume": "medium",
+    "shelfmate_job": "Elena can talk; 3-minute rec"
+  },
+  {
+    "window_id": "OC-PM-T",
+    "weekday": "Tuesday",
+    "start_local": "14:50",
+    "end_local": "15:20",
+    "who_comes": "Graphic Novel Club overlap",
+    "est_checkouts": 10,
+    "staff_id": "L-001",
+    "volume": "low",
+    "shelfmate_job": "club"
+  },
+  {
+    "window_id": "OC-PM-R",
+    "weekday": "Thursday",
+    "start_local": "14:50",
+    "end_local": "15:20",
+    "who_comes": "after-school",
+    "est_checkouts": 12,
+    "staff_id": "L-001",
+    "volume": "medium",
+    "shelfmate_job": "teacher-requested holds"
+  },
+  {
+    "window_id": "OC-PM-F",
+    "weekday": "Friday",
+    "start_local": "14:20",
+    "end_local": "15:20",
+    "who_comes": "weekend checkout",
+    "est_checkouts": 40,
+    "staff_id": "L-001",
+    "volume": "peak",
+    "shelfmate_job": "do not recommend copies_available=0 (Bad Guys is out)"
+  }
+]

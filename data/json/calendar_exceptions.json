@@ -1,0 +1,72 @@
+[
+  {
+    "date": "2026-09-07",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "Labor Day",
+    "impact": "no circ"
+  },
+  {
+    "date": "2026-09-18",
+    "site_id": "MSE",
+    "status": "early_close_12:00",
+    "reason": "Staff development",
+    "impact": "Tom shift only; Elena at PD"
+  },
+  {
+    "date": "2026-10-12",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "District in-service",
+    "impact": "no circ; good day for partner working session"
+  },
+  {
+    "date": "2026-11-11",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "Veterans Day",
+    "impact": "no circ"
+  },
+  {
+    "date": "2026-11-23",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "Fall break",
+    "impact": "Thanksgiving week"
+  },
+  {
+    "date": "2026-11-24",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "Fall break",
+    "impact": "Thanksgiving week"
+  },
+  {
+    "date": "2026-11-25",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "Fall break",
+    "impact": "Thanksgiving week"
+  },
+  {
+    "date": "2026-11-26",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "Fall break",
+    "impact": "Thanksgiving week"
+  },
+  {
+    "date": "2026-11-27",
+    "site_id": "MSE",
+    "status": "closed",
+    "reason": "Fall break",
+    "impact": "Thanksgiving week"
+  },
+  {
+    "date": "2026-12-21",
+    "site_id": "MSE",
+    "status": "early_close_12:00",
+    "reason": "Winter break begins",
+    "impact": "last checkout day of lighthouse if we start Oct 5"
+  }
+]

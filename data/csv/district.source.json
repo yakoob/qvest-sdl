@@ -1,0 +1,34 @@
+{
+  "district_id": "WBSD",
+  "district_name": "Willow Bend School District",
+  "state": "CA",
+  "fictional": true,
+  "school_year": "2026-27",
+  "year_start": "2026-08-17",
+  "year_end": "2027-06-11",
+  "ils": {
+    "vendor": "Follett Destiny (assumed)",
+    "export": "nightly CSV drop, 18:00 local",
+    "timezone": "America/Los_Angeles"
+  },
+  "lighthouse": {
+    "school_id": "MSE",
+    "school_name": "Maple Street Elementary",
+    "address": "140 Maple Street, Willow Bend, CA",
+    "grades": "K-5",
+    "enrollment": 412,
+    "pilot_grades": [3, 4, 5],
+    "library_room": "Room 12 / Media Center",
+    "copies_policy": "do not recommend a title with copies_available = 0"
+  },
+  "data_owner": {
+    "staff_id": "L-003",
+    "name": "Priya Shah",
+    "role": "District Library Coordinator"
+  },
+  "privacy_officer": {
+    "name": "Marcus Ellison",
+    "role": "Director of Information Services (fictional)",
+    "gate": "must approve student_id join before any LLM vendor is enabled"
+  }
+}

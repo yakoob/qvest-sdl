@@ -1,0 +1,1762 @@
+[
+  {
+    "event_id": "C-0001",
+    "student_id": "S-306",
+    "book_id": "B-015",
+    "checkout_date": "2026-01-13",
+    "due_date": "2026-01-27",
+    "return_date": "2026-01-20",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0002",
+    "student_id": "S-308",
+    "book_id": "B-007",
+    "checkout_date": "2026-01-14",
+    "due_date": "2026-01-28",
+    "return_date": "2026-01-21",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0003",
+    "student_id": "S-407",
+    "book_id": "B-020",
+    "checkout_date": "2026-01-14",
+    "due_date": "2026-01-28",
+    "return_date": "2026-01-28",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0004",
+    "student_id": "S-505",
+    "book_id": "B-044",
+    "checkout_date": "2026-01-15",
+    "due_date": "2026-01-29",
+    "return_date": "2026-01-22",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0005",
+    "student_id": "S-508",
+    "book_id": "B-007",
+    "checkout_date": "2026-01-16",
+    "due_date": "2026-01-30",
+    "return_date": "2026-01-30",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0006",
+    "student_id": "S-407",
+    "book_id": "B-045",
+    "checkout_date": "2026-01-19",
+    "due_date": "2026-02-02",
+    "return_date": "2026-01-26",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0007",
+    "student_id": "S-408",
+    "book_id": "B-053",
+    "checkout_date": "2026-01-21",
+    "due_date": "2026-02-04",
+    "return_date": "2026-02-04",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0008",
+    "student_id": "S-409",
+    "book_id": "B-063",
+    "checkout_date": "2026-01-22",
+    "due_date": "2026-02-05",
+    "return_date": "2026-02-05",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0009",
+    "student_id": "S-502",
+    "book_id": "B-016",
+    "checkout_date": "2026-01-22",
+    "due_date": "2026-02-05",
+    "return_date": "2026-01-29",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0010",
+    "student_id": "S-305",
+    "book_id": "B-015",
+    "checkout_date": "2026-01-23",
+    "due_date": "2026-02-06",
+    "return_date": "2026-01-30",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0011",
+    "student_id": "S-305",
+    "book_id": "B-015",
+    "checkout_date": "2026-01-27",
+    "due_date": "2026-02-10",
+    "return_date": "2026-02-10",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0012",
+    "student_id": "S-505",
+    "book_id": "B-063",
+    "checkout_date": "2026-01-28",
+    "due_date": "2026-02-11",
+    "return_date": "2026-02-04",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0013",
+    "student_id": "S-408",
+    "book_id": "B-021",
+    "checkout_date": "2026-01-29",
+    "due_date": "2026-02-12",
+    "return_date": "2026-02-05",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0014",
+    "student_id": "S-410",
+    "book_id": "B-034",
+    "checkout_date": "2026-02-02",
+    "due_date": "2026-02-16",
+    "return_date": "2026-02-16",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0015",
+    "student_id": "S-510",
+    "book_id": "B-052",
+    "checkout_date": "2026-02-02",
+    "due_date": "2026-02-16",
+    "return_date": "2026-02-09",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0016",
+    "student_id": "S-307",
+    "book_id": "B-043",
+    "checkout_date": "2026-02-03",
+    "due_date": "2026-02-17",
+    "return_date": "2026-02-10",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0017",
+    "student_id": "S-303",
+    "book_id": "B-040",
+    "checkout_date": "2026-02-05",
+    "due_date": "2026-02-19",
+    "return_date": "2026-02-26",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0018",
+    "student_id": "S-407",
+    "book_id": "B-044",
+    "checkout_date": "2026-02-05",
+    "due_date": "2026-02-19",
+    "return_date": "2026-02-26",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0019",
+    "student_id": "S-508",
+    "book_id": "B-004",
+    "checkout_date": "2026-02-05",
+    "due_date": "2026-02-19",
+    "return_date": "2026-02-12",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0020",
+    "student_id": "S-406",
+    "book_id": "B-003",
+    "checkout_date": "2026-02-09",
+    "due_date": "2026-02-23",
+    "return_date": "2026-03-02",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0021",
+    "student_id": "S-306",
+    "book_id": "B-062",
+    "checkout_date": "2026-02-10",
+    "due_date": "2026-02-24",
+    "return_date": "2026-02-17",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0022",
+    "student_id": "S-408",
+    "book_id": "B-054",
+    "checkout_date": "2026-02-10",
+    "due_date": "2026-02-24",
+    "return_date": "2026-03-03",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0023",
+    "student_id": "S-409",
+    "book_id": "B-014",
+    "checkout_date": "2026-02-10",
+    "due_date": "2026-02-24",
+    "return_date": "2026-02-17",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0024",
+    "student_id": "S-402",
+    "book_id": "B-010",
+    "checkout_date": "2026-02-11",
+    "due_date": "2026-02-25",
+    "return_date": "2026-02-25",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0025",
+    "student_id": "S-406",
+    "book_id": "B-001",
+    "checkout_date": "2026-02-11",
+    "due_date": "2026-02-25",
+    "return_date": "2026-02-18",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0026",
+    "student_id": "S-410",
+    "book_id": "B-032",
+    "checkout_date": "2026-02-12",
+    "due_date": "2026-02-26",
+    "return_date": "2026-02-19",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0027",
+    "student_id": "S-402",
+    "book_id": "B-015",
+    "checkout_date": "2026-02-13",
+    "due_date": "2026-02-27",
+    "return_date": "2026-02-20",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0028",
+    "student_id": "S-507",
+    "book_id": "B-013",
+    "checkout_date": "2026-02-13",
+    "due_date": "2026-02-27",
+    "return_date": "2026-02-27",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0029",
+    "student_id": "S-305",
+    "book_id": "B-015",
+    "checkout_date": "2026-02-16",
+    "due_date": "2026-03-02",
+    "return_date": "2026-03-02",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0030",
+    "student_id": "S-303",
+    "book_id": "B-043",
+    "checkout_date": "2026-02-17",
+    "due_date": "2026-03-03",
+    "return_date": "2026-03-03",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0031",
+    "student_id": "S-408",
+    "book_id": "B-052",
+    "checkout_date": "2026-02-17",
+    "due_date": "2026-03-03",
+    "return_date": "2026-03-10",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0032",
+    "student_id": "S-501",
+    "book_id": "B-021",
+    "checkout_date": "2026-02-17",
+    "due_date": "2026-03-03",
+    "return_date": "2026-03-10",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0033",
+    "student_id": "S-502",
+    "book_id": "B-012",
+    "checkout_date": "2026-02-17",
+    "due_date": "2026-03-03",
+    "return_date": "2026-03-10",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0034",
+    "student_id": "S-306",
+    "book_id": "B-063",
+    "checkout_date": "2026-02-19",
+    "due_date": "2026-03-05",
+    "return_date": "2026-02-26",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0035",
+    "student_id": "S-308",
+    "book_id": "B-005",
+    "checkout_date": "2026-02-20",
+    "due_date": "2026-03-06",
+    "return_date": "2026-03-06",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0036",
+    "student_id": "S-306",
+    "book_id": "B-008",
+    "checkout_date": "2026-02-24",
+    "due_date": "2026-03-10",
+    "return_date": "2026-03-10",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0037",
+    "student_id": "S-407",
+    "book_id": "B-041",
+    "checkout_date": "2026-02-24",
+    "due_date": "2026-03-10",
+    "return_date": "2026-03-10",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0038",
+    "student_id": "S-305",
+    "book_id": "B-015",
+    "checkout_date": "2026-02-25",
+    "due_date": "2026-03-11",
+    "return_date": "2026-03-04",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0039",
+    "student_id": "S-404",
+    "book_id": "B-027",
+    "checkout_date": "2026-02-25",
+    "due_date": "2026-03-11",
+    "return_date": "2026-03-04",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0040",
+    "student_id": "S-304",
+    "book_id": "B-034",
+    "checkout_date": "2026-03-02",
+    "due_date": "2026-03-16",
+    "return_date": "2026-03-09",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0041",
+    "student_id": "S-301",
+    "book_id": "B-001",
+    "checkout_date": "2026-03-06",
+    "due_date": "2026-03-20",
+    "return_date": "2026-03-13",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0042",
+    "student_id": "S-306",
+    "book_id": "B-003",
+    "checkout_date": "2026-03-09",
+    "due_date": "2026-03-23",
+    "return_date": "2026-03-23",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0043",
+    "student_id": "S-308",
+    "book_id": "B-001",
+    "checkout_date": "2026-03-10",
+    "due_date": "2026-03-24",
+    "return_date": "2026-03-31",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0044",
+    "student_id": "S-503",
+    "book_id": "B-055",
+    "checkout_date": "2026-03-10",
+    "due_date": "2026-03-24",
+    "return_date": "2026-03-24",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0045",
+    "student_id": "S-410",
+    "book_id": "B-031",
+    "checkout_date": "2026-03-16",
+    "due_date": "2026-03-30",
+    "return_date": "2026-03-30",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0046",
+    "student_id": "S-501",
+    "book_id": "B-023",
+    "checkout_date": "2026-03-17",
+    "due_date": "2026-03-31",
+    "return_date": "2026-03-24",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0047",
+    "student_id": "S-510",
+    "book_id": "B-024",
+    "checkout_date": "2026-03-17",
+    "due_date": "2026-03-31",
+    "return_date": "2026-03-24",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0048",
+    "student_id": "S-506",
+    "book_id": "B-030",
+    "checkout_date": "2026-03-18",
+    "due_date": "2026-04-01",
+    "return_date": "2026-03-25",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0049",
+    "student_id": "S-507",
+    "book_id": "B-016",
+    "checkout_date": "2026-03-18",
+    "due_date": "2026-04-01",
+    "return_date": "2026-03-25",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0050",
+    "student_id": "S-505",
+    "book_id": "B-022",
+    "checkout_date": "2026-03-19",
+    "due_date": "2026-04-02",
+    "return_date": "2026-03-26",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0051",
+    "student_id": "S-510",
+    "book_id": "B-054",
+    "checkout_date": "2026-03-19",
+    "due_date": "2026-04-02",
+    "return_date": "2026-04-09",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0052",
+    "student_id": "S-303",
+    "book_id": "B-042",
+    "checkout_date": "2026-03-23",
+    "due_date": "2026-04-06",
+    "return_date": "2026-03-30",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0053",
+    "student_id": "S-305",
+    "book_id": "B-015",
+    "checkout_date": "2026-03-23",
+    "due_date": "2026-04-06",
+    "return_date": "2026-04-13",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0054",
+    "student_id": "S-501",
+    "book_id": "B-034",
+    "checkout_date": "2026-03-23",
+    "due_date": "2026-04-06",
+    "return_date": "2026-03-30",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0055",
+    "student_id": "S-508",
+    "book_id": "B-043",
+    "checkout_date": "2026-03-23",
+    "due_date": "2026-04-06",
+    "return_date": "2026-04-06",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0056",
+    "student_id": "S-505",
+    "book_id": "B-045",
+    "checkout_date": "2026-03-25",
+    "due_date": "2026-04-08",
+    "return_date": "2026-04-15",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0057",
+    "student_id": "S-306",
+    "book_id": "B-004",
+    "checkout_date": "2026-03-26",
+    "due_date": "2026-04-09",
+    "return_date": "2026-04-09",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0058",
+    "student_id": "S-406",
+    "book_id": "B-002",
+    "checkout_date": "2026-03-26",
+    "due_date": "2026-04-09",
+    "return_date": "2026-04-02",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0059",
+    "student_id": "S-302",
+    "book_id": "B-063",
+    "checkout_date": "2026-03-27",
+    "due_date": "2026-04-10",
+    "return_date": "2026-04-03",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0060",
+    "student_id": "S-505",
+    "book_id": "B-040",
+    "checkout_date": "2026-03-27",
+    "due_date": "2026-04-10",
+    "return_date": "2026-04-03",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0061",
+    "student_id": "S-510",
+    "book_id": "B-055",
+    "checkout_date": "2026-03-27",
+    "due_date": "2026-04-10",
+    "return_date": "2026-04-10",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0062",
+    "student_id": "S-304",
+    "book_id": "B-034",
+    "checkout_date": "2026-03-31",
+    "due_date": "2026-04-14",
+    "return_date": "2026-04-07",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0063",
+    "student_id": "S-408",
+    "book_id": "B-027",
+    "checkout_date": "2026-03-31",
+    "due_date": "2026-04-14",
+    "return_date": "2026-04-14",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0064",
+    "student_id": "S-304",
+    "book_id": "B-034",
+    "checkout_date": "2026-04-01",
+    "due_date": "2026-04-15",
+    "return_date": "2026-04-15",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0065",
+    "student_id": "S-407",
+    "book_id": "B-024",
+    "checkout_date": "2026-04-01",
+    "due_date": "2026-04-15",
+    "return_date": "2026-04-08",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0066",
+    "student_id": "S-406",
+    "book_id": "B-004",
+    "checkout_date": "2026-04-02",
+    "due_date": "2026-04-16",
+    "return_date": "2026-04-16",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0067",
+    "student_id": "S-409",
+    "book_id": "B-015",
+    "checkout_date": "2026-04-02",
+    "due_date": "2026-04-16",
+    "return_date": "2026-04-09",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0068",
+    "student_id": "S-503",
+    "book_id": "B-052",
+    "checkout_date": "2026-04-02",
+    "due_date": "2026-04-16",
+    "return_date": "2026-04-09",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0069",
+    "student_id": "S-404",
+    "book_id": "B-025",
+    "checkout_date": "2026-04-03",
+    "due_date": "2026-04-17",
+    "return_date": "2026-04-17",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0070",
+    "student_id": "S-507",
+    "book_id": "B-008",
+    "checkout_date": "2026-04-03",
+    "due_date": "2026-04-17",
+    "return_date": "2026-04-17",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0071",
+    "student_id": "S-406",
+    "book_id": "B-005",
+    "checkout_date": "2026-04-06",
+    "due_date": "2026-04-20",
+    "return_date": "2026-04-20",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0072",
+    "student_id": "S-504",
+    "book_id": "B-001",
+    "checkout_date": "2026-04-06",
+    "due_date": "2026-04-20",
+    "return_date": "2026-04-20",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0073",
+    "student_id": "S-505",
+    "book_id": "B-043",
+    "checkout_date": "2026-04-06",
+    "due_date": "2026-04-20",
+    "return_date": "2026-04-20",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0074",
+    "student_id": "S-504",
+    "book_id": "B-002",
+    "checkout_date": "2026-04-07",
+    "due_date": "2026-04-21",
+    "return_date": "2026-04-14",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0075",
+    "student_id": "S-409",
+    "book_id": "B-043",
+    "checkout_date": "2026-04-09",
+    "due_date": "2026-04-23",
+    "return_date": "2026-04-16",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0076",
+    "student_id": "S-501",
+    "book_id": "B-027",
+    "checkout_date": "2026-04-09",
+    "due_date": "2026-04-23",
+    "return_date": "2026-04-16",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0077",
+    "student_id": "S-507",
+    "book_id": "B-017",
+    "checkout_date": "2026-04-09",
+    "due_date": "2026-04-23",
+    "return_date": "2026-04-23",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0078",
+    "student_id": "S-401",
+    "book_id": "B-010",
+    "checkout_date": "2026-04-10",
+    "due_date": "2026-04-24",
+    "return_date": "2026-04-17",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0079",
+    "student_id": "S-409",
+    "book_id": "B-011",
+    "checkout_date": "2026-04-10",
+    "due_date": "2026-04-24",
+    "return_date": "2026-04-17",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0080",
+    "student_id": "S-403",
+    "book_id": "B-026",
+    "checkout_date": "2026-04-14",
+    "due_date": "2026-04-28",
+    "return_date": "2026-04-28",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0081",
+    "student_id": "S-302",
+    "book_id": "B-002",
+    "checkout_date": "2026-04-17",
+    "due_date": "2026-05-01",
+    "return_date": "2026-05-01",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0082",
+    "student_id": "S-404",
+    "book_id": "B-020",
+    "checkout_date": "2026-04-17",
+    "due_date": "2026-05-01",
+    "return_date": "2026-04-24",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0083",
+    "student_id": "S-307",
+    "book_id": "B-042",
+    "checkout_date": "2026-04-20",
+    "due_date": "2026-05-04",
+    "return_date": "2026-05-04",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0084",
+    "student_id": "S-401",
+    "book_id": "B-011",
+    "checkout_date": "2026-04-20",
+    "due_date": "2026-05-04",
+    "return_date": "2026-05-11",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0085",
+    "student_id": "S-504",
+    "book_id": "B-007",
+    "checkout_date": "2026-04-20",
+    "due_date": "2026-05-04",
+    "return_date": "2026-05-04",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0086",
+    "student_id": "S-302",
+    "book_id": "B-061",
+    "checkout_date": "2026-04-21",
+    "due_date": "2026-05-05",
+    "return_date": "2026-05-05",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0087",
+    "student_id": "S-503",
+    "book_id": "B-051",
+    "checkout_date": "2026-04-21",
+    "due_date": "2026-05-05",
+    "return_date": "2026-05-12",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0088",
+    "student_id": "S-508",
+    "book_id": "B-044",
+    "checkout_date": "2026-04-21",
+    "due_date": "2026-05-05",
+    "return_date": "2026-05-05",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0089",
+    "student_id": "S-510",
+    "book_id": "B-053",
+    "checkout_date": "2026-04-21",
+    "due_date": "2026-05-05",
+    "return_date": "2026-05-05",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0090",
+    "student_id": "S-305",
+    "book_id": "B-060",
+    "checkout_date": "2026-04-23",
+    "due_date": "2026-05-07",
+    "return_date": "2026-05-07",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0091",
+    "student_id": "S-402",
+    "book_id": "B-012",
+    "checkout_date": "2026-04-23",
+    "due_date": "2026-05-07",
+    "return_date": "2026-05-07",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0092",
+    "student_id": "S-407",
+    "book_id": "B-043",
+    "checkout_date": "2026-04-23",
+    "due_date": "2026-05-07",
+    "return_date": "2026-04-30",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0093",
+    "student_id": "S-409",
+    "book_id": "B-013",
+    "checkout_date": "2026-04-23",
+    "due_date": "2026-05-07",
+    "return_date": "2026-04-30",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0094",
+    "student_id": "S-407",
+    "book_id": "B-040",
+    "checkout_date": "2026-04-27",
+    "due_date": "2026-05-11",
+    "return_date": "2026-05-04",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0095",
+    "student_id": "S-305",
+    "book_id": "B-062",
+    "checkout_date": "2026-05-04",
+    "due_date": "2026-05-18",
+    "return_date": "2026-05-18",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0096",
+    "student_id": "S-302",
+    "book_id": "B-005",
+    "checkout_date": "2026-05-06",
+    "due_date": "2026-05-20",
+    "return_date": "2026-05-13",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0097",
+    "student_id": "S-306",
+    "book_id": "B-022",
+    "checkout_date": "2026-05-06",
+    "due_date": "2026-05-20",
+    "return_date": "2026-05-27",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0098",
+    "student_id": "S-409",
+    "book_id": "B-054",
+    "checkout_date": "2026-05-07",
+    "due_date": "2026-05-21",
+    "return_date": "2026-05-21",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0099",
+    "student_id": "S-306",
+    "book_id": "B-043",
+    "checkout_date": "2026-05-11",
+    "due_date": "2026-05-25",
+    "return_date": "2026-05-18",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0100",
+    "student_id": "S-403",
+    "book_id": "B-032",
+    "checkout_date": "2026-05-12",
+    "due_date": "2026-05-26",
+    "return_date": "2026-05-26",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0101",
+    "student_id": "S-502",
+    "book_id": "B-017",
+    "checkout_date": "2026-05-12",
+    "due_date": "2026-05-26",
+    "return_date": "2026-05-26",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0102",
+    "student_id": "S-506",
+    "book_id": "B-026",
+    "checkout_date": "2026-05-12",
+    "due_date": "2026-05-26",
+    "return_date": "2026-05-19",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0103",
+    "student_id": "S-306",
+    "book_id": "B-001",
+    "checkout_date": "2026-05-13",
+    "due_date": "2026-05-27",
+    "return_date": "2026-05-27",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0104",
+    "student_id": "S-410",
+    "book_id": "B-031",
+    "checkout_date": "2026-05-13",
+    "due_date": "2026-05-27",
+    "return_date": "2026-05-20",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0105",
+    "student_id": "S-409",
+    "book_id": "B-017",
+    "checkout_date": "2026-05-15",
+    "due_date": "2026-05-29",
+    "return_date": "2026-05-29",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0106",
+    "student_id": "S-503",
+    "book_id": "B-001",
+    "checkout_date": "2026-05-15",
+    "due_date": "2026-05-29",
+    "return_date": "2026-05-29",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0107",
+    "student_id": "S-307",
+    "book_id": "B-034",
+    "checkout_date": "2026-05-18",
+    "due_date": "2026-06-01",
+    "return_date": "2026-06-08",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0108",
+    "student_id": "S-506",
+    "book_id": "B-034",
+    "checkout_date": "2026-05-18",
+    "due_date": "2026-06-01",
+    "return_date": "2026-06-01",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0109",
+    "student_id": "S-508",
+    "book_id": "B-021",
+    "checkout_date": "2026-05-18",
+    "due_date": "2026-06-01",
+    "return_date": "2026-05-25",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0110",
+    "student_id": "S-302",
+    "book_id": "B-001",
+    "checkout_date": "2026-05-20",
+    "due_date": "2026-06-03",
+    "return_date": "2026-05-27",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0111",
+    "student_id": "S-308",
+    "book_id": "B-004",
+    "checkout_date": "2026-05-20",
+    "due_date": "2026-06-03",
+    "return_date": "2026-05-27",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0112",
+    "student_id": "S-505",
+    "book_id": "B-042",
+    "checkout_date": "2026-05-21",
+    "due_date": "2026-06-04",
+    "return_date": "2026-06-04",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0113",
+    "student_id": "S-510",
+    "book_id": "B-051",
+    "checkout_date": "2026-05-21",
+    "due_date": "2026-06-04",
+    "return_date": "2026-05-28",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0114",
+    "student_id": "S-308",
+    "book_id": "B-006",
+    "checkout_date": "2026-05-22",
+    "due_date": "2026-06-05",
+    "return_date": "2026-05-29",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0115",
+    "student_id": "S-407",
+    "book_id": "B-022",
+    "checkout_date": "2026-05-22",
+    "due_date": "2026-06-05",
+    "return_date": "2026-06-05",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0116",
+    "student_id": "S-304",
+    "book_id": "B-034",
+    "checkout_date": "2026-05-25",
+    "due_date": "2026-06-08",
+    "return_date": "2026-06-08",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0117",
+    "student_id": "S-307",
+    "book_id": "B-063",
+    "checkout_date": "2026-05-25",
+    "due_date": "2026-06-08",
+    "return_date": "2026-06-01",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0118",
+    "student_id": "S-306",
+    "book_id": "B-042",
+    "checkout_date": "2026-05-26",
+    "due_date": "2026-06-09",
+    "return_date": "2026-06-09",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0119",
+    "student_id": "S-407",
+    "book_id": "B-042",
+    "checkout_date": "2026-05-27",
+    "due_date": "2026-06-10",
+    "return_date": "2026-06-10",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0120",
+    "student_id": "S-302",
+    "book_id": "B-007",
+    "checkout_date": "2026-05-28",
+    "due_date": "2026-06-11",
+    "return_date": "2026-06-04",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0121",
+    "student_id": "S-305",
+    "book_id": "B-063",
+    "checkout_date": "2026-05-28",
+    "due_date": "2026-06-11",
+    "return_date": "2026-06-18",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0122",
+    "student_id": "S-307",
+    "book_id": "B-007",
+    "checkout_date": "2026-05-28",
+    "due_date": "2026-06-11",
+    "return_date": "2026-06-11",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0123",
+    "student_id": "S-407",
+    "book_id": "B-042",
+    "checkout_date": "2026-05-29",
+    "due_date": "2026-06-12",
+    "return_date": "2026-06-05",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0124",
+    "student_id": "S-410",
+    "book_id": "B-060",
+    "checkout_date": "2026-05-29",
+    "due_date": "2026-06-12",
+    "return_date": "2026-06-19",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0125",
+    "student_id": "S-505",
+    "book_id": "B-041",
+    "checkout_date": "2026-05-29",
+    "due_date": "2026-06-12",
+    "return_date": "2026-06-12",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0126",
+    "student_id": "S-301",
+    "book_id": "B-003",
+    "checkout_date": "2026-06-01",
+    "due_date": "2026-06-15",
+    "return_date": "2026-06-22",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0127",
+    "student_id": "S-303",
+    "book_id": "B-041",
+    "checkout_date": "2026-06-01",
+    "due_date": "2026-06-15",
+    "return_date": "2026-06-08",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0128",
+    "student_id": "S-305",
+    "book_id": "B-015",
+    "checkout_date": "2026-06-02",
+    "due_date": "2026-06-16",
+    "return_date": "2026-06-16",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0129",
+    "student_id": "S-503",
+    "book_id": "B-053",
+    "checkout_date": "2026-06-02",
+    "due_date": "2026-06-16",
+    "return_date": "2026-06-23",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0130",
+    "student_id": "S-303",
+    "book_id": "B-022",
+    "checkout_date": "2026-06-03",
+    "due_date": "2026-06-17",
+    "return_date": "2026-06-24",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0131",
+    "student_id": "S-305",
+    "book_id": "B-015",
+    "checkout_date": "2026-06-04",
+    "due_date": "2026-06-18",
+    "return_date": "2026-06-11",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0132",
+    "student_id": "S-503",
+    "book_id": "B-054",
+    "checkout_date": "2026-06-04",
+    "due_date": "2026-06-18",
+    "return_date": "2026-06-11",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0133",
+    "student_id": "S-409",
+    "book_id": "B-012",
+    "checkout_date": "2026-06-05",
+    "due_date": "2026-06-19",
+    "return_date": "2026-06-12",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0134",
+    "student_id": "S-510",
+    "book_id": "B-015",
+    "checkout_date": "2026-06-05",
+    "due_date": "2026-06-19",
+    "return_date": "2026-06-26",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0135",
+    "student_id": "S-501",
+    "book_id": "B-026",
+    "checkout_date": "2026-08-18",
+    "due_date": "2026-09-01",
+    "return_date": "2026-09-01",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0136",
+    "student_id": "S-508",
+    "book_id": "B-025",
+    "checkout_date": "2026-08-18",
+    "due_date": "2026-09-01",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0137",
+    "student_id": "S-402",
+    "book_id": "B-014",
+    "checkout_date": "2026-08-19",
+    "due_date": "2026-09-02",
+    "return_date": "2026-08-26",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0138",
+    "student_id": "S-502",
+    "book_id": "B-013",
+    "checkout_date": "2026-08-19",
+    "due_date": "2026-09-02",
+    "return_date": "2026-09-02",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0139",
+    "student_id": "S-506",
+    "book_id": "B-033",
+    "checkout_date": "2026-08-19",
+    "due_date": "2026-09-02",
+    "return_date": "2026-09-02",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0140",
+    "student_id": "S-303",
+    "book_id": "B-043",
+    "checkout_date": "2026-08-20",
+    "due_date": "2026-09-03",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0141",
+    "student_id": "S-401",
+    "book_id": "B-015",
+    "checkout_date": "2026-08-20",
+    "due_date": "2026-09-03",
+    "return_date": "2026-09-03",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0142",
+    "student_id": "S-410",
+    "book_id": "B-031",
+    "checkout_date": "2026-08-20",
+    "due_date": "2026-09-03",
+    "return_date": "2026-09-03",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0143",
+    "student_id": "S-507",
+    "book_id": "B-026",
+    "checkout_date": "2026-08-20",
+    "due_date": "2026-09-03",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0144",
+    "student_id": "S-304",
+    "book_id": "B-034",
+    "checkout_date": "2026-08-21",
+    "due_date": "2026-09-04",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0145",
+    "student_id": "S-307",
+    "book_id": "B-006",
+    "checkout_date": "2026-08-21",
+    "due_date": "2026-09-04",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0146",
+    "student_id": "S-510",
+    "book_id": "B-052",
+    "checkout_date": "2026-08-21",
+    "due_date": "2026-09-04",
+    "return_date": "2026-09-04",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0147",
+    "student_id": "S-306",
+    "book_id": "B-015",
+    "checkout_date": "2026-08-24",
+    "due_date": "2026-09-07",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0148",
+    "student_id": "S-407",
+    "book_id": "B-027",
+    "checkout_date": "2026-08-24",
+    "due_date": "2026-09-07",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0149",
+    "student_id": "S-408",
+    "book_id": "B-054",
+    "checkout_date": "2026-08-24",
+    "due_date": "2026-09-07",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0150",
+    "student_id": "S-503",
+    "book_id": "B-053",
+    "checkout_date": "2026-08-24",
+    "due_date": "2026-09-07",
+    "return_date": "2026-08-31",
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0151",
+    "student_id": "S-506",
+    "book_id": "B-032",
+    "checkout_date": "2026-08-24",
+    "due_date": "2026-09-07",
+    "return_date": "2026-08-31",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0152",
+    "student_id": "S-507",
+    "book_id": "B-015",
+    "checkout_date": "2026-08-24",
+    "due_date": "2026-09-07",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0153",
+    "student_id": "S-301",
+    "book_id": "B-007",
+    "checkout_date": "2026-08-25",
+    "due_date": "2026-09-08",
+    "return_date": "2026-09-01",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0154",
+    "student_id": "S-404",
+    "book_id": "B-023",
+    "checkout_date": "2026-08-25",
+    "due_date": "2026-09-08",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0155",
+    "student_id": "S-406",
+    "book_id": "B-001",
+    "checkout_date": "2026-08-25",
+    "due_date": "2026-09-08",
+    "return_date": "2026-09-01",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0156",
+    "student_id": "S-501",
+    "book_id": "B-020",
+    "checkout_date": "2026-08-25",
+    "due_date": "2026-09-08",
+    "return_date": "2026-09-01",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0157",
+    "student_id": "S-505",
+    "book_id": "B-045",
+    "checkout_date": "2026-08-25",
+    "due_date": "2026-09-08",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0158",
+    "student_id": "S-404",
+    "book_id": "B-024",
+    "checkout_date": "2026-08-26",
+    "due_date": "2026-09-09",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0159",
+    "student_id": "S-405",
+    "book_id": "B-062",
+    "checkout_date": "2026-08-26",
+    "due_date": "2026-09-09",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0160",
+    "student_id": "S-409",
+    "book_id": "B-053",
+    "checkout_date": "2026-08-26",
+    "due_date": "2026-09-09",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0161",
+    "student_id": "S-301",
+    "book_id": "B-002",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0162",
+    "student_id": "S-302",
+    "book_id": "B-003",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0163",
+    "student_id": "S-303",
+    "book_id": "B-040",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": "2026-09-03",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0164",
+    "student_id": "S-402",
+    "book_id": "B-010",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0165",
+    "student_id": "S-504",
+    "book_id": "B-025",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": "2026-09-03",
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0166",
+    "student_id": "S-505",
+    "book_id": "B-023",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0167",
+    "student_id": "S-508",
+    "book_id": "B-008",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0168",
+    "student_id": "S-510",
+    "book_id": "B-040",
+    "checkout_date": "2026-08-27",
+    "due_date": "2026-09-10",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0169",
+    "student_id": "S-409",
+    "book_id": "B-010",
+    "checkout_date": "2026-08-28",
+    "due_date": "2026-09-11",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0170",
+    "student_id": "S-403",
+    "book_id": "B-030",
+    "checkout_date": "2026-08-31",
+    "due_date": "2026-09-14",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0171",
+    "student_id": "S-406",
+    "book_id": "B-006",
+    "checkout_date": "2026-08-31",
+    "due_date": "2026-09-14",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0172",
+    "student_id": "S-503",
+    "book_id": "B-053",
+    "checkout_date": "2026-08-31",
+    "due_date": "2026-09-14",
+    "return_date": null,
+    "staff_id": "L-001",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0173",
+    "student_id": "S-305",
+    "book_id": "B-061",
+    "checkout_date": "2026-09-01",
+    "due_date": "2026-09-15",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0174",
+    "student_id": "S-408",
+    "book_id": "B-054",
+    "checkout_date": "2026-09-02",
+    "due_date": "2026-09-16",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0175",
+    "student_id": "S-304",
+    "book_id": "B-034",
+    "checkout_date": "2026-09-03",
+    "due_date": "2026-09-17",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  },
+  {
+    "event_id": "C-0176",
+    "student_id": "S-308",
+    "book_id": "B-061",
+    "checkout_date": "2026-09-03",
+    "due_date": "2026-09-17",
+    "return_date": null,
+    "staff_id": "L-002",
+    "channel": "desk"
+  }
+]

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShelfMate — Maple Street desk</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>ShelfMate</h1>
+      <p class="sub">Maple Street desk · librarian only · LLM off</p>
+    </div>
+    <label>Staff
+      <select id="staff">
+        <option value="L-001">Elena Vasquez</option>
+        <option value="L-002">Tom Bradley</option>
+        <option value="L-003">Priya Shah</option>
+      </select>
+    </label>
+  </header>
+  <main>
+    <section class="lookup">
+      <label>Student
+        <select id="student"></select>
+      </label>
+      <label class="grow">Ask (optional)
+        <input id="query" placeholder="funny, reluctant 4th, under 150 pages, we have copies" />
+      </label>
+      <label class="check"><input type="checkbox" id="stretch" /> Stretch</label>
+      <button id="go" type="button">Next book</button>
+    </section>
+    <section class="cols">
+      <article>
+        <h2>History</h2>
+        <div id="history" class="list muted">Pick a student.</div>
+      </article>
+      <article>
+        <h2>On the shelf now</h2>
+        <div id="recs" class="list muted">20-second path: pick student, Next book.</div>
+      </article>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

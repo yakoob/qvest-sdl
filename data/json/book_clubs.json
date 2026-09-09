@@ -1,0 +1,38 @@
+[
+  {
+    "club_id": "BC-01",
+    "name": "Graphic Novel Club",
+    "weekday": "Tuesday",
+    "start_local": "14:50",
+    "end_local": "15:20",
+    "grades": "4-5",
+    "staff_id": "L-001",
+    "room": "Room 12",
+    "active": true,
+    "notes": "Mateo S-406 and Tyler S-504 are regulars. Recs must stay graphic unless they ask to stretch."
+  },
+  {
+    "club_id": "BC-02",
+    "name": "Family Literacy Night",
+    "weekday": "first Thursday",
+    "start_local": "18:00",
+    "end_local": "19:00",
+    "grades": "K-5",
+    "staff_id": "L-001",
+    "room": "cafeteria",
+    "active": true,
+    "notes": "Monthly. Out of PoC scope. Do not put student recs on a public screen."
+  },
+  {
+    "club_id": "BC-03",
+    "name": "Battle of the Books (spring)",
+    "weekday": "Thursday",
+    "start_local": "14:50",
+    "end_local": "15:20",
+    "grades": "4-5",
+    "staff_id": "L-001",
+    "room": "Room 12",
+    "active": false,
+    "notes": "Starts January. Do not train the model on a contest list in the fall pilot."
+  }
+]

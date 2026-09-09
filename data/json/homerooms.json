@@ -1,0 +1,68 @@
+[
+  {
+    "homeroom_id": "H-3A",
+    "grade": 3,
+    "teacher": "Ms. Anjali Patel",
+    "room": "14",
+    "class_size": 24,
+    "library_weekday": "Monday",
+    "library_start": "08:20",
+    "library_end": "09:00",
+    "lead_librarian": "L-001"
+  },
+  {
+    "homeroom_id": "H-3B",
+    "grade": 3,
+    "teacher": "Mr. Minh Nguyen",
+    "room": "15",
+    "class_size": 23,
+    "library_weekday": "Tuesday",
+    "library_start": "08:20",
+    "library_end": "09:00",
+    "lead_librarian": "L-001"
+  },
+  {
+    "homeroom_id": "H-4A",
+    "grade": 4,
+    "teacher": "Ms. Carmen Ruiz",
+    "room": "21",
+    "class_size": 25,
+    "library_weekday": "Monday",
+    "library_start": "10:05",
+    "library_end": "10:45",
+    "lead_librarian": "L-001"
+  },
+  {
+    "homeroom_id": "H-4B",
+    "grade": 4,
+    "teacher": "Mr. David Cole",
+    "room": "22",
+    "class_size": 24,
+    "library_weekday": "Tuesday",
+    "library_start": "10:05",
+    "library_end": "10:45",
+    "lead_librarian": "L-001"
+  },
+  {
+    "homeroom_id": "H-5A",
+    "grade": 5,
+    "teacher": "Ms. Chioma Okonkwo",
+    "room": "30",
+    "class_size": 26,
+    "library_weekday": "Monday",
+    "library_start": "13:05",
+    "library_end": "13:45",
+    "lead_librarian": "L-001"
+  },
+  {
+    "homeroom_id": "H-5B",
+    "grade": 5,
+    "teacher": "Mr. Peter Barrett",
+    "room": "31",
+    "class_size": 25,
+    "library_weekday": "Tuesday",
+    "library_start": "13:05",
+    "library_end": "13:45",
+    "lead_librarian": "L-001"
+  }
+]

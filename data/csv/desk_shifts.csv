@@ -1,0 +1,12 @@
+shift_id,staff_id,weekday,start_local,end_local,station,covers,shelfmate_use
+DS-01,L-002,Monday,07:40,12:00,circulation desk,before-school + morning specials checkout,20-second student lookup
+DS-02,L-001,Monday,08:00,15:20,teaching floor + desk,class visits 3A/4A/5A; solo desk after 12:00,end-of-class next-book (3 min)
+DS-03,L-002,Tuesday,07:40,12:00,circulation desk,before-school + morning specials checkout,20-second student lookup
+DS-04,L-001,Tuesday,08:00,15:20,teaching floor + desk,class visits 3B/4B/5B; Graphic Novel Club,club picks + stretch toggle
+DS-05,L-002,Wednesday,07:40,12:00,circulation desk,K-2 read-aloud support; no 3-5 specials,low 3-5 volume
+DS-06,L-001,Wednesday,08:00,14:25,teaching floor,K-2 read-alouds; PLC 14:30,async teacher emails only
+DS-07,L-002,Thursday,07:40,12:00,circulation desk,open circ + shelving,walk-up lookup
+DS-08,L-001,Thursday,08:00,15:20,desk + collab,teacher planning 10:00-11:00; open circ,NL search for teacher requests
+DS-09,L-002,Friday,07:40,12:00,circulation desk,before-school + inventory,walk-up lookup
+DS-10,L-001,Friday,08:00,15:20,desk,weekend checkout rush 14:20-15:20,fast recs; availability filter matters
+DS-11,L-003,Tuesday,09:00,12:00,on-site (pilot weeks only),shadow Elena; privacy questions,does not serve students

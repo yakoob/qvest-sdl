@@ -2,6 +2,17 @@
 window.renderProgress = function (acad) {
   const root = document.createElement("div");
   root.className = "progress-grid";
+  if (acad && acad.demo_case === "improving_same_form_illustrative") {
+    const banner = document.createElement("aside");
+    banner.className = "illustrative-banner";
+    banner.setAttribute("role", "note");
+    const title = document.createElement("strong");
+    title.textContent = "Synthetic illustrative trajectory";
+    const body = document.createElement("p");
+    body.textContent = acad.demo_note || "Same-form reading check 2 then 3 with a historical English B leading to the existing B+. Borrowed is not finished. Co-timing is not causal proof.";
+    banner.append(title, body);
+    root.append(banner);
+  }
   const make = (tag, value, cls) => {
     const n = document.createElement(tag);
     if (value != null) n.textContent = value;
@@ -65,6 +76,42 @@ window.renderProgress = function (acad) {
     table.append(tbody); details.append(table); card.append(details); root.append(card);
   }
   const semesters = (acad.semesters || []).slice().sort((a, b) => a.end.localeCompare(b.end));
+  const events = [];
+  const seenLoans = new Set();
+  semesters.forEach(s => {
+    if (s.status === "final") events.push({ date: s.end, kind: "English", detail: `${s.label}: ${s.english_grade ?? "not posted"} (${s.scale})` });
+    (s.borrowed || []).forEach(b => {
+      const key = `${b.book_id}|${b.checkout_date}`;
+      if (seenLoans.has(key)) return;
+      seenLoans.add(key);
+      events.push({ date: b.checkout_date, kind: "Borrowed", detail: `${b.title}${b.renewal_or_repeat ? " · repeat/renewal" : ""}. Borrowed does not mean finished.` });
+    });
+  });
+  (acad.assessments || []).forEach(a => events.push({ date: a.date, kind: "Assessment", detail: `${a.name}: ${a.result ?? "not posted"} / 4 · grade ${a.grade} form. ${a.compare_note || ""}` }));
+  events.sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind));
+  if (events.length) {
+    const card = make("section", null, "progress-card timeline-card");
+    card.append(make("h3", "Books & learning · one timeline"), make("p", "Select a month to see books borrowed and academic observations together. Fictional context—not proof that books caused a result. Borrowing is not completion.", "hint"));
+    const controls = make("div", null, "timeline-controls");
+    const label = make("label", "Observation window");
+    const select = make("select");
+    select.setAttribute("aria-label", "Timeline observation month");
+    const all = make("option", "All recorded dates"); all.value = ""; select.append(all);
+    [...new Set(events.map(e => e.date.slice(0, 7)))].forEach(month => {
+      const option = make("option", month); option.value = month; select.append(option);
+    });
+    label.append(select); controls.append(label); card.append(controls);
+    const list = make("ol", null, "learning-timeline");
+    const draw = () => {
+      list.replaceChildren();
+      events.filter(e => !select.value || e.date.startsWith(select.value)).forEach(e => {
+        const row = make("li");
+        row.append(make("time", e.date), make("strong", e.kind), make("span", e.detail));
+        list.append(row);
+      });
+    };
+    select.addEventListener("change", draw); draw(); card.append(list); root.append(card);
+  }
   plot("English · reported letter grades", semesters.map(s => {
     const valid = s.status === "final" && s.scale === "letter_A_F" && /^[ABCD][+-]?$|^F$/.test(s.english_grade || "");
     return { date: s.end, value: valid ? s.english_grade[0] : null, label: valid ? s.english_grade : null,

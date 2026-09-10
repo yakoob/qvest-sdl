@@ -473,7 +473,7 @@ func readJSONBody(w http.ResponseWriter, r *http.Request) ([]byte, bool) {
 
 func isShortcut(id string) bool {
 	switch id {
-	case "S-406", "S-402", "S-405", "S-509":
+	case "S-406", "S-402", "S-405", "S-509", "S-305":
 		return true
 	default:
 		return false

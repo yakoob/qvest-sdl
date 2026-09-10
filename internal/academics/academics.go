@@ -35,6 +35,8 @@ type Provenance struct {
 
 type Record struct {
 	StudentID   string       `json:"student_id"`
+	DemoCase    string       `json:"demo_case,omitempty"`
+	DemoNote    string       `json:"demo_note,omitempty"`
 	Semesters   []SemesterIn `json:"semesters"`
 	Assessments []Assessment `json:"assessments"`
 }
@@ -76,6 +78,8 @@ type View struct {
 	Note                string           `json:"note"`
 	CirculationCoverage string           `json:"circulation_coverage"`
 	Loaded              bool             `json:"loaded"`
+	DemoCase            string           `json:"demo_case,omitempty"`
+	DemoNote            string           `json:"demo_note,omitempty"`
 	Semesters           []SemesterView   `json:"semesters"`
 	Assessments         []AssessmentView `json:"assessments"`
 	Disclaimer          string           `json:"disclaimer"`
@@ -234,6 +238,8 @@ func (c *Catalog) View(studentID string, st *store.Store) View {
 		view.Note = "No synthetic academic rows for this student. Missing is not a zero."
 		return view
 	}
+	view.DemoCase = rec.DemoCase
+	view.DemoNote = rec.DemoNote
 	var hist []domain.CirculationEvent
 	if st != nil {
 		hist = st.History[studentID]

@@ -150,6 +150,36 @@ func assertSameRank(t *testing.T, a, b domain.Recommendation) {
 	}
 }
 
+func TestRankedIDsUnchangedByAcademicFixture(t *testing.T) {
+	eng := New(loadStore(t))
+	want := map[string][]string{
+		"S-406": {"B-007", "B-063", "B-061", "B-025", "B-043"},
+		"S-402": {"B-011", "B-017", "B-013", "B-016", "B-054"},
+		"S-405": {"B-060", "B-063", "B-061", "B-042", "B-040"},
+		"S-509": {"B-001", "B-015", "B-043", "B-007", "B-063"},
+		"S-504": {"B-003", "B-005", "B-004", "B-006", "B-021"},
+		"S-305": {"B-003", "B-034", "B-001", "B-043", "B-004"},
+		"S-301": {"B-005", "B-006", "B-004", "B-063", "B-061"},
+		"S-510": {"B-022", "B-050", "B-027", "B-020", "B-043"},
+		"S-401": {"B-014", "B-012", "B-013", "B-017", "B-016"},
+		"S-302": {"B-006", "B-004", "B-062", "B-060", "B-043"},
+	}
+	for id, ids := range want {
+		rec, err := eng.Recommend(domain.Request{StudentID: id, Limit: 5})
+		if err != nil {
+			t.Fatalf("%s: %v", id, err)
+		}
+		if len(rec.Items) != len(ids) {
+			t.Fatalf("%s len %d want %d", id, len(rec.Items), len(ids))
+		}
+		for i, bookID := range ids {
+			if rec.Items[i].BookID != bookID {
+				t.Fatalf("%s[%d]=%s want %s", id, i, rec.Items[i].BookID, bookID)
+			}
+		}
+	}
+}
+
 func loadStore(t *testing.T) *store.Store {
 	t.Helper()
 	_, file, _, _ := runtime.Caller(0)

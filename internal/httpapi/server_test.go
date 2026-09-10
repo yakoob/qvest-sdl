@@ -3,6 +3,7 @@ package httpapi
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -199,6 +200,61 @@ func TestAcademicsEndpoint(t *testing.T) {
 	}
 	if acad["source_label"] != "synthetic_demo" {
 		t.Fatalf("label %v", acad["source_label"])
+	}
+}
+
+func TestSofiaImprovingAcademicsHTTP(t *testing.T) {
+	srv := newTestServer(t)
+	h := srv.Handler()
+	rr := httptest.NewRecorder()
+	h.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/students/S-305/academics", nil))
+	if rr.Code != 200 {
+		t.Fatal(rr.Body.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatal(err)
+	}
+	acad := payload["academics"].(map[string]any)
+	if acad["demo_case"] != "improving_same_form_illustrative" {
+		t.Fatalf("demo_case %v", acad["demo_case"])
+	}
+	note := strings.ToLower(fmt.Sprint(acad["demo_note"]))
+	if !strings.Contains(note, "not proof") && !strings.Contains(note, "not a sis") {
+		t.Fatalf("demo_note %v", acad["demo_note"])
+	}
+	var s1, s2 map[string]any
+	for _, raw := range acad["semesters"].([]any) {
+		row := raw.(map[string]any)
+		switch row["id"] {
+		case "SY25-S1":
+			s1 = row
+		case "SY25-S2":
+			s2 = row
+		}
+	}
+	if s1["english_grade"] != "B" || s2["english_grade"] != "B+" {
+		t.Fatalf("grades s1=%v s2=%v", s1["english_grade"], s2["english_grade"])
+	}
+	if s2["checkout_count"].(float64) == 0 {
+		t.Fatal("spring borrowing join missing")
+	}
+	rr = httptest.NewRecorder()
+	h.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/students", nil))
+	var list map[string]any
+	_ = json.Unmarshal(rr.Body.Bytes(), &list)
+	found := false
+	for _, raw := range list["students"].([]any) {
+		row := raw.(map[string]any)
+		if row["student_id"] == "S-305" {
+			found = true
+			if row["shortcut"] != true {
+				t.Fatal("Sofia should be a demo shortcut")
+			}
+		}
+	}
+	if !found {
+		t.Fatal("S-305 missing from list")
 	}
 }
 

@@ -265,3 +265,89 @@ func TestJSONRoundTripNulls(t *testing.T) {
 		t.Fatal("current terms must use JSON null grades")
 	}
 }
+
+func TestSofiaImprovingSameFormFixture(t *testing.T) {
+	st, cat := loadAll(t)
+	rec, ok := cat.ByStudent["S-305"]
+	if !ok {
+		t.Fatal("Sofia academics missing")
+	}
+	if rec.DemoCase != "improving_same_form_illustrative" {
+		t.Fatalf("demo_case %q", rec.DemoCase)
+	}
+	if !strings.Contains(strings.ToLower(rec.DemoNote), "not proof") && !strings.Contains(strings.ToLower(rec.DemoNote), "not a sis") {
+		t.Fatalf("illustrative note too weak: %s", rec.DemoNote)
+	}
+	view := cat.View("S-305", st)
+	if view.DemoCase != "improving_same_form_illustrative" {
+		t.Fatalf("view demo_case %q", view.DemoCase)
+	}
+	if !strings.Contains(strings.ToLower(view.Disclaimer), "borrowed is not finished") {
+		t.Fatalf("disclaimer %s", view.Disclaimer)
+	}
+	s1 := semester(view, "SY25-S1")
+	s2 := semester(view, "SY25-S2")
+	cur := semester(view, "SY26-S1")
+	if s1.EnglishGrade == nil || *s1.EnglishGrade != "B" {
+		t.Fatalf("historical grade %+v", s1.EnglishGrade)
+	}
+	if s2.EnglishGrade == nil || *s2.EnglishGrade != "B+" {
+		t.Fatalf("latest posted grade must stay B+, got %+v", s2.EnglishGrade)
+	}
+	if cur.EnglishGrade != nil {
+		t.Fatal("current term must stay ungraded")
+	}
+	if s2.CheckoutCount == 0 || s2.UniqueTitles == 0 {
+		t.Fatalf("spring must join covered borrowing, checkouts=%d unique=%d", s2.CheckoutCount, s2.UniqueTitles)
+	}
+	if s1.CheckoutCount != 0 {
+		t.Fatalf("S1 checkouts should be outside extract dates, got %d", s1.CheckoutCount)
+	}
+	if !strings.Contains(strings.ToLower(s1.MissingNote), "synthetic") {
+		t.Fatalf("historical row must stay labeled synthetic: %s", s1.MissingNote)
+	}
+	var jan, may AssessmentView
+	for _, a := range view.Assessments {
+		switch a.Date {
+		case "2026-01-22":
+			jan = a
+		case "2026-05-12":
+			may = a
+		}
+	}
+	if jan.Result == nil || *jan.Result != 2 || jan.Grade != 2 {
+		t.Fatalf("jan %+v", jan)
+	}
+	if may.Result == nil || *may.Result != 3 || may.Grade != 2 {
+		t.Fatalf("may %+v", may)
+	}
+	if !may.Comparable {
+		t.Fatal("May vs Jan same grade/scale must be comparable (still not a growth score)")
+	}
+	if !strings.Contains(strings.ToLower(may.Note), "not proof") {
+		t.Fatalf("may note must deny causality: %s", may.Note)
+	}
+}
+
+func TestStableAndMissingAcademicCasesPreserved(t *testing.T) {
+	st, cat := loadAll(t)
+	mateo := cat.View("S-406", st)
+	if len(mateo.Semesters) != 3 || mateo.DemoCase != "" {
+		t.Fatalf("mateo drift semesters=%d demo=%q", len(mateo.Semesters), mateo.DemoCase)
+	}
+	if gradeOf(mateo, "SY25-S2") != "C" {
+		t.Fatalf("mateo spring %s", gradeOf(mateo, "SY25-S2"))
+	}
+	aisha := cat.View("S-402", st)
+	if gradeOf(aisha, "SY25-S2") != "A-" {
+		t.Fatalf("aisha spring %s", gradeOf(aisha, "SY25-S2"))
+	}
+	priya := cat.View("S-405", st)
+	if len(priya.Assessments) != 1 || priya.Assessments[0].Result != nil {
+		t.Fatal("priya missing assessment must stay null")
+	}
+	olivia := cat.View("S-509", st)
+	if len(olivia.Assessments) != 0 || semester(olivia, "SY26-S1").CheckoutCount != 0 {
+		t.Fatal("olivia invented history")
+	}
+}

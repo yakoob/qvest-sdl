@@ -66,6 +66,7 @@ curl -s -X POST http://127.0.0.1:8088/api/checkouts \
 | S-402 | Aisha | Fantasy cluster; stretch is grade policy |
 | S-405 | Priya | Sparse history + under-150 query |
 | S-509 | Olivia | Zero history fallback |
+| S-305 | Sofia | Synthetic illustrative improving case (same-form 2→3; English B then B+) |
 
 Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 
@@ -87,8 +88,9 @@ Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 3. Check out an available book. The loan and copy count change; academic results and support band do not.
 4. Record a check-in only if it happened. The dated follow-up is process-local and separate from academic evidence.
 5. Open **Reading & learning**: letter-grade categories, separate assessment grade forms, and observed borrowing counts. Hover/focus marks or expand the data tables. Partial exports are not complete reading rates; borrowed/returned does not mean read/finished.
-6. Compare Aisha (`S-402`, no current flags), Mateo (`S-406`, check in soon), and Priya/Olivia (insufficient evidence). Missing records never become zeros or an inactivity penalty.
-7. Restart with `./run.sh`: loans, copy counts, activity and follow-ups reset. Base JSON is unchanged.
+6. Shortcut **Sofia · illustrative (S-305)** is the labeled improving case (same-form reading check 2→3; English B then existing B+). It does not change ranking or the latest support band. Mateo/Aisha remain the stable/missing comparators; Priya/Olivia stay insufficient-evidence.
+7. Compare Aisha (`S-402`, no current flags), Mateo (`S-406`, check in soon), and Priya/Olivia (insufficient evidence). Missing records never become zeros or an inactivity penalty.
+8. Restart with `./run.sh`: loans, copy counts, activity and follow-ups reset. Base JSON is unchanged.
 
 Support rules in `internal/support/evaluate.go` are **unvalidated synthetic demo rules**, reviewed as of 2026-09-04—not a clinical screen or failure prediction. The UI has no real authentication/RBAC; staff choice is attribution only. Counselor data is deliberately shared reading guidance, not clinical records. Live Axon remains unverified; mock failure/privacy tests cover the integration.
 

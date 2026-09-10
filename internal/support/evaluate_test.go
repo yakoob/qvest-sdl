@@ -96,7 +96,7 @@ func TestDemoFixtures(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for id, want := range map[string]string{"S-406": Soon, "S-402": None, "S-405": Insufficient, "S-509": Insufficient, "S-504": First, "S-510": None} {
+	for id, want := range map[string]string{"S-406": Soon, "S-402": None, "S-405": Insufficient, "S-509": Insufficient, "S-504": First, "S-510": None, "S-305": None} {
 		r := ac.ByStudent[id]
 		r.StudentID = id
 		if got := Evaluate(r, c.ByStudent[id], DefaultConfig()); got.Band != want {

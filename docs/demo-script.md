@@ -33,7 +33,7 @@ Copy talking points after Mateo. Say out loud they are drafts.
 6. **Return** — on Mateo's Current loans, Return. Shelf count comes back. History keeps the title (borrowed, not finished).
 7. **Reading & learning** — synthetic fixture. Mateo has a posted spring English C and a current term with no grade. Willow Bend Reading Check (fictional 1–4) is flat in grade 3; the grade 4 form is not a delta. Checkout does not change grades.
 8. **Support** — select Tyler S-504; see Check in first and expand its evidence. The current teacher request determines prompt attention; counselor themes do not influence the band. Explore sports/underdogs as an explicit reading preference. Record a real check-in or student-reported enjoyment separately; the band and academic values stay unchanged.
-9. **Progress** — inspect separate letter-grade, assessment-form and observed-borrowing charts. Use keyboard focus or hover for detail; each chart has a data table. No claim that borrowing caused a grade change.
+9. **Progress** — inspect separate letter-grade, assessment-form and observed-borrowing charts. Use keyboard focus or hover for detail; each chart has a data table. No claim that borrowing caused a grade change. Shortcut **Sofia · illustrative (S-305)** opens Reading & progress: same-form Willow Bend Reading Check 2 then 3, with a synthetic historical English B leading to the existing B+. Label is synthetic illustrative; borrowed is not finished and is not causal proof. Latest support band stays No current flags.
 10. Restart the server with `./run.sh`: demo loans, activity and follow-ups vanish; original source loans remain and the frozen extract is back.
 
 If Tom cannot finish step 1 without a walkthrough, the UX is not done.

@@ -20,6 +20,7 @@ const state = {
   recSeq: 0,
   loadSeq: 0,
   busy: false,
+  activeTab: "books",
   lastConfirm: null,
 };
 
@@ -83,6 +84,7 @@ function filteredStudents() {
 
 function renderStudentList() {
   const rows = filteredStudents();
+  document.getElementById("student-count").textContent = rows.length;
   listEl.replaceChildren();
   if (rows.length === 0) {
     listEl.appendChild(el("div", { class: "muted", text: "No match" }));
@@ -96,9 +98,12 @@ function renderStudentList() {
       "aria-pressed": selected ? "true" : "false",
       "data-id": s.student_id,
     }, [
-      el("span", null, [`${labelFor(s)} · g${s.grade}`]),
-      el("span", { class: "loans", text: s.open_loans ? `${s.open_loans} out` : "" }),
-      el("span", { class: "sid", text: state.supportQueue.get(s.student_id)?.label || s.student_id }),
+      el("span", { class: "avatar", "aria-hidden": "true", text: `${s.first_name?.[0] || ""}${s.last_initial || ""}` }),
+      el("span", { class: "student-info" }, [
+        el("span", { class: "student-name", text: labelFor(s) }),
+        el("span", { class: "student-meta", text: `Grade ${s.grade} · ${s.student_id}${s.open_loans ? ` · ${s.open_loans} out` : ""}` }),
+        el("span", { class: `support-band band-${state.supportQueue.get(s.student_id)?.band || "insufficient"}`, text: state.supportQueue.get(s.student_id)?.label || "Loading context" }),
+      ]),
     ]);
     btn.addEventListener("click", () => selectStudent(s.student_id));
     listEl.appendChild(btn);
@@ -133,18 +138,23 @@ async function loadStudents() {
 function renderHeader(detail) {
   const st = detail.student || {};
   const loans = detail.loans || [];
+  const band = state.supportQueue.get(st.student_id);
   headerEl.replaceChildren(
-    el("h2", { text: `${st.first_name || ""} ${st.last_initial || ""}.` }),
-    el("div", { class: "meta-row" }, [
-      el("span", { text: st.student_id }),
-      el("span", { text: `Grade ${st.grade}` }),
-      el("span", { text: `Homeroom ${st.homeroom_id || "—"}` }),
-      el("span", { text: `Cluster ${st.cluster || "—"}` }),
+    el("span", { class: "avatar", "aria-hidden": "true", text: `${st.first_name?.[0] || ""}${st.last_initial || ""}` }),
+    el("div", { class: "student-heading" }, [
+      el("h2", { text: `${st.first_name || ""} ${st.last_initial || ""}.` }),
+      el("div", { class: "meta-row" }, [
+        el("span", { text: st.student_id }),
+        el("span", { text: `Grade ${st.grade}` }),
+        el("span", { text: `Homeroom ${st.homeroom_id || "—"}` }),
+      ]),
+    ]),
+    el("div", { class: "header-badges" }, [
+      el("span", { class: `support-band band-${band?.band || "insufficient"}`, text: band?.label || "Not enough information" }),
       el("span", { class: "loan-count", text: `${loans.length} current loan${loans.length === 1 ? "" : "s"}` }),
     ]),
-    st.anecdote ? el("p", { class: "why" }, [st.anecdote]) : null,
-    el("p", { class: "hint", text: detail.session_note || "Demo loans in this process. Restart restores the frozen extract." }),
   );
+  state.deskNote = st.anecdote || "";
 }
 
 function renderLoans(detail) {
@@ -326,7 +336,44 @@ async function loadActivity() {
   renderActivity(data.items || []);
 }
 
+function switchTab(name, focus = false) {
+  if (!["books", "support", "progress"].includes(name)) return;
+  state.activeTab = name;
+  ["books", "support", "progress"].forEach(key => {
+    const tab = document.getElementById(`tab-${key}`);
+    const selected = key === name;
+    tab.setAttribute("aria-selected", String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+    document.getElementById(`panel-${key}`).hidden = !selected;
+  });
+  if (focus) document.getElementById(`tab-${name}`).focus();
+}
+
+function openDirectory() {
+  const rail = document.getElementById("student-directory");
+  if (window.matchMedia("(max-width: 800px)").matches) {
+    rail.classList.add("directory-open");
+    rail.setAttribute("role", "dialog");
+    rail.setAttribute("aria-modal", "true");
+    document.getElementById("main-workspace").inert = true;
+    document.querySelector(".top").inert = true;
+  }
+  searchEl.focus();
+}
+
+function closeDirectory() {
+  const rail = document.getElementById("student-directory");
+  const wasOpen = rail.classList.contains("directory-open");
+  rail.classList.remove("directory-open");
+  rail.removeAttribute("role");
+  rail.removeAttribute("aria-modal");
+  document.getElementById("main-workspace").inert = false;
+  document.querySelector(".top").inert = false;
+  if (wasOpen) document.getElementById("open-students").focus();
+}
+
 async function selectStudent(id, opts) {
+  closeDirectory();
   if (state.selectedId !== id) {
     state.recSeq++;
     goBtn.disabled = false;
@@ -478,12 +525,11 @@ function showConfirm(data, firstName) {
     el("div", { class: "hint", text: data.note || "This session only. Restart restores the extract." }),
     el("div", { class: "next" }, [
       buttonAction("Find another book", () => {
+        switchTab("books");
         confirmEl.hidden = true;
         document.getElementById("query").focus();
       }),
-      buttonAction("Next student", () => {
-        searchEl.focus();
-      }, true),
+      buttonAction("Next student", openDirectory, true),
     ]),
   );
 }
@@ -596,6 +642,8 @@ findForm.addEventListener("submit", recommend);
 document.querySelectorAll("[data-student]").forEach((btn) => {
   btn.addEventListener("click", () => {
     searchEl.value = "";
+    const tab = btn.getAttribute("data-tab");
+    if (tab) switchTab(tab);
     selectStudent(btn.getAttribute("data-student"));
   });
 });
@@ -623,6 +671,7 @@ function renderSupport(data) {
     const current = g.approved_at <= now && now <= g.review_by;
     const buttons = (g.themes || []).map(theme => {
       const b = buttonAction(`Explore ${theme}`, () => {
+        switchTab("books");
         document.getElementById("theme").value = theme;
         document.getElementById("find").scrollIntoView({ behavior: "smooth", block: "start" });
         recommend();
@@ -655,6 +704,7 @@ function renderSupport(data) {
         ` — ${e.reason}${e.date ? ` (${e.date})` : ""}${e.rule ? ` · ${e.rule}` : ""}`,
       ])),
     ]),
+    state.deskNote ? el("details", { class: "support-evidence" }, [el("summary", { text: "Existing librarian context" }), el("p", { text: state.deskNote })]) : null,
     el("p", { text: `Strengths & interests: ${(guidance.strengths || []).join(" · ") || "Ask the student what they enjoy."}` }),
     el("div", { class: "guidance-grid" }, [...notes, ...shared]),
     !notes.length && !shared.length ? el("p", { class: "hint", text: "No shared teacher or counselor guidance in this demo file. This does not mean no concerns." }) : null,
@@ -683,6 +733,41 @@ async function recordFollowup(action, button) {
     if (id === state.selectedId) setStatus(err.message, "err");
   } finally { button.disabled = false; }
 }
+
+const tabNames = ["books", "support", "progress"];
+tabNames.forEach((name, index) => {
+  const tab = document.getElementById(`tab-${name}`);
+  tab.addEventListener("click", () => switchTab(name));
+  tab.addEventListener("keydown", ev => {
+    let next;
+    if (ev.key === "ArrowRight") next = (index + 1) % tabNames.length;
+    if (ev.key === "ArrowLeft") next = (index + tabNames.length - 1) % tabNames.length;
+    if (ev.key === "Home") next = 0;
+    if (ev.key === "End") next = tabNames.length - 1;
+    if (next !== undefined) { ev.preventDefault(); switchTab(tabNames[next], true); }
+  });
+});
+const activityDialog = document.getElementById("activity-dialog");
+document.getElementById("open-activity").addEventListener("click", () => { activityDialog.showModal(); loadActivity(); });
+document.getElementById("close-activity").addEventListener("click", () => activityDialog.close());
+activityDialog.addEventListener("click", ev => {
+  if (ev.target !== activityDialog) return;
+  const rect = activityDialog.getBoundingClientRect();
+  if (ev.clientX < rect.left || ev.clientX > rect.right || ev.clientY < rect.top || ev.clientY > rect.bottom) activityDialog.close();
+});
+document.getElementById("open-students").addEventListener("click", openDirectory);
+document.getElementById("close-students").addEventListener("click", closeDirectory);
+window.matchMedia("(max-width: 800px)").addEventListener("change", closeDirectory);
+document.getElementById("student-directory").addEventListener("keydown", ev => {
+  if (!ev.currentTarget.classList.contains("directory-open")) return;
+  if (ev.key === "Escape") { ev.preventDefault(); closeDirectory(); }
+  if (ev.key === "Tab") {
+    const controls = [...ev.currentTarget.querySelectorAll("button, input, select")].filter(n => !n.disabled && n.getClientRects().length);
+    const first = controls[0], last = controls[controls.length - 1];
+    if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+    if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+  }
+});
 
 document.getElementById("support-filter").addEventListener("change", renderStudentList);
 

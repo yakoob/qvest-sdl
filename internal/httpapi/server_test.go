@@ -216,28 +216,44 @@ func TestSofiaImprovingAcademicsHTTP(t *testing.T) {
 		t.Fatal(err)
 	}
 	acad := payload["academics"].(map[string]any)
-	if acad["demo_case"] != "improving_same_form_illustrative" {
+	if acad["demo_case"] != "improving_engagement_illustrative" {
 		t.Fatalf("demo_case %v", acad["demo_case"])
 	}
 	note := strings.ToLower(fmt.Sprint(acad["demo_note"]))
-	if !strings.Contains(note, "not proof") && !strings.Contains(note, "not a sis") {
+	if !strings.Contains(note, "illustrative") {
 		t.Fatalf("demo_note %v", acad["demo_note"])
 	}
-	var s1, s2 map[string]any
+	sc := acad["scenario"].(map[string]any)
+	if sc["id"] != "improving_engagement_illustrative" || sc["isolated_from_operations"] != true {
+		t.Fatalf("scenario %+v", sc)
+	}
+	windows := sc["windows"].([]any)
+	if len(windows) != 4 {
+		t.Fatalf("windows %d", len(windows))
+	}
+	wantCounts := []float64{2, 4, 6, 9}
+	wantGrades := []string{"D+", "C-", "C", "B+"}
+	for i, raw := range windows {
+		row := raw.(map[string]any)
+		if row["inclusive_days"].(float64) != 84 {
+			t.Fatalf("window %d days %v", i, row["inclusive_days"])
+		}
+		if row["checkout_count"].(float64) != wantCounts[i] {
+			t.Fatalf("window %d checkouts %v want %v", i, row["checkout_count"], wantCounts[i])
+		}
+		if row["english_grade"] != wantGrades[i] {
+			t.Fatalf("window %d grade %v want %s", i, row["english_grade"], wantGrades[i])
+		}
+	}
+	var s2 map[string]any
 	for _, raw := range acad["semesters"].([]any) {
 		row := raw.(map[string]any)
-		switch row["id"] {
-		case "SY25-S1":
-			s1 = row
-		case "SY25-S2":
+		if row["id"] == "SY25-S2" {
 			s2 = row
 		}
 	}
-	if s1["english_grade"] != "B" || s2["english_grade"] != "B+" {
-		t.Fatalf("grades s1=%v s2=%v", s1["english_grade"], s2["english_grade"])
-	}
-	if s2["checkout_count"].(float64) == 0 {
-		t.Fatal("spring borrowing join missing")
+	if s2["english_grade"] != "B+" {
+		t.Fatalf("operational latest grade %v", s2["english_grade"])
 	}
 	rr = httptest.NewRecorder()
 	h.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/students", nil))
@@ -374,6 +390,9 @@ func newTestServer(t *testing.T) Server {
 	eng.Audit = nil
 	cat, err := academics.Load(dir)
 	if err != nil {
+		t.Fatal(err)
+	}
+	if err := cat.Validate(st); err != nil {
 		t.Fatal(err)
 	}
 	return Server{Session: session.New(eng), Academics: cat}

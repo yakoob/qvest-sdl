@@ -132,7 +132,7 @@
       "id": "academic_demo",
       "json": "data/json/academic_demo.json",
       "records": 10,
-      "description": "Synthetic desk fixture: semester English letter grades and Willow Bend Reading Check (fictional 1–4 scale). Not a SIS extract. Not used for ranking or model payloads. Sofia S-305 is a labeled illustrative improving case. catalog.json / circulation.json / students.json are unchanged."
+      "description": "Synthetic desk fixture: semester English letter grades, Willow Bend Reading Check, and isolated 84-day matched-window scenarios. Sofia S-305 is the primary illustrative story (checkouts 2→4→6→9, English D+→C-→C→B+). Not a SIS extract. Not used for ranking, retrieve, support, or model payloads. catalog.json / circulation.json / students.json are unchanged."
     }
   ]
 }

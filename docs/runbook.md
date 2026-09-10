@@ -66,7 +66,7 @@ curl -s -X POST http://127.0.0.1:8088/api/checkouts \
 | S-402 | Aisha | Fantasy cluster; stretch is grade policy |
 | S-405 | Priya | Sparse history + under-150 query |
 | S-509 | Olivia | Zero history fallback |
-| S-305 | Sofia | Synthetic illustrative improving case (same-form 2→3; English B then B+) |
+| S-305 | Sofia | Primary synthetic story: matched windows, more borrowing, better English |
 
 Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 
@@ -87,8 +87,8 @@ Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 2. Inspect strengths and counselor-approved reading themes. Click **Explore sports** to confirm a neutral local catalog preference. Raw teacher/counselor text is not copied into the query or model payload.
 3. Check out an available book. The loan and copy count change; academic results and support band do not.
 4. Record a check-in only if it happened. The dated follow-up is process-local and separate from academic evidence.
-5. Open **Reading & learning**: letter-grade categories, separate assessment grade forms, and observed borrowing counts. Hover/focus marks or expand the data tables. Partial exports are not complete reading rates; borrowed/returned does not mean read/finished.
-6. Shortcut **Sofia · illustrative (S-305)** is the labeled improving case (same-form reading check 2→3; English B then existing B+). It does not change ranking or the latest support band. Mateo/Aisha remain the stable/missing comparators; Priya/Olivia stay insufficient-evidence.
+5. Open **Reading & learning**: exact letter grades (plus/minus labeled), separate assessment grade forms, and observed borrowing. Hover/focus marks or expand the data tables. Incomplete extract coverage is under details, not the primary story.
+6. Shortcut **Sofia · illustrative (S-305)** is the primary labeled story: 84-day matched windows, checkouts 2→4→6→9, English D+ → C- → C → B+. Isolated from operational loans, ranking, and support. Latest support band stays No current flags. Mateo/Aisha remain stable comparators; Priya/Olivia stay insufficient-evidence.
 7. Compare Aisha (`S-402`, no current flags), Mateo (`S-406`, check in soon), and Priya/Olivia (insufficient evidence). Missing records never become zeros or an inactivity penalty.
 8. Restart with `./run.sh`: loans, copy counts, activity and follow-ups reset. Base JSON is unchanged.
 

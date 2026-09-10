@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"time"
 
 	"school_district_reading/internal/domain"
 	"school_district_reading/internal/store"
@@ -22,8 +21,9 @@ const (
 )
 
 type File struct {
-	Provenance Provenance `json:"provenance"`
-	Students   []Record   `json:"students"`
+	Provenance Provenance        `json:"provenance"`
+	Calendar   *ScenarioCalendar `json:"scenario_calendar,omitempty"`
+	Students   []Record          `json:"students"`
 }
 
 type Provenance struct {
@@ -39,6 +39,7 @@ type Record struct {
 	DemoNote    string       `json:"demo_note,omitempty"`
 	Semesters   []SemesterIn `json:"semesters"`
 	Assessments []Assessment `json:"assessments"`
+	Scenario    *ScenarioIn  `json:"scenario,omitempty"`
 }
 
 type SemesterIn struct {
@@ -67,6 +68,7 @@ type Assessment struct {
 type Catalog struct {
 	Path       string
 	Provenance Provenance
+	Calendar   *ScenarioCalendar
 	ByStudent  map[string]Record
 	Missing    bool
 }
@@ -80,6 +82,7 @@ type View struct {
 	Loaded              bool             `json:"loaded"`
 	DemoCase            string           `json:"demo_case,omitempty"`
 	DemoNote            string           `json:"demo_note,omitempty"`
+	Scenario            *ScenarioView    `json:"scenario,omitempty"`
 	Semesters           []SemesterView   `json:"semesters"`
 	Assessments         []AssessmentView `json:"assessments"`
 	Disclaimer          string           `json:"disclaimer"`
@@ -149,6 +152,7 @@ func Load(dir string) (*Catalog, error) {
 	c := &Catalog{
 		Path:       path,
 		Provenance: file.Provenance,
+		Calendar:   file.Calendar,
 		ByStudent:  map[string]Record{},
 	}
 	if c.Provenance.Label == "" {
@@ -168,28 +172,45 @@ func (c *Catalog) Validate(st *store.Store) error {
 	if c == nil || c.Missing {
 		return nil
 	}
+	if err := c.validateCalendar(); err != nil {
+		return err
+	}
 	for sid, rec := range c.ByStudent {
 		if _, ok := st.Student(sid); !ok {
 			return fmt.Errorf("academic record for unknown student %s", sid)
 		}
-		for _, sem := range rec.Semesters {
-			if _, err := time.Parse("2006-01-02", sem.Start); err != nil {
+		for i := range rec.Semesters {
+			sem := &rec.Semesters[i]
+			start, err := ParseDateOnly(sem.Start)
+			if err != nil {
 				return fmt.Errorf("%s semester %s start: %w", sid, sem.ID, err)
 			}
-			if _, err := time.Parse("2006-01-02", sem.End); err != nil {
+			end, err := ParseDateOnly(sem.End)
+			if err != nil {
 				return fmt.Errorf("%s semester %s end: %w", sid, sem.ID, err)
 			}
+			if end.Before(start) {
+				return fmt.Errorf("%s semester %s ends before it starts", sid, sem.ID)
+			}
+			sem.Start = FormatDateOnly(start)
+			sem.End = FormatDateOnly(end)
 			if sem.Grade != nil && strings.TrimSpace(*sem.Grade) == "" {
 				return fmt.Errorf("%s semester %s empty grade string; use null", sid, sem.ID)
+			}
+			if sem.Grade != nil && !validLetter(*sem.Grade) {
+				return fmt.Errorf("%s semester %s unrecognized letter %s", sid, sem.ID, *sem.Grade)
 			}
 			if sem.Scale != "" && sem.Scale != ScaleLetter {
 				return fmt.Errorf("%s semester %s unexpected scale %s", sid, sem.ID, sem.Scale)
 			}
 		}
-		for _, a := range rec.Assessments {
-			if _, err := time.Parse("2006-01-02", a.Date); err != nil {
+		for i := range rec.Assessments {
+			a := &rec.Assessments[i]
+			d, err := ParseDateOnly(a.Date)
+			if err != nil {
 				return fmt.Errorf("%s assessment %s date: %w", sid, a.ID, err)
 			}
+			a.Date = FormatDateOnly(d)
 			if a.Scale != ScaleWillow {
 				return fmt.Errorf("%s assessment %s unexpected scale %s", sid, a.ID, a.Scale)
 			}
@@ -197,6 +218,10 @@ func (c *Catalog) Validate(st *store.Store) error {
 				return fmt.Errorf("%s assessment %s result %d out of 1-4", sid, a.ID, *a.Result)
 			}
 		}
+		if err := c.validateScenario(sid, rec, st); err != nil {
+			return err
+		}
+		c.ByStudent[sid] = rec
 	}
 	return nil
 }
@@ -240,6 +265,10 @@ func (c *Catalog) View(studentID string, st *store.Store) View {
 	}
 	view.DemoCase = rec.DemoCase
 	view.DemoNote = rec.DemoNote
+	view.Scenario = c.scenarioView(studentID, rec, st)
+	if view.Scenario != nil && strings.TrimSpace(view.DemoNote) == "" {
+		view.DemoNote = view.Scenario.Label + ". " + view.Scenario.Caveat
+	}
 	var hist []domain.CirculationEvent
 	if st != nil {
 		hist = st.History[studentID]
@@ -273,12 +302,30 @@ func (c *Catalog) View(studentID string, st *store.Store) View {
 		view.Semesters = append(view.Semesters, sv)
 	}
 	sort.SliceStable(view.Semesters, func(i, j int) bool {
-		return view.Semesters[i].Start < view.Semesters[j].Start
+		a, aerr := ParseDateOnly(view.Semesters[i].Start)
+		b, berr := ParseDateOnly(view.Semesters[j].Start)
+		if aerr != nil || berr != nil {
+			return view.Semesters[i].Start < view.Semesters[j].Start
+		}
+		if a.Equal(b) {
+			return view.Semesters[i].ID < view.Semesters[j].ID
+		}
+		return a.Before(b)
 	})
 	prevSame := map[string]Assessment{}
 	prevName := map[string]Assessment{}
 	assess := append([]Assessment(nil), rec.Assessments...)
-	sort.SliceStable(assess, func(i, j int) bool { return assess[i].Date < assess[j].Date })
+	sort.SliceStable(assess, func(i, j int) bool {
+		a, aerr := ParseDateOnly(assess[i].Date)
+		b, berr := ParseDateOnly(assess[j].Date)
+		if aerr != nil || berr != nil {
+			return assess[i].Date < assess[j].Date
+		}
+		if a.Equal(b) {
+			return assess[i].ID < assess[j].ID
+		}
+		return a.Before(b)
+	})
 	for _, a := range assess {
 		av := AssessmentView{
 			ID:     a.ID,
@@ -313,8 +360,15 @@ func (c *Catalog) View(studentID string, st *store.Store) View {
 func joinLoans(hist []domain.CirculationEvent, st *store.Store, start, end string) ([]Borrowed, int, int) {
 	seen := map[string]int{}
 	out := []Borrowed{}
+	ws, werr := ParseDateOnly(start)
+	we, eerr := ParseDateOnly(end)
 	for _, ev := range hist {
-		if ev.CheckoutDate < start || ev.CheckoutDate > end {
+		cd, derr := ParseDateOnly(ev.CheckoutDate)
+		if derr != nil || werr != nil || eerr != nil {
+			if ev.CheckoutDate < start || ev.CheckoutDate > end {
+				continue
+			}
+		} else if !InClosedRange(cd, ws, we) {
 			continue
 		}
 		title := ev.BookID
@@ -336,12 +390,23 @@ func joinLoans(hist []domain.CirculationEvent, st *store.Store, start, end strin
 		if out[i].CheckoutDate == out[j].CheckoutDate {
 			return out[i].BookID < out[j].BookID
 		}
-		return out[i].CheckoutDate < out[j].CheckoutDate
+		a, aerr := ParseDateOnly(out[i].CheckoutDate)
+		b, berr := ParseDateOnly(out[j].CheckoutDate)
+		if aerr != nil || berr != nil {
+			return out[i].CheckoutDate < out[j].CheckoutDate
+		}
+		return a.Before(b)
 	})
 	return out, len(out), len(seen)
 }
 
 func overlapsCoverage(start, end string) bool {
-	const covStart, covEnd = "2026-01-13", "2026-09-03"
-	return end >= covStart && start <= covEnd
+	s, serr := ParseDateOnly(start)
+	e, eerr := ParseDateOnly(end)
+	cs, _ := ParseDateOnly("2026-01-13")
+	ce, _ := ParseDateOnly("2026-09-03")
+	if serr != nil || eerr != nil {
+		return false
+	}
+	return RangesOverlap(s, e, cs, ce)
 }

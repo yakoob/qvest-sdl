@@ -197,6 +197,30 @@ func TestSessionCheckoutDoesNotChangeGrades(t *testing.T) {
 	if !found {
 		t.Fatal("session checkout should appear in current-semester borrowing")
 	}
+	sofiaBefore := cat.View("S-305", st)
+	sofiaAfter := cat.View("S-305", clone)
+	if sofiaBefore.Scenario == nil || sofiaAfter.Scenario == nil {
+		t.Fatal("sofia scenario missing")
+	}
+	if len(sofiaBefore.Scenario.Windows) != len(sofiaAfter.Scenario.Windows) {
+		t.Fatal("scenario window count changed on checkout")
+	}
+	for i := range sofiaBefore.Scenario.Windows {
+		b, a := sofiaBefore.Scenario.Windows[i], sofiaAfter.Scenario.Windows[i]
+		if b.CheckoutCount != a.CheckoutCount {
+			t.Fatalf("scenario checkout_count changed at %s", b.ID)
+		}
+		bg, ag := "", ""
+		if b.EnglishGrade != nil {
+			bg = *b.EnglishGrade
+		}
+		if a.EnglishGrade != nil {
+			ag = *a.EnglishGrade
+		}
+		if bg != ag {
+			t.Fatalf("scenario english changed at %s", b.ID)
+		}
+	}
 }
 
 func TestAcademicsAbsentFromModelPayloadAndRanking(t *testing.T) {
@@ -266,88 +290,113 @@ func TestJSONRoundTripNulls(t *testing.T) {
 	}
 }
 
-func TestSofiaImprovingSameFormFixture(t *testing.T) {
+func TestSofiaImprovingEngagementScenario(t *testing.T) {
 	st, cat := loadAll(t)
 	rec, ok := cat.ByStudent["S-305"]
 	if !ok {
 		t.Fatal("Sofia academics missing")
 	}
-	if rec.DemoCase != "improving_same_form_illustrative" {
+	if rec.DemoCase != DemoImprovingEngagement {
 		t.Fatalf("demo_case %q", rec.DemoCase)
 	}
-	if !strings.Contains(strings.ToLower(rec.DemoNote), "not proof") && !strings.Contains(strings.ToLower(rec.DemoNote), "not a sis") {
-		t.Fatalf("illustrative note too weak: %s", rec.DemoNote)
+	if rec.Scenario == nil || !rec.Scenario.IsolatedFromOperations {
+		t.Fatal("scenario must be isolated")
 	}
 	view := cat.View("S-305", st)
-	if view.DemoCase != "improving_same_form_illustrative" {
-		t.Fatalf("view demo_case %q", view.DemoCase)
+	if view.DemoCase != DemoImprovingEngagement || view.Scenario == nil {
+		t.Fatalf("view demo_case %q scenario %+v", view.DemoCase, view.Scenario)
 	}
-	if !strings.Contains(strings.ToLower(view.Disclaimer), "borrowed is not finished") {
-		t.Fatalf("disclaimer %s", view.Disclaimer)
+	if view.Scenario.Caveat == "" {
+		t.Fatal("one caveat required")
 	}
-	s1 := semester(view, "SY25-S1")
-	s2 := semester(view, "SY25-S2")
-	cur := semester(view, "SY26-S1")
-	if s1.EnglishGrade == nil || *s1.EnglishGrade != "B" {
-		t.Fatalf("historical grade %+v", s1.EnglishGrade)
+	wins := view.Scenario.Windows
+	if len(wins) != 4 {
+		t.Fatalf("windows %d", len(wins))
 	}
-	if s2.EnglishGrade == nil || *s2.EnglishGrade != "B+" {
-		t.Fatalf("latest posted grade must stay B+, got %+v", s2.EnglishGrade)
-	}
-	if cur.EnglishGrade != nil {
-		t.Fatal("current term must stay ungraded")
-	}
-	if s2.CheckoutCount == 0 || s2.UniqueTitles == 0 {
-		t.Fatalf("spring must join covered borrowing, checkouts=%d unique=%d", s2.CheckoutCount, s2.UniqueTitles)
-	}
-	if s1.CheckoutCount != 0 {
-		t.Fatalf("S1 checkouts should be outside extract dates, got %d", s1.CheckoutCount)
-	}
-	if !strings.Contains(strings.ToLower(s1.MissingNote), "synthetic") {
-		t.Fatalf("historical row must stay labeled synthetic: %s", s1.MissingNote)
-	}
-	var jan, may AssessmentView
-	for _, a := range view.Assessments {
-		switch a.Date {
-		case "2026-01-22":
-			jan = a
-		case "2026-05-12":
-			may = a
+	wantCounts := []int{2, 4, 6, 9}
+	wantGrades := []string{"D+", "C-", "C", "B+"}
+	wantReading := []*int{ptrInt(1), ptrInt(2), ptrInt(2), ptrInt(3)}
+	for i, w := range wins {
+		if w.InclusiveDays != MatchedWindowDays {
+			t.Fatalf("window %s days %d", w.ID, w.InclusiveDays)
+		}
+		if w.CheckoutCount != wantCounts[i] {
+			t.Fatalf("window %s checkouts %d want %d", w.ID, w.CheckoutCount, wantCounts[i])
+		}
+		if w.EnglishGrade == nil || *w.EnglishGrade != wantGrades[i] {
+			t.Fatalf("window %s grade %+v want %s", w.ID, w.EnglishGrade, wantGrades[i])
+		}
+		if w.ReadingCheck == nil || w.ReadingCheck.Result == nil || *w.ReadingCheck.Result != *wantReading[i] {
+			t.Fatalf("window %s reading %+v", w.ID, w.ReadingCheck)
+		}
+		if i > 0 && w.CheckoutCount <= wins[i-1].CheckoutCount {
+			t.Fatalf("borrowing did not increase at %s", w.ID)
+		}
+		if i > 0 && letterRank(*w.EnglishGrade) < letterRank(*wins[i-1].EnglishGrade) {
+			t.Fatalf("english did not improve at %s", w.ID)
 		}
 	}
-	if jan.Result == nil || *jan.Result != 2 || jan.Grade != 2 {
-		t.Fatalf("jan %+v", jan)
+	if wins[0].SchoolGrade != 1 || wins[2].SchoolGrade != 2 {
+		t.Fatalf("school grades %+v %+v", wins[0], wins[2])
 	}
-	if may.Result == nil || *may.Result != 3 || may.Grade != 2 {
-		t.Fatalf("may %+v", may)
+	s2 := semester(view, "SY25-S2")
+	if s2.EnglishGrade == nil || *s2.EnglishGrade != "B+" {
+		t.Fatalf("latest posted operational grade must stay B+, got %+v", s2.EnglishGrade)
 	}
-	if !may.Comparable {
-		t.Fatal("May vs Jan same grade/scale must be comparable (still not a growth score)")
-	}
-	if !strings.Contains(strings.ToLower(may.Note), "not proof") {
-		t.Fatalf("may note must deny causality: %s", may.Note)
+	cur := semester(view, "SY26-S1")
+	if cur.EnglishGrade != nil {
+		t.Fatal("current term must stay ungraded")
 	}
 }
 
 func TestStableAndMissingAcademicCasesPreserved(t *testing.T) {
 	st, cat := loadAll(t)
 	mateo := cat.View("S-406", st)
-	if len(mateo.Semesters) != 3 || mateo.DemoCase != "" {
-		t.Fatalf("mateo drift semesters=%d demo=%q", len(mateo.Semesters), mateo.DemoCase)
+	if len(mateo.Semesters) != 3 || gradeOf(mateo, "SY25-S2") != "C" {
+		t.Fatalf("mateo drift semesters=%d grade=%s", len(mateo.Semesters), gradeOf(mateo, "SY25-S2"))
 	}
-	if gradeOf(mateo, "SY25-S2") != "C" {
-		t.Fatalf("mateo spring %s", gradeOf(mateo, "SY25-S2"))
+	if mateo.DemoCase != DemoStableComparator {
+		t.Fatalf("mateo demo %q", mateo.DemoCase)
 	}
 	aisha := cat.View("S-402", st)
-	if gradeOf(aisha, "SY25-S2") != "A-" {
-		t.Fatalf("aisha spring %s", gradeOf(aisha, "SY25-S2"))
+	if gradeOf(aisha, "SY25-S2") != "A-" || aisha.DemoCase != DemoStrongStable {
+		t.Fatalf("aisha spring %s demo %s", gradeOf(aisha, "SY25-S2"), aisha.DemoCase)
 	}
 	priya := cat.View("S-405", st)
 	if len(priya.Assessments) != 1 || priya.Assessments[0].Result != nil {
 		t.Fatal("priya missing assessment must stay null")
 	}
+	if priya.Scenario == nil || len(priya.Scenario.Windows) != 0 {
+		t.Fatal("priya must not invent prior local years")
+	}
 	olivia := cat.View("S-509", st)
 	if len(olivia.Assessments) != 0 || semester(olivia, "SY26-S1").CheckoutCount != 0 {
 		t.Fatal("olivia invented history")
 	}
+	if olivia.Scenario == nil || len(olivia.Scenario.Windows) != 0 {
+		t.Fatal("olivia must not invent prior local years")
+	}
+	tyler := cat.View("S-504", st)
+	if gradeOf(tyler, "SY25-S2") != "C" {
+		t.Fatalf("tyler spring %s", gradeOf(tyler, "SY25-S2"))
+	}
+	luis := cat.View("S-302", st)
+	if gradeOf(luis, "SY25-S2") != "" {
+		t.Fatalf("luis missing grade became %s", gradeOf(luis, "SY25-S2"))
+	}
+	if len(luis.Assessments) != 1 || luis.Assessments[0].Result != nil {
+		t.Fatal("luis missing reading check must stay null")
+	}
+	if luis.Scenario == nil || len(luis.Scenario.Windows) != 1 {
+		t.Fatal("luis missingness window")
+	}
+	miss := luis.Scenario.Windows[0]
+	if miss.EnglishGrade != nil || miss.ReadingCheck == nil || miss.ReadingCheck.Result != nil {
+		t.Fatal("luis scenario missing values must stay missing")
+	}
+	if miss.CheckoutCount != 0 {
+		t.Fatalf("luis scenario invented borrowing %d", miss.CheckoutCount)
+	}
 }
+
+func ptrInt(v int) *int { return &v }

@@ -235,22 +235,26 @@ function gradeCell(v) {
 
 function renderAcademics(payload) {
   const acad = payload.academics || payload;
-  const nodes = [
-    el("p", { class: "hint" }, [
+  const scenario = acad.scenario;
+  const nodes = [];
+  if (window.renderProgress) nodes.push(window.renderProgress(acad));
+  if (!scenario) {
+    nodes.push(el("p", { class: "hint" }, [
       `${acad.source_label || "synthetic_demo"} · ${acad.note || ""}`,
-    ]),
-    el("p", { class: "hint", text: acad.circulation_coverage || "" }),
-    el("p", { class: "hint", text: acad.disclaimer || "" }),
-  ];
+    ]));
+    if (acad.circulation_coverage) nodes.push(el("p", { class: "hint", text: acad.circulation_coverage }));
+    if (acad.disclaimer) nodes.push(el("p", { class: "hint", text: acad.disclaimer }));
+  }
   const semesters = acad.semesters || [];
   if (!acad.loaded) {
     nodes.push(el("p", { class: "muted", text: acad.note || "No academic fixture loaded." }));
     acadEl.replaceChildren(...nodes);
     return;
   }
-  if (semesters.length === 0) {
+  const extractNodes = [];
+  if (semesters.length === 0 && !scenario) {
     nodes.push(el("p", { class: "muted", text: acad.note || "No academic rows for this student. Missing is not a zero." }));
-  } else {
+  } else if (semesters.length) {
     const table = el("table", { class: "sem" }, [
       el("thead", null, [
         el("tr", null, [
@@ -287,14 +291,13 @@ function renderAcademics(payload) {
       ]));
     });
     table.appendChild(tbody);
-    nodes.push(el("h3", { text: "English by semester" }), table);
+    extractNodes.push(el("h3", { text: "English by semester (extract)" }), table);
   }
 
   const assesses = acad.assessments || [];
-  nodes.push(el("h3", { text: "Willow Bend Reading Check (fictional)" }));
-  if (assesses.length === 0) {
-    nodes.push(el("p", { class: "muted", text: "No assessment rows. Missing is not a zero." }));
-  } else {
+  if (assesses.length === 0 && !scenario) {
+    extractNodes.push(el("h3", { text: "Willow Bend Reading Check (fictional)" }), el("p", { class: "muted", text: "No assessment rows. Missing is not a zero." }));
+  } else if (assesses.length) {
     const wrap = el("div", { class: "assess" });
     assesses.forEach((a) => {
       const result = a.result == null ? "not posted" : `${a.result} / 4${a.band ? " · " + a.band : ""}`;
@@ -306,9 +309,20 @@ function renderAcademics(payload) {
         a.note ? el("div", { class: "hint", text: a.note }) : null,
       ]));
     });
-    nodes.push(wrap);
+    extractNodes.push(el("h3", { text: "Willow Bend Reading Check (extract)" }), wrap);
   }
-  if (window.renderProgress) nodes.unshift(window.renderProgress(acad));
+  if (extractNodes.length) {
+    if (scenario) {
+      const details = el("details", { class: "extract-coverage" }, [
+        el("summary", { text: "Incomplete extract coverage (not the matched-window story)" }),
+        el("p", { class: "hint", text: acad.circulation_coverage || "Coverage is incomplete. Absence is not zero borrowing." }),
+      ]);
+      extractNodes.forEach((n) => details.appendChild(n));
+      nodes.push(details);
+    } else {
+      nodes.push(...extractNodes);
+    }
+  }
   acadEl.replaceChildren(...nodes);
 }
 

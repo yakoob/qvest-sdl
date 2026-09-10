@@ -4,14 +4,14 @@ ShelfMate is a fictional, localhost librarian prototype. These are descriptive a
 
 ## Scope
 
-Operational activity reports process-memory records from **This server session**. Restart clears those actions and restores inventory. The separate **Students served · observed changes** section supports illustrative historical contacts and a session cohort. Historical contacts and explicit window coverage come from `engagement_demo.json`; they never seed live appointments, loans or feedback. Generic student check-ins are not engagement evidence.
+Operational activity reports process-memory records from **This server session**. Restart clears those actions and restores inventory. The separate **Reading changes** section supports illustrative historical contacts and a session cohort. Historical contacts and explicit window coverage come from `engagement_demo.json`; they never seed live appointments, loans or feedback. Generic student check-ins are not engagement evidence.
 
 All metrics must derive from typed records, not stored KPI totals. Summary and supporting records use the same source, period, report-as-of instant and facilitator filter. Time ranges are half-open `[start, end)`; display dates use the school timezone. Exclude evidence recorded after report-as-of. Return exact counts and use an unavailable ratio, not zero percent, for an empty denominator.
 
 ## Activity cohort and attribution
 
 - **Completed conversations:** interactions explicitly completed in the reporting period, using `completed_at`, attributed to the actual facilitator. Opening a conversation or checking out does not complete it.
-- **Students served:** distinct student IDs in those completed interactions. District totals deduplicate across facilitators. Per-librarian distinct counts may overlap and cannot be added into a district distinct count.
+- **Students helped / Students served:** distinct student IDs in those completed interactions. The console card says Students helped and still means completed-contact counts, not demonstrated benefit. District totals deduplicate across facilitators. Per-librarian distinct counts may overlap and cannot be added into a district distinct count.
 - **Students choosing a book:** distinct served students with accepted choices in cohort interactions. A recorded “none today” is visible but is not a book choice.
 - **Linked checkouts:** successful loans explicitly linked to an accepted choice in cohort interactions; never join on book/date heuristics. Returns do not erase the original linkage. Unlinked legacy desk loans do not become engagement checkouts.
 - **Appointments:** show scheduled, in-progress, completed, cancelled and no-show separately. A reschedule changes the original appointment and appends a trace event, not another completed conversation. Appointment ownership and circulation staff are not substitutes for actual facilitator attribution.

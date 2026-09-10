@@ -53,6 +53,7 @@ func (s Server) Handler() http.Handler {
 	if s.Web != nil {
 		mux.Handle("/", s.Web)
 	}
+	s.withTestDriver(mux)
 	return withSameOrigin(mux)
 }
 

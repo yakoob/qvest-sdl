@@ -20,8 +20,8 @@
     "DISABLE_TELEMETRY": "1",
     "DISABLE_ERROR_REPORTING": "1",
     "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
-    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "900000",
-    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "1000000",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "450000",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "500000",
     "LIBRARIAN_BASE": "https://axon.compeller.ai/librarian",
     "BRAIN_BASE": "https://axon.compeller.ai/continuity",
     "TOOLSHED_BASE": "https://axon.compeller.ai/toolshed"

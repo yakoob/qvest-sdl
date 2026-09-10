@@ -454,6 +454,8 @@ async function refreshStudent(opts) {
       if (seq !== state.loadSeq) return;
       noteRevision(acad.revision);
       renderAcademics(acad);
+    } else if (seq === state.loadSeq) {
+      acadEl.replaceChildren(el("p", { class: "hint", text: "Academic records are unavailable. Finding books and recording the conversation still work." }));
     }
     if (supportRes.ok) {
       const supportData = await parseJSON(supportRes);
@@ -811,7 +813,7 @@ document.getElementById("student-directory").addEventListener("keydown", ev => {
 document.getElementById("support-filter").addEventListener("change", renderStudentList);
 
 Promise.all([loadSupportQueue(), loadStudents()])
-  .then(async () => { await refreshStudent(); await window.engagement.showView("day"); })
+  .then(async () => { await refreshStudent(); await window.engagement.showView("day", { boot: true }); })
   .catch((err) => {
     recsEl.replaceChildren(el("div", { class: "muted", text: "API not running. go run ./cmd/shelfmate serve" }));
     setStatus(String(err.message || err), "err");

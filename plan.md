@@ -3,7 +3,7 @@
 **Assignment:** Sony EIP hiring presentation  
 **Product:** librarian-in-the-loop next-book assistant for a fictional K-5 district  
 **Language:** Go, single binary  
-**Status:** retrieve + policy + eval + librarian console + optional Axon explainer + audit + HTML deck. My day supports available-slot bookings and reserved follow-up conversations with atomic choice/loan linkage. Outcomes separates session activity, shared student-progress rollups and descriptive historical served-cohort pairs with coverage/comparability exclusions. Historical offer/feedback funnels and production integrations remain deferred; see docs/runbook.md and docs/metric-definitions.md.
+**Status:** retrieve + policy + eval + librarian console + optional Axon explainer + audit + HTML deck. My day supports available-slot bookings and reserved follow-up conversations with atomic choice/loan linkage. Outcomes separates **Our work** (live session activity), **Reading changes** (descriptive historical served-cohort pairs) and **Student trends** (whole-roster rollups) with coverage/comparability exclusions. Historical offer/feedback funnels and production integrations remain deferred; see docs/runbook.md and docs/metric-definitions.md.
 
 This is not Netflix-for-kids. Students already take librarian recs. ShelfMate makes Elena's sticky-note notebook queryable in the 20-second desk window.
 

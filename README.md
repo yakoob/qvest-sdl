@@ -47,8 +47,8 @@ python3 scripts/csv_to_json.py
 - Appointments and follow-ups use available-slot pickers with school-local conflict checks and explicit confirmation. Follow-ups reserve time; completing the linked conversation records contact.
 - Book choices do not consume inventory. Linked checkout and its conversation association are atomic.
 - Explicit conversation completion and structured book feedback drive session-only activity tables, with exact denominators and supporting records.
-- Outcomes → Student progress rolls up individual borrowing, English grades and compatible reading checks, with separate extract/scenario sources and student drill-downs.
-- Outcomes → Students served · observed changes compares eligible historical borrowing/academic pairs, with sample sizes, exclusions and first-contact attribution. Historical contacts are explicitly fictional and isolated from live actions.
+- Outcomes → Student trends rolls up individual borrowing, English grades and compatible reading checks, with separate extract/scenario sources and student drill-downs.
+- Outcomes → Reading changes compares eligible historical borrowing/academic pairs, with sample sizes, exclusions and first-contact attribution. Historical contacts are explicitly fictional and isolated from live actions.
 - Restart clears session engagement and loans; read-only historical fixtures reload unchanged. Session contacts never inherit historical academic outcomes.
 
 See [the walkthrough](docs/runbook.md#complete-librarian-support-loop-session-only), [metric definitions](docs/metric-definitions.md), and [pilot proposal](docs/pilot-proposal.md). Staff selection is attribution, not authentication.

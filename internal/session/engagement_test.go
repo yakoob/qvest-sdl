@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"school_district_reading/internal/engagement"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -93,6 +94,41 @@ func TestEngagementSchedulingTransitions(t *testing.T) {
 	command(t, s, engagement.Command{Action: "cancel", ID: a.ID})
 	if _, e := s.EngagementCommand(context.Background(), engagement.Command{Action: "start", AppointmentID: a.ID, StaffID: "L-001", RequestID: "cancelled", ExpectedRevision: s.EngagementSnapshot().Revision}); e == nil {
 		t.Fatal("started cancelled appointment")
+	}
+}
+func TestConcurrentSlotBookingLeavesOneWinner(t *testing.T) {
+	s := engagementService(t)
+	c1 := engagement.Command{Action: "schedule", StudentID: "S-406", StaffID: "L-002", Start: "2026-09-11T09:00", Duration: 10, Confirmed: true, RequestID: "a", ExpectedRevision: 0}
+	c2 := engagement.Command{Action: "schedule", StudentID: "S-405", StaffID: "L-002", Start: "2026-09-11T09:00", Duration: 10, Confirmed: true, RequestID: "b", ExpectedRevision: 0}
+	var wg sync.WaitGroup
+	errc := make(chan error, 2)
+	for _, c := range []engagement.Command{c1, c2} {
+		c := c
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			_, err := s.EngagementCommand(context.Background(), c)
+			errc <- err
+		}()
+	}
+	wg.Wait()
+	close(errc)
+	var ok, conflict int
+	for err := range errc {
+		if err == nil {
+			ok++
+			continue
+		}
+		if !strings.Contains(err.Error(), "conflict") {
+			t.Fatalf("unexpected error %v", err)
+		}
+		conflict++
+	}
+	if ok != 1 || conflict != 1 {
+		t.Fatalf("ok=%d conflict=%d", ok, conflict)
+	}
+	if n := len(s.EngagementSnapshot().Appointments); n != 1 {
+		t.Fatalf("appointments %d", n)
 	}
 }
 func TestEngagementInvalidChoiceDoesNotConsumeInventory(t *testing.T) {

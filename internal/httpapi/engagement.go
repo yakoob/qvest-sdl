@@ -17,7 +17,7 @@ func (s Server) agenda(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "GET only", 405)
 		return
 	}
-	writeJSON(w, 200, map[string]any{"session_started": s.Session.Snapshot().StartedAt, "state": s.Session.EngagementSnapshot(), "timezone": s.Session.EngagementTimezone(), "now": time.Now().UTC(), "source": "This server session", "note": "Memory only. Restart clears engagement records. Availability requires staff confirmation."})
+	writeJSON(w, 200, map[string]any{"session_started": s.Session.Snapshot().StartedAt, "state": s.Session.EngagementSnapshot(), "timezone": s.Session.EngagementTimezone(), "now": s.Session.Now().UTC(), "source": "This server session", "note": "Memory only. Restart clears engagement records. Availability requires staff confirmation."})
 }
 func (s Server) availability(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
@@ -81,7 +81,7 @@ func (s Server) engagementMetrics(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, 500, map[string]string{"error": "school timezone unavailable"})
 		return
 	}
-	now := time.Now().UTC()
+	now := s.Session.Now().UTC()
 	start := s.Session.Snapshot().StartedAt.In(loc)
 	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, loc)
 	end := now.In(loc)

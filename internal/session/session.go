@@ -152,6 +152,18 @@ func (s *Service) SetClock(now func() time.Time) {
 	s.mu.Unlock()
 }
 
+func (s *Service) Now() time.Time {
+	if s == nil {
+		return time.Now()
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.clock == nil {
+		return time.Now()
+	}
+	return s.clock()
+}
+
 func (s *Service) Snapshot() Snapshot {
 	s.mu.Lock()
 	defer s.mu.Unlock()

@@ -51,8 +51,30 @@ window.engagement = {
     return out;
   },
   active() { return (this.snapshot.interactions || []).find(i => i.student_id === state.selectedId && !i.completed_at); },
-  async showView(view) {
+  retryButton(onDone) {
+    return this.button("Retry interrupted action", async () => {
+      if (this.busy || !this.pending) return;
+      this.busy = true;
+      try {
+        await this.send(this.pending);
+        this.pending = null;
+        this.renderConversation();
+        onDone?.();
+      } finally { this.busy = false; }
+    });
+  },
+  pendingNotice(container, onDone) {
+    if (!this.pending) return;
+    if (container.querySelector?.("[data-retry-notice]")) return;
+    container.append(el("div", { class: "empty-state", "data-retry-notice": "true" }, [
+      el("p", { text: "An action is awaiting confirmation. Retry safely before continuing." }),
+      this.retryButton(onDone),
+    ]));
+  },
+  async showView(view, opts = {}) {
     if (!["day", "students", "outcomes"].includes(view)) return;
+    if (opts.boot && this.choseView) return;
+    if (!opts.boot) this.choseView = true;
     this.view = view;
     for (const key of ["day", "students", "outcomes"]) { document.getElementById(`${key}-view`).hidden = key !== view; const b = document.querySelector(`[data-view="${key}"]`); if (key === view) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); }
     try { if (view === "day") await this.loadAgenda(); if (view === "outcomes") await this.loadOutcomes(); } catch (e) { this.error(e); }
@@ -136,11 +158,14 @@ window.engagement = {
       duration: existing ? Math.round((new Date(existing.end) - new Date(existing.start)) / 60000) : 10,
       onChange: value => { save.disabled = !value; },
     });
-    form.append(el("h2", { text: title }), picker.element, charts.disclosure("Place", el("label", {}, ["Place (no confidential notes)", place])), message, save, this.button("Close", () => dialog.close()));
+    form.append(el("h2", { text: title }));
+    this.pendingNotice(form, () => dialog.close());
+    if (this.pending) save.disabled = true;
+    form.append(picker.element, charts.disclosure("Place", el("label", {}, ["Place (no confidential notes)", place])), message, save, this.button("Close", () => dialog.close()));
     form.addEventListener("submit", async e => {
       e.preventDefault();
       const slot = picker.value();
-      if (!slot) return;
+      if (!slot || this.busy) return;
       save.disabled = true;
       try {
         await this.command({ ...slot, place: place.value, student_id: student,
@@ -151,7 +176,9 @@ window.engagement = {
         dialog.close();
       } catch (error) {
         message.textContent = error.message;
+        this.pendingNotice(form, () => dialog.close());
         await picker.reload();
+        save.disabled = !picker.value() || !!this.pending;
       }
     });
     dialog.append(form); document.body.append(dialog);
@@ -163,6 +190,7 @@ window.engagement = {
     const dialog = el("dialog", { class: "engagement-dialog", "aria-label": title });
     const message = el("p", { role: "status" });
     dialog.append(el("h2", { text: title }));
+    this.pendingNotice(dialog, () => dialog.close());
     build(dialog, message);
     dialog.append(message, this.button("Close", () => dialog.close()));
     document.body.append(dialog);
@@ -174,8 +202,9 @@ window.engagement = {
     this.showDialog("Finish conversation", (dialog, message) => {
       dialog.append(el("p", { text: "Finish this visit now, or choose an available time to check in again." }),
         this.primary("Finish now", async () => {
+          if (this.busy) return;
           try { await this.command({action:"complete",interaction_id:interaction.id}); dialog.close(); }
-          catch (error) { message.textContent=error.message; }
+          catch (error) { message.textContent=error.message; this.pendingNotice(dialog, () => dialog.close()); }
         }),
         this.button("Book a follow-up", () => { dialog.close(); return this.schedule(interaction.student_id,null,interaction); }));
     });
@@ -189,8 +218,9 @@ window.engagement = {
       dialog.append(el("p",{text:this.name(interaction.student_id)+" · "+this.book(choice.book_id)}),
         el("label",{},["Reading status",reading]), el("label",{},["Enjoyment",enjoyment]), el("label",{},["Report source",source]),
         this.primary("Save feedback",async()=>{
+          if (this.busy) return;
           try { await this.command({action:"feedback",interaction_id:interaction.id,book_id:choice.book_id,reading:reading.value,enjoyment:enjoyment.value,source:source.value,staff_id:staffId()});dialog.close(); }
-          catch(error){message.textContent=error.message;}
+          catch(error){message.textContent=error.message; this.pendingNotice(dialog, () => dialog.close());}
         }));
     });
   },
@@ -198,11 +228,7 @@ window.engagement = {
     const target=document.getElementById("conversation-body");if(!target)return;
     const id=state.selectedId, active=this.active();
     const nodes=[];
-    if(this.pending)nodes.push(el("div",{class:"empty-state"},[el("p",{text:"An action is awaiting confirmation. Retry safely before continuing."}),this.button("Retry interrupted action",async()=>{
-      if(this.busy)return;
-      this.busy=true;
-      try {await this.send(this.pending);this.pending=null;this.renderConversation();}finally{this.busy=false;}
-    })]));
+    this.pendingNotice({ append(...items) { nodes.push(...items); } });
     if(!active)nodes.push(el("div",{class:"visit-summary"},[el("div",{},[el("h3",{text:"A little conversation. A better next book."}),el("p",{class:"hint",text:"Start a visit, or browse books below for a quick lookup."})]),el("div",{class:"engagement-actions"},[this.primary("Start conversation",()=>this.command({action:"start",student_id:id,staff_id:staffId()})),this.button("Book a time",()=>this.schedule(id))])]));
     else {
       const choice=(this.snapshot.choices||[]).find(c=>c.interaction_id===active.id);

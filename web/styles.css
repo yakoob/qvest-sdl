@@ -45,6 +45,7 @@ small, .hint, .muted { color: var(--muted); }
 .outcome-tabs button[aria-pressed="true"] { background: white; color: var(--ink); box-shadow: 0 2px 8px #172b3b12; }
 .outcome-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 0 0 28px; }
 .outcome-filters > label { flex: 1 1 160px; max-width: 300px; }
+.outcome-filters details:not([open]) > :not(summary) { display: none; }
 .outcome-intro { margin-bottom: 24px; }
 .outcome-intro h2 { font-size: 1.9rem; margin: 12px 0; }
 .outcome-intro p { color: var(--muted); font-size: .875rem; margin-bottom: 8px; }
@@ -66,8 +67,8 @@ small, .hint, .muted { color: var(--muted); }
 .bar-context { font-size: .72rem; color: var(--muted); margin: 0 0 8px; }
 .bar-label { font-size: .8rem; }
 .chart-readout { min-height: 38px; margin: 14px 0 0; font-size: .75rem; color: var(--muted); }
-.stack-track { display: flex; gap: 2px; height: 22px; margin: 24px 0 14px; background: #edf1f5; }
-.stack-fill { min-width: 0; min-height: 22px; padding: 0; border: 0; border-radius: 0; position: relative; }
+.stack-track { display: flex; gap: 2px; height: 44px; margin: 24px 0 14px; background: #edf1f5; }
+.stack-fill { min-width: 0; min-height: 44px; padding: 0; border: 0; border-radius: 0; position: relative; }
 .stack-fill::after { content: ""; position: absolute; inset: -11px 0; }
 .stack-fill:hover { outline: 2px solid var(--ink); outline-offset: 2px; }
 .series-0 { background: #2a78d6; }.series-1 { background: #eb6834; }.series-2 { background: #1baf7a; }
@@ -83,7 +84,7 @@ small, .hint, .muted { color: var(--muted); }
 .empty-state { background: #fff; padding: 24px; border-radius: 12px; border: 1px dashed var(--line-strong); margin-bottom: 20px; }
 .empty-state button { margin: 6px 8px 0 0; }
 .section-heading { display: flex; justify-content: space-between; gap: 20px; align-items: center; flex-wrap: wrap; margin: 28px 0 18px; }
-#outcomes-body[aria-busy="true"] > :not(.report-status):not(.outcome-tabs):not(.outcome-filters), #outcomes-body[data-stale="true"] > :not(.report-status):not(.outcome-tabs):not(.outcome-filters) { opacity: .5; pointer-events: none; }
+#outcomes-body[aria-busy="true"] > :not(.report-status):not(.outcome-tabs):not(.outcome-filters), #outcomes-body[data-stale="true"] > :not(.report-status):not(.outcome-tabs):not(.outcome-filters) { opacity: .5; }
 .report-status { font-size: .875rem; padding: 10px; background: #fff8df; }
 .visit-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
 .visit-summary p { margin: 4px 0; }

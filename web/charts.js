@@ -66,10 +66,17 @@ window.charts = {
   shiftDate(value, days) { const d = new Date(`${value}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0,10); },
   periodLabel(start) { return new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${start}T12:00:00Z`)); },
   staff(id) { return [...document.getElementById("staff").options].find(o => o.value === id)?.text.split(" · ")[0] || id; },
+  lockReport(target, locked) {
+    [...target.children].forEach(node => {
+      const keep = node.classList.contains("report-status") || node.classList.contains("outcome-tabs") || node.classList.contains("outcome-filters");
+      node.inert = locked && !keep;
+    });
+  },
   async report(target, url, render) {
     const owner = window.engagement;
     const seq = owner.outcomeRequest = (owner.outcomeRequest || 0) + 1;
     target.setAttribute("aria-busy", "true");
+    this.lockReport(target, true);
     let status = target.querySelector(":scope > .report-status");
     if (!status) { status = el("p", { class: "report-status", role: "status" }); target.prepend(status); }
     status.textContent = "Updating this view…";
@@ -77,11 +84,12 @@ window.charts = {
       const response = await fetch(url), data = await response.json();
       if (seq !== owner.outcomeRequest || owner.view !== "outcomes") return;
       if (!response.ok) throw new Error(data.error || "Could not load this view");
-      render(data); target.removeAttribute("data-stale");
+      render(data); target.removeAttribute("data-stale"); this.lockReport(target, false);
     } catch (e) {
       if (seq !== owner.outcomeRequest || owner.view !== "outcomes") return;
       status.textContent = `${e.message}. Previous results have not been updated.`;
       target.setAttribute("data-stale", "true");
+      this.lockReport(target, true);
       status.append(owner.button("Try again", () => owner.loadOutcomes()));
     } finally { if (seq === owner.outcomeRequest) target.removeAttribute("aria-busy"); }
   },

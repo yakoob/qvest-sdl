@@ -25,7 +25,9 @@ window.engagement.loadPairedOutcomes = async function (target, navigation) {
     const recordBody = el("div");records.append(recordBody);
     const showRecords = (measure, direction) => {
       const rows = report.rows.filter(r => !measure || r[measure].direction === direction);
-      recordBody.replaceChildren(el("h3",{text:measure ? `${measure}: ${direction}` : "All students in this cohort"}), charts.table(["Student","First contact / librarian","Borrowing","English","Reading check","Later contacts"], rows.map(r => [
+      const heading = el("div", { class: "section-heading" }, [el("h3",{text:measure ? `${measure}: ${direction}` : "All students in this cohort"})]);
+      if (measure) heading.append(this.button("Show all students", () => showRecords()));
+      recordBody.replaceChildren(heading, charts.table(["Student","First contact / librarian","Borrowing","English","Reading check","Later contacts"], rows.map(r => [
         this.button(this.name(r.student_id),async()=>{await selectStudent(r.student_id);switchTab("progress",true);}),
         `${r.contact_id} · ${this.local(r.contact_at)} · ${charts.staff(r.facilitator)}`, evidence(r.borrowing),evidence(r.english),evidence(r.reading),
         r.later_contacts.map(c=>`${this.local(c.at)} · ${charts.staff(c.staff_id)}`).join("; ") || "None",

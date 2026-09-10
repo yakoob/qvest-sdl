@@ -50,7 +50,7 @@ Student portfolio rollups reuse `academics.Catalog.View`, not a second JavaScrip
 
 `internal/metrics` is a pure projection over a cloned typed snapshot. Completed-at cohorts, original-facilitator attribution and due-at follow-up cohorts have distinct definitions. Latest student book reports are separate from staff observations. No legacy check-in, circulation heuristic or isolated academic scenario becomes a book report. See metric-definitions.md.
 
-GET agenda/availability/metrics and POST engagement reuse existing bounded-body and same-origin helpers. This is localhost attribution, not production authorization. Restart clears session state. The optional read-only `engagement_demo.json` fixture loads separately for `/api/metrics/paired`; it never populates session state. `metrics.Paired` indexes first completed contacts before facilitator filtering, then pairs covered and compatible observations from academic scenario views. Missing fixtures disable historical pairing without blocking the core workflow.
+GET agenda/availability/metrics and POST engagement reuse existing bounded-body and same-origin helpers. This is localhost attribution, not production authorization. Restart clears session state. The optional read-only `engagement_demo.json` fixture loads separately for `/api/metrics/paired`; it never populates session state. `metrics.Paired` indexes first completed contacts before facilitator filtering, then pairs covered and compatible observations from academic scenario views. Missing fixtures disable historical pairing without blocking the core workflow. An injected clock exists only when `SHELFMATE_TEST_DRIVER=1`; production serve never registers `/api/test/clock`.
 
 ## Why hybrid, not CF-only or LLM-first
 

@@ -21,7 +21,7 @@ func (s Server) pairedOutcomes(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, 500, map[string]string{"error": "school timezone unavailable"})
 		return
 	}
-	now := time.Now().UTC()
+	now := s.Session.Now().UTC()
 	asof := now
 	if value := q.Get("as_of"); value != "" {
 		asof, err = time.Parse(time.RFC3339, value)

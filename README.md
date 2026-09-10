@@ -17,8 +17,9 @@ Librarian-in-the-loop next-book assistant. Fictional Willow Bend School District
 | `data/notes/` | Personas, as-is sticky notes, generator |
 | `cmd/shelfmate` | Single binary: `recommend`, `serve`, `eval` |
 | `internal/` | Retrieve / policy / explain / audit / HTTP |
-| `web/` | Librarian console skeleton |
+| `web/` | Librarian desk: lookup, recs, checkout/return, activity |
 | `testdata/golden/` | Demo cases (Mateo, Aisha, Priya, Olivia) |
+| `data/json/academic_demo.json` | Synthetic semester English + fictional reading check |
 
 ## Quick start
 
@@ -46,6 +47,7 @@ python3 scripts/csv_to_json.py
 - LLM off by default. Recs still work.
 - Prompts (when enabled) use `student_id` only.
 - Elena approves. The binary does not talk to kids.
+- Demo checkout is in-memory. Restart restores the frozen extract.
 
 ## Demo IDs
 

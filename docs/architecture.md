@@ -15,6 +15,10 @@ librarian console (web/, localhost)
 
 Closed world: `data/json/catalog.json` is the only title source. Policy re-reads the store for membership and `copies_available`; candidate structs are not trusted.
 
+Serve path adds a process-local `session.Service`. Checkout and return clone Books + Circulation, rebuild retrieve/policy, and publish a new immutable snapshot with a monotonic revision. Restart reloads the frozen extract. Session activity is memory-only and is not appended to the optional CLI audit JSONL.
+
+Synthetic academics (`data/json/academic_demo.json`) load beside the store. They never enter retrieve, policy, explainer payloads, or audit records.
+
 ## Request sequence
 
 1. Librarian looks up a student (desk laptop).
@@ -24,6 +28,15 @@ Closed world: `data/json/catalog.json` is the only title source. Policy re-reads
 5. Stretch is a librarian checkbox: `grade_min <= grade+1` and `grade_max >= grade`. It does not change retrieve weights or invent ability.
 6. Explainer writes talking points for the already-ranked IDs. Kill switch `SHELFMATE_LLM=off` (default) keeps TemplateExplainer. `SHELFMATE_LLM=on` may call Axon; ranking is unchanged on success or failure.
 7. Audit JSONL appends opaque IDs, policy outcomes, explain mode, version. Write errors surface; they are not ignored.
+8. Optional demo checkout (`POST /api/checkouts`) decrements live copies in the session snapshot and records an open loan. Return restores one copy. The UI shows confirmation, current loans, and activity. Stale recommendations include `revision` so the console can refetch.
+
+## Demo session (serve only)
+
+- One `session.Service` per process. All student / recommend / inventory reads use the same snapshot kind.
+- Checkout validates student, staff, book, no duplicate open loan, copies > 0, and a retry key under the writer lock.
+- Return validates loan ID + student. If restoring a copy would exceed `copies_total` (imported inventory is authoritative at boot), the call fails with 409 rather than corrupting counts.
+- Recommendation and explanation run after the lock is released. Older in-flight recs may finish; checkout always re-checks current inventory.
+- No reset HTTP endpoint. Restart is the reset.
 
 ## Why hybrid, not CF-only or LLM-first
 

@@ -1,13 +1,27 @@
-const studentSel = document.getElementById("student");
 const searchEl = document.getElementById("search");
-const recs = document.getElementById("recs");
-const history = document.getElementById("history");
+const listEl = document.getElementById("student-list");
+const recsEl = document.getElementById("recs");
+const loansEl = document.getElementById("loans-body");
+const acadEl = document.getElementById("acad-body");
+const headerEl = document.getElementById("student-header");
 const statusEl = document.getElementById("status");
 const goBtn = document.getElementById("go");
+const confirmEl = document.getElementById("confirm");
+const activityEl = document.getElementById("activity");
+const sessionBanner = document.getElementById("session-banner");
+const findForm = document.getElementById("find-form");
 
-let students = [];
-let recSeq = 0;
-let histSeq = 0;
+const state = {
+  students: [],
+  supportQueue: new Map(),
+  sessionStarted: null,
+  selectedId: "S-406",
+  revision: 0,
+  recSeq: 0,
+  loadSeq: 0,
+  busy: false,
+  lastConfirm: null,
+};
 
 function text(s) {
   return document.createTextNode(s == null ? "" : String(s));
@@ -20,6 +34,7 @@ function el(tag, attrs, children) {
       if (v == null || v === false) return;
       if (k === "class") node.className = v;
       else if (k === "text") node.textContent = v;
+      else if (k === "on") return;
       else node.setAttribute(k, v === true ? "" : String(v));
     });
   }
@@ -30,108 +45,140 @@ function el(tag, attrs, children) {
   return node;
 }
 
-function setStatus(msg, isErr) {
+function setStatus(msg, kind) {
   statusEl.textContent = msg || "";
-  statusEl.className = isErr ? "status err" : "status";
+  statusEl.className = kind === "err" ? "status err" : kind === "ok" ? "status ok" : "status";
+}
+
+function staffId() {
+  return document.getElementById("staff").value;
+}
+
+function noteRevision(rev) {
+  if (typeof rev === "number" && rev > state.revision) state.revision = rev;
+}
+
+function newerThan(rev) {
+  return typeof rev === "number" && state.revision > rev;
+}
+
+function retryId(kind, studentId, extra) {
+  return `${kind}-${studentId}-${extra}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function labelFor(s) {
-  const mark = s.demo_role ? ` · ${s.demo_role}` : "";
-  return `${s.first_name} ${s.last_initial}. (${s.student_id}, g${s.grade})${mark}`;
+  return `${s.first_name} ${s.last_initial}.`;
 }
 
-function renderOptions(filter) {
-  const q = (filter || "").trim().toLowerCase();
-  const rows = students.filter((s) => {
+function filteredStudents() {
+  const q = (searchEl.value || "").trim().toLowerCase();
+  return state.students.filter((s) => {
+    const band = document.getElementById("support-filter").value;
+    if (band && state.supportQueue.get(s.student_id)?.band !== band) return false;
     if (!q) return true;
     const blob = `${s.first_name} ${s.last_initial} ${s.student_id} ${s.demo_role || ""} ${s.cluster || ""}`.toLowerCase();
     return blob.includes(q);
   });
-  const prev = studentSel.value;
-  studentSel.innerHTML = "";
+}
+
+function renderStudentList() {
+  const rows = filteredStudents();
+  listEl.replaceChildren();
   if (rows.length === 0) {
-    studentSel.appendChild(el("option", { value: "", disabled: true, text: "No match" }));
+    listEl.appendChild(el("div", { class: "muted", text: "No match" }));
     return;
   }
   rows.forEach((s) => {
-    studentSel.appendChild(el("option", { value: s.student_id, text: labelFor(s) }));
+    const selected = s.student_id === state.selectedId;
+    const btn = el("button", {
+      class: "student",
+      type: "button",
+      "aria-pressed": selected ? "true" : "false",
+      "data-id": s.student_id,
+    }, [
+      el("span", null, [`${labelFor(s)} · g${s.grade}`]),
+      el("span", { class: "loans", text: s.open_loans ? `${s.open_loans} out` : "" }),
+      el("span", { class: "sid", text: state.supportQueue.get(s.student_id)?.label || s.student_id }),
+    ]);
+    btn.addEventListener("click", () => selectStudent(s.student_id));
+    listEl.appendChild(btn);
   });
-  if (rows.some((s) => s.student_id === prev)) studentSel.value = prev;
-  else studentSel.value = rows[0].student_id;
+  document.querySelectorAll("[data-student]").forEach((chip) => {
+    chip.setAttribute("aria-pressed", chip.getAttribute("data-student") === state.selectedId ? "true" : "false");
+  });
+}
+
+async function parseJSON(res) {
+  return res.json().catch(() => ({}));
 }
 
 async function loadStudents() {
   const res = await fetch("/api/students");
   if (!res.ok) throw new Error("Could not load students");
-  students = await res.json();
-  renderOptions("");
-  studentSel.value = "S-406";
-  await showStudent();
-}
-
-async function showStudent() {
-  const id = studentSel.value;
-  if (!id) {
-    history.replaceChildren(el("div", { class: "muted", text: "Pick a student." }));
-    return;
-  }
-  const seq = ++histSeq;
-  history.replaceChildren(el("div", { class: "muted", text: "Loading history…" }));
-  try {
-    const res = await fetch(`/api/students/${encodeURIComponent(id)}`);
-    if (seq !== histSeq) return;
-    if (res.status === 404) {
-      history.replaceChildren(el("div", { class: "muted", text: "Unknown student." }));
-      return;
+  const data = await res.json();
+  if (Array.isArray(data)) {
+    state.students = data;
+  } else {
+    state.students = data.students || [];
+    if (state.sessionStarted !== data.session_started) {
+      state.sessionStarted = data.session_started;
+      state.revision = 0;
     }
-    if (!res.ok) throw new Error("history failed");
-    const data = await res.json();
-    if (seq !== histSeq) return;
-    const st = data.student || {};
-    const evs = data.history || [];
-    const nodes = [
-      el("div", null, [
-        `${st.first_name || ""} ${st.last_initial || ""}. · grade ${st.grade} · band ${st.reading_band || "—"} · cluster ${st.cluster || "—"}`,
-      ]),
-    ];
-    if (st.anecdote) nodes.push(el("div", { class: "why" }, [st.anecdote]));
-    if (evs.length === 0) {
-      nodes.push(el("div", { class: "muted", text: "No checkouts. Cold start — popularity fallback unless you type a query." }));
-    } else {
-      evs.forEach((e) => {
-        nodes.push(el("div", { class: "card" }, [
-          el("strong", { text: e.title || e.book_id }),
-          el("span", { class: "meta", text: `${e.checkout_date} → ${e.return_date || "out"}` }),
-        ]));
-      });
-    }
-    history.replaceChildren(...nodes);
-  } catch (err) {
-    if (seq !== histSeq) return;
-    history.replaceChildren(el("div", { class: "muted", text: "Could not load history." }));
-    setStatus(String(err.message || err), true);
+    noteRevision(data.revision);
+    if (data.session_note) sessionBanner.textContent = data.session_note;
   }
+  renderStudentList();
 }
 
-function talkingText(rec) {
-  const lines = (rec.items || []).map((it) => {
-    const tp = it.talking_point || (it.reasons || []).join("; ");
-    return `${it.title} (${it.book_id}): ${tp}`;
-  });
-  return lines.join("\n");
+function renderHeader(detail) {
+  const st = detail.student || {};
+  const loans = detail.loans || [];
+  headerEl.replaceChildren(
+    el("h2", { text: `${st.first_name || ""} ${st.last_initial || ""}.` }),
+    el("div", { class: "meta-row" }, [
+      el("span", { text: st.student_id }),
+      el("span", { text: `Grade ${st.grade}` }),
+      el("span", { text: `Homeroom ${st.homeroom_id || "—"}` }),
+      el("span", { text: `Cluster ${st.cluster || "—"}` }),
+      el("span", { class: "loan-count", text: `${loans.length} current loan${loans.length === 1 ? "" : "s"}` }),
+    ]),
+    st.anecdote ? el("p", { class: "why" }, [st.anecdote]) : null,
+    el("p", { class: "hint", text: detail.session_note || "Demo loans in this process. Restart restores the frozen extract." }),
+  );
 }
 
-async function copyTalking(rec) {
-  const payload = talkingText(rec);
-  try {
-    await navigator.clipboard.writeText(payload);
-    setStatus("Talking points copied. Speak them; they are drafts.");
-  } catch (err) {
-    setStatus("Clipboard blocked. Select the talking points instead.", true);
+function renderLoans(detail) {
+  const loans = detail.loans || [];
+  const hist = detail.history || [];
+  const openNodes = loans.length
+    ? loans.map((l) => loanCard(l, true))
+    : [el("p", { class: "muted", text: "Nothing out right now." })];
+  const histNodes = hist.length
+    ? hist.slice(0, 12).map((l) => loanCard(l, false))
+    : [el("p", { class: "muted", text: "No returned titles in this extract." })];
+  loansEl.replaceChildren(
+    el("div", { class: "loan-grid" }, [
+      el("div", null, [el("h3", { text: "Out now" }), ...openNodes]),
+      el("div", null, [el("h3", { text: "Returned (borrowed, not finished)" }), ...histNodes]),
+    ]),
+  );
+}
+
+function loanCard(l, canReturn) {
+  const badge = el("span", { class: "badge", text: l.provenance === "session" ? "this session" : "source" });
+  const node = el("div", { class: "loan-item" }, [
+    el("strong", null, [l.title || l.book_id, badge]),
+    el("div", { class: "meta", text: `${l.checkout_date || ""}${l.due_date ? " · due " + l.due_date : ""}${l.return_date ? " · back " + l.return_date : ""}` }),
+  ]);
+  if (canReturn) {
+    const btn = el("button", { class: "ghost", type: "button", text: "Return" });
+    btn.addEventListener("click", () => returnLoan(l));
+    node.appendChild(btn);
   }
+  return node;
 }
 
-function renderRecs(rec) {
+function renderRecs(rec, firstName) {
   const nodes = [];
   const mode = rec.explain_mode || "template";
   nodes.push(el("div", { class: "mode" }, [
@@ -142,11 +189,22 @@ function renderRecs(rec) {
     nodes.push(el("div", { class: "muted", text: "No in-stock titles passed policy for this lookup." }));
   }
   items.forEach((it) => {
+    const checkout = el("button", {
+      type: "button",
+      text: `Check out to ${firstName}`,
+    });
+    checkout.addEventListener("click", () => checkoutBook(it, checkout));
+    const copy = el("button", { class: "secondary", type: "button", text: "Copy talking point" });
+    copy.addEventListener("click", () => copyTalkingItem(it));
     nodes.push(el("div", { class: "card" }, [
       el("strong", { text: it.title || it.book_id }),
-      el("span", { class: "meta", text: `${it.author || ""} · ${it.cluster || ""} · ${it.pages}p · ${it.copies_available} copies` }),
-      el("div", { class: "evidence" }, [`Evidence: ${(it.reasons || []).join("; ") || "none"}`]),
-      el("div", { class: "talk" }, [`Draft: ${it.talking_point || "—"}`]),
+      el("span", { class: "meta", text: `${it.author || ""} · ${it.pages}p · ${it.copies_available} on shelf` }),
+      el("div", { class: "evidence" }, [`Why this: ${(it.reasons || []).join("; ") || "none"}`]),
+      el("details", { class: "talk-more" }, [
+        el("summary", { text: "Talking point (draft)" }),
+        el("div", { class: "talk" }, [it.talking_point || "—"]),
+      ]),
+      el("div", { class: "card-actions" }, [checkout, copy]),
     ]));
   });
   (rec.dropped || []).slice(0, 5).forEach((d) => {
@@ -157,27 +215,219 @@ function renderRecs(rec) {
         : `Dropped ${d.title}: ${d.why}`,
     ]));
   });
-  if (items.length) {
-    const btn = el("button", { class: "copy", type: "button", text: "Copy talking points" });
-    btn.addEventListener("click", () => copyTalking(rec));
-    nodes.push(btn);
-  }
-  recs.replaceChildren(...nodes);
+  recsEl.replaceChildren(...nodes);
 }
 
-async function recommend() {
-  const id = studentSel.value;
-  if (!id) {
-    setStatus("Pick a student first.", true);
+function gradeCell(v) {
+  if (v == null || v === "") return el("span", { class: "missing", text: "not posted" });
+  return text(v);
+}
+
+function renderAcademics(payload) {
+  const acad = payload.academics || payload;
+  const nodes = [
+    el("p", { class: "hint" }, [
+      `${acad.source_label || "synthetic_demo"} · ${acad.note || ""}`,
+    ]),
+    el("p", { class: "hint", text: acad.circulation_coverage || "" }),
+    el("p", { class: "hint", text: acad.disclaimer || "" }),
+  ];
+  const semesters = acad.semesters || [];
+  if (!acad.loaded) {
+    nodes.push(el("p", { class: "muted", text: acad.note || "No academic fixture loaded." }));
+    acadEl.replaceChildren(...nodes);
     return;
   }
-  const seq = ++recSeq;
+  if (semesters.length === 0) {
+    nodes.push(el("p", { class: "muted", text: acad.note || "No academic rows for this student. Missing is not a zero." }));
+  } else {
+    const table = el("table", { class: "sem" }, [
+      el("thead", null, [
+        el("tr", null, [
+          el("th", { text: "Semester" }),
+          el("th", { text: "English (letter_A_F)" }),
+          el("th", { text: "Checkouts" }),
+          el("th", { text: "Unique titles" }),
+          el("th", { text: "Borrowed in window" }),
+        ]),
+      ]),
+    ]);
+    const tbody = el("tbody");
+    semesters.forEach((s) => {
+      const list = (s.borrowed || []).map((b) => {
+        const extra = b.renewal_or_repeat ? " · repeat/renewal" : "";
+        const back = b.return_date ? ` → ${b.return_date}` : " (out)";
+        return el("li", { text: `${b.title} · ${b.checkout_date}${back}${extra}` });
+      });
+      tbody.appendChild(el("tr", null, [
+        el("td", null, [
+          el("strong", { text: s.label }),
+          el("div", { class: "hint", text: `${s.start} – ${s.end}` }),
+          s.missing_note ? el("div", { class: "hint", text: s.missing_note }) : null,
+        ]),
+        el("td", null, [gradeCell(s.english_grade), el("div", { class: "hint", text: s.status || "" })]),
+        el("td", { text: String(s.checkout_count) }),
+        el("td", { text: String(s.unique_titles) }),
+        el("td", { class: "borrowed" }, [
+          el("div", { class: "hint", text: s.borrowing_note || "" }),
+          list.length
+            ? el("details", null, [el("summary", { text: `${list.length} title event${list.length === 1 ? "" : "s"}` }), el("ul", null, list)])
+            : el("span", { class: "missing", text: "none in extract" }),
+        ]),
+      ]));
+    });
+    table.appendChild(tbody);
+    nodes.push(el("h3", { text: "English by semester" }), table);
+  }
+
+  const assesses = acad.assessments || [];
+  nodes.push(el("h3", { text: "Willow Bend Reading Check (fictional)" }));
+  if (assesses.length === 0) {
+    nodes.push(el("p", { class: "muted", text: "No assessment rows. Missing is not a zero." }));
+  } else {
+    const wrap = el("div", { class: "assess" });
+    assesses.forEach((a) => {
+      const result = a.result == null ? "not posted" : `${a.result} / 4${a.band ? " · " + a.band : ""}`;
+      wrap.appendChild(el("article", { class: "assess-card" }, [
+        el("strong", { text: a.name }),
+        el("div", { class: "meta", text: `${a.date} · grade ${a.grade} form · scale ${a.scale}` }),
+        el("div", null, [`Result: ${result}`]),
+        el("div", { class: "hint", text: a.compare_note || "" }),
+        a.note ? el("div", { class: "hint", text: a.note }) : null,
+      ]));
+    });
+    nodes.push(wrap);
+  }
+  if (window.renderProgress) nodes.unshift(window.renderProgress(acad));
+  acadEl.replaceChildren(...nodes);
+}
+
+function renderActivity(items) {
+  if (!items || items.length === 0) {
+    activityEl.replaceChildren(el("p", { class: "muted", text: "No demo checkouts yet this session." }));
+    return;
+  }
+  const nodes = items.map((a) => {
+    const delta = a.copies_delta > 0 ? `+${a.copies_delta} copy` : `${a.copies_delta} copy`;
+    return el("div", { class: "act" }, [
+      el("strong", { text: `${a.action} · ${a.title || a.book_id}` }),
+      el("div", { text: `${a.student_id} · ${delta} · now ${a.copies_available}/${a.copies_total} on shelf` }),
+      el("div", { class: "when", text: a.ts ? String(a.ts).replace("T", " ").replace("Z", " UTC") : "" }),
+    ]);
+  });
+  activityEl.replaceChildren(...nodes);
+}
+
+async function loadActivity() {
+  const res = await fetch("/api/activity");
+  if (!res.ok) return;
+  const data = await parseJSON(res);
+  noteRevision(data.revision);
+  renderActivity(data.items || []);
+}
+
+async function selectStudent(id, opts) {
+  if (state.selectedId !== id) {
+    state.recSeq++;
+    goBtn.disabled = false;
+    document.getElementById("theme").value = "";
+    document.getElementById("query").value = "";
+    headerEl.replaceChildren();
+    acadEl.replaceChildren();
+    document.getElementById("support-body").replaceChildren();
+    recsEl.replaceChildren();
+  }
+  state.selectedId = id;
+  renderStudentList();
+  confirmEl.hidden = true;
+  confirmEl.replaceChildren();
+  await refreshStudent(opts);
+}
+
+async function refreshStudent(opts) {
+  const id = state.selectedId;
+  if (!id) return;
+  const seq = ++state.loadSeq;
+  const keepRecs = opts && opts.keepRecs;
+  loansEl.replaceChildren(el("div", { class: "muted", text: "Loading loans…" }));
+  try {
+    const [detailRes, acadRes, supportRes] = await Promise.all([
+      fetch(`/api/students/${encodeURIComponent(id)}`),
+      fetch(`/api/students/${encodeURIComponent(id)}/academics`),
+      fetch(`/api/students/${encodeURIComponent(id)}/support`),
+    ]);
+    if (seq !== state.loadSeq) return;
+    if (detailRes.status === 404) {
+      headerEl.replaceChildren(el("p", { class: "muted", text: "Unknown student." }));
+      return;
+    }
+    const detail = await parseJSON(detailRes);
+    if (seq !== state.loadSeq) return;
+    if (!detailRes.ok) throw new Error("Could not load selected student");
+    if (detail.session_started !== state.sessionStarted) {
+      state.sessionStarted = detail.session_started;
+      state.revision = 0;
+    }
+    if (newerThan(detail.revision)) return;
+    noteRevision(detail.revision);
+    renderHeader(detail);
+    renderLoans(detail);
+    if (acadRes.ok) {
+      const acad = await parseJSON(acadRes);
+      if (seq !== state.loadSeq) return;
+      noteRevision(acad.revision);
+      renderAcademics(acad);
+    }
+    if (supportRes.ok) {
+      const supportData = await parseJSON(supportRes);
+      if (seq !== state.loadSeq || state.selectedId !== id) return;
+      renderSupport(supportData);
+    }
+    if (!keepRecs) {
+      recsEl.replaceChildren(el("div", { class: "muted", text: "Next book to see in-stock titles for this student." }));
+    }
+    await loadActivity();
+    await loadStudents();
+    renderStudentList();
+  } catch (err) {
+    if (seq !== state.loadSeq) return;
+    setStatus(String(err.message || err), "err");
+  }
+}
+
+function talkingText(rec) {
+  return (rec.items || []).map((it) => {
+    const tp = it.talking_point || (it.reasons || []).join("; ");
+    return `${it.title} (${it.book_id}): ${tp}`;
+  }).join("\n");
+}
+
+async function copyTalkingItem(it) {
+  const payload = `${it.title} (${it.book_id}): ${it.talking_point || (it.reasons || []).join("; ")}`;
+  try {
+    await navigator.clipboard.writeText(payload);
+    setStatus("Talking point copied. Speak it; it is a draft.", "ok");
+  } catch (err) {
+    setStatus("Clipboard blocked.", "err");
+  }
+}
+
+async function recommend(ev) {
+  if (ev) ev.preventDefault();
+  const id = state.selectedId;
+  if (!id) {
+    setStatus("Pick a student first.", "err");
+    return;
+  }
+  const seq = ++state.recSeq;
+  const expectedRev = state.revision;
   goBtn.disabled = true;
-  recs.replaceChildren(el("div", { class: "muted", text: "Looking…" }));
+  recsEl.replaceChildren(el("div", { class: "muted", text: "Looking…" }));
   setStatus("Looking up the shelf…");
   const body = {
     student_id: id,
-    staff_id: document.getElementById("staff").value,
+    staff_id: staffId(),
+    theme: document.getElementById("theme").value,
     query: document.getElementById("query").value,
     stretch: document.getElementById("stretch").checked,
     limit: 5,
@@ -188,54 +438,257 @@ async function recommend() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    const rec = await res.json().catch(() => ({}));
-    if (seq !== recSeq) return;
+    const rec = await parseJSON(res);
+    if (seq !== state.recSeq) return;
+    if (state.selectedId !== id) return;
+    if (newerThan(rec.revision) || (typeof rec.revision === "number" && rec.revision < expectedRev)) {
+      recsEl.replaceChildren(el("div", { class: "muted", text: "Shelf changed. Refreshing…" }));
+      await refreshStudent({ keepRecs: false });
+      return;
+    }
     if (!res.ok) {
-      recs.replaceChildren(el("div", { class: "muted", text: rec.error || "Lookup failed." }));
-      setStatus(rec.error || `HTTP ${res.status}`, true);
+      recsEl.replaceChildren(el("div", { class: "muted", text: rec.error || "Lookup failed." }));
+      setStatus(rec.error || `HTTP ${res.status}`, "err");
       return;
     }
     if (rec.student_id && rec.student_id !== id) {
-      recs.replaceChildren(el("div", { class: "muted", text: "Stale result ignored." }));
+      recsEl.replaceChildren(el("div", { class: "muted", text: "Stale result ignored." }));
       return;
     }
-    renderRecs(rec);
+    noteRevision(rec.revision);
+    const stu = state.students.find((s) => s.student_id === id);
+    renderRecs(rec, stu ? stu.first_name : "student");
     setStatus(`Showing ${rec.student_id} · ${rec.explain_mode || "template"}`);
   } catch (err) {
-    if (seq !== recSeq) return;
-    recs.replaceChildren(el("div", { class: "muted", text: "API not running. go run ./cmd/shelfmate serve" }));
-    setStatus(String(err.message || err), true);
+    if (seq !== state.recSeq) return;
+    recsEl.replaceChildren(el("div", { class: "muted", text: "API not running. go run ./cmd/shelfmate serve" }));
+    setStatus(String(err.message || err), "err");
   } finally {
-    if (seq === recSeq) goBtn.disabled = false;
+    if (seq === state.recSeq) goBtn.disabled = false;
   }
 }
 
-function pickStudent(id) {
-  searchEl.value = "";
-  renderOptions("");
-  studentSel.value = id;
-  showStudent();
+function showConfirm(data, firstName) {
+  confirmEl.hidden = false;
+  const copies = `${data.copies_available} of ${data.copies_total} left on the shelf`;
+  confirmEl.className = "confirm";
+  confirmEl.replaceChildren(
+    el("strong", { text: `Checked out ${data.loan.title} to ${firstName}` }),
+    el("div", { text: copies }),
+    el("div", { class: "hint", text: data.note || "This session only. Restart restores the extract." }),
+    el("div", { class: "next" }, [
+      buttonAction("Find another book", () => {
+        confirmEl.hidden = true;
+        document.getElementById("query").focus();
+      }),
+      buttonAction("Next student", () => {
+        searchEl.focus();
+      }, true),
+    ]),
+  );
 }
 
-document.getElementById("go").addEventListener("click", recommend);
-searchEl.addEventListener("input", () => renderOptions(searchEl.value));
+function buttonAction(label, fn, secondary) {
+  const b = el("button", { class: secondary ? "secondary" : "", type: "button", text: label });
+  b.addEventListener("click", fn);
+  return b;
+}
+
+async function checkoutBook(it, btn) {
+  const id = state.selectedId;
+  if (!id || state.busy) return;
+  state.busy = true;
+  if (btn) btn.disabled = true;
+  setStatus(`Checking out ${it.title}…`);
+  try {
+    const res = await fetch("/api/checkouts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        student_id: id,
+        book_id: it.book_id,
+        staff_id: staffId(),
+        retry_id: retryId("co", id, it.book_id),
+      }),
+    });
+    const data = await parseJSON(res);
+    if (state.selectedId !== id) return;
+    if (!res.ok) {
+      confirmEl.hidden = false;
+      confirmEl.className = "conflict";
+      confirmEl.replaceChildren(
+        el("strong", { text: data.error || "Could not check out" }),
+        el("div", { text: data.hint || "Refresh this student and try again." }),
+        buttonAction("Refresh student", () => refreshStudent({ keepRecs: true }), true),
+      );
+      setStatus(data.error || "Checkout failed", "err");
+      return;
+    }
+    noteRevision(data.revision);
+    const stu = state.students.find((s) => s.student_id === id);
+    showConfirm(data, stu ? stu.first_name : id);
+    setStatus(`Checked out ${data.loan.title}. ${data.copies_available} left on the shelf.`, "ok");
+    await refreshStudent({ keepRecs: true });
+    await recommend();
+  } catch (err) {
+    setStatus(String(err.message || err), "err");
+  } finally {
+    state.busy = false;
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function returnLoan(loan) {
+  const id = state.selectedId;
+  if (!id || state.busy) return;
+  state.busy = true;
+  setStatus(`Returning ${loan.title}…`);
+  try {
+    const res = await fetch("/api/returns", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        student_id: id,
+        loan_id: loan.loan_id,
+        staff_id: staffId(),
+        retry_id: retryId("ret", id, loan.loan_id),
+      }),
+    });
+    const data = await parseJSON(res);
+    if (state.selectedId !== id) return;
+    if (!res.ok) {
+      setStatus(data.error || "Return failed", "err");
+      confirmEl.hidden = false;
+      confirmEl.className = "conflict";
+      confirmEl.replaceChildren(
+        el("strong", { text: data.error || "Could not return" }),
+        el("div", { text: data.hint || "Refresh this student." }),
+      );
+      return;
+    }
+    noteRevision(data.revision);
+    setStatus(`Returned ${data.loan.title}. Shelf is now ${data.copies_available}/${data.copies_total}.`, "ok");
+    confirmEl.hidden = false;
+    confirmEl.className = "confirm";
+    confirmEl.replaceChildren(
+      el("strong", { text: `Returned ${data.loan.title}` }),
+      el("div", { text: `${data.copies_available} of ${data.copies_total} on the shelf` }),
+    );
+    await refreshStudent({ keepRecs: true });
+    await recommend();
+  } catch (err) {
+    setStatus(String(err.message || err), "err");
+  } finally {
+    state.busy = false;
+  }
+}
+
+searchEl.addEventListener("input", () => {
+  renderStudentList();
+});
 searchEl.addEventListener("keydown", (ev) => {
   if (ev.key === "Enter") {
     ev.preventDefault();
-    recommend();
+    recommend(ev);
   }
 });
-studentSel.addEventListener("change", showStudent);
-studentSel.addEventListener("keydown", (ev) => {
-  if (ev.key === "Enter") {
-    ev.preventDefault();
-    recommend();
-  }
-});
+findForm.addEventListener("submit", recommend);
 document.querySelectorAll("[data-student]").forEach((btn) => {
-  btn.addEventListener("click", () => pickStudent(btn.getAttribute("data-student")));
+  btn.addEventListener("click", () => {
+    searchEl.value = "";
+    selectStudent(btn.getAttribute("data-student"));
+  });
 });
-loadStudents().catch((err) => {
-  recs.replaceChildren(el("div", { class: "muted", text: "API not running. go run ./cmd/shelfmate serve" }));
-  setStatus(String(err.message || err), true);
+window.addEventListener("focus", () => {
+  if (state.selectedId) refreshStudent({ keepRecs: true });
 });
+
+async function loadSupportQueue() {
+  const response = await fetch("/api/support/queue");
+  if (!response.ok) throw new Error("Could not load support queue");
+  const data = await response.json();
+  state.supportQueue = new Map((data.students || []).map(s => [s.student_id, s]));
+}
+
+function renderSupport(data) {
+  const result = data.support;
+  const guidance = data.reading_guidance || {};
+  const now = new Date().toISOString().slice(0, 10);
+  const notes = (guidance.teacher_notes || []).map(n => el("article", { class: "note-card" }, [
+    el("strong", { text: `Teacher observation · ${n.date}` }),
+    el("p", { text: n.text }),
+    el("small", { text: `${n.source_id} · structured request: ${n.request}` }),
+  ]));
+  const shared = (guidance.guidance || []).map(g => {
+    const current = g.approved_at <= now && now <= g.review_by;
+    const buttons = (g.themes || []).map(theme => {
+      const b = buttonAction(`Explore ${theme}`, () => {
+        document.getElementById("theme").value = theme;
+        document.getElementById("find").scrollIntoView({ behavior: "smooth", block: "start" });
+        recommend();
+      }, true);
+      b.disabled = !current;
+      return b;
+    });
+    return el("article", { class: "note-card" }, [
+      el("strong", { text: "Shared reading guidance · counselor approved" }),
+      el("p", { text: g.summary }),
+      el("p", { class: "hint", text: `${g.source_id} · approved ${g.approved_at} · review by ${g.review_by}${current ? "" : " · review needed before use"}` }),
+      el("div", { class: "card-actions" }, buttons),
+    ]);
+  });
+  const actions = [["check_in", "Record a check-in"], ["enjoyed", "Student reported enjoyment"], ["try_another", "Student wants another option"]].map(([action, label]) => {
+    const b = buttonAction(label, () => recordFollowup(action, b), true);
+    return b;
+  });
+  const labels = { check_in: "Check-in recorded", enjoyed: "Student reported enjoyment", try_another: "Student requested another option" };
+  document.getElementById("support-body").replaceChildren(
+    el("div", { class: "support-summary" }, [
+      el("strong", { class: `support-band band-${result.band}`, text: result.label }),
+      el("span", { text: result.coverage }),
+    ]),
+    el("p", { class: "hint", text: `${result.disclaimer} Evidence reviewed as of ${result.config.as_of} · ${result.config.id}.` }),
+    el("details", { class: "support-evidence" }, [
+      el("summary", { text: "Why this band? See evidence and missing inputs" }),
+      ...result.evidence.map(e => el("p", null, [
+        el("strong", { text: `${e.kind}: ${e.included ? e.value : "not used"}` }),
+        ` — ${e.reason}${e.date ? ` (${e.date})` : ""}${e.rule ? ` · ${e.rule}` : ""}`,
+      ])),
+    ]),
+    el("p", { text: `Strengths & interests: ${(guidance.strengths || []).join(" · ") || "Ask the student what they enjoy."}` }),
+    el("div", { class: "guidance-grid" }, [...notes, ...shared]),
+    !notes.length && !shared.length ? el("p", { class: "hint", text: "No shared teacher or counselor guidance in this demo file. This does not mean no concerns." }) : null,
+    el("h3", { text: "Check back with the student" }),
+    el("p", { class: "hint", text: "Record only something that happened. These actions do not change academic results or support bands. Restart clears them." }),
+    el("div", { class: "card-actions" }, actions),
+    el("ul", { class: "followup-list" }, (data.followups || []).map(f => el("li", { text: `${labels[f.action] || f.action} · ${f.at} · ${f.staff_id}` }))),
+  );
+}
+
+async function recordFollowup(action, button) {
+  const id = state.selectedId;
+  button.disabled = true;
+  if (!button.dataset.retryId) button.dataset.retryId = retryId("followup", id, action);
+  try {
+    const res = await fetch("/api/support/followups", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student_id: id, staff_id: staffId(), action, retry_id: button.dataset.retryId }),
+    });
+    const out = await parseJSON(res);
+    if (id !== state.selectedId) return;
+    if (!res.ok) throw new Error(out.error || "Follow-up failed");
+    setStatus(out.note, "ok");
+    await refreshStudent({ keepRecs: true });
+  } catch (err) {
+    if (id === state.selectedId) setStatus(err.message, "err");
+  } finally { button.disabled = false; }
+}
+
+document.getElementById("support-filter").addEventListener("change", renderStudentList);
+
+Promise.all([loadSupportQueue(), loadStudents()])
+  .then(() => selectStudent(state.selectedId))
+  .catch((err) => {
+    recsEl.replaceChildren(el("div", { class: "muted", text: "API not running. go run ./cmd/shelfmate serve" }));
+    setStatus(String(err.message || err), "err");
+  });

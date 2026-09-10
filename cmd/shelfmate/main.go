@@ -11,10 +11,13 @@ import (
 	"path/filepath"
 	"strings"
 
+	"school_district_reading/internal/academics"
 	"school_district_reading/internal/domain"
 	"school_district_reading/internal/engine"
 	"school_district_reading/internal/httpapi"
+	"school_district_reading/internal/session"
 	"school_district_reading/internal/store"
+	"school_district_reading/internal/support"
 	"school_district_reading/internal/version"
 )
 
@@ -52,6 +55,7 @@ func usage() {
 LLM is off unless SHELFMATE_LLM=on. Recs still work.
 Optional Axon: LLM_BASE (origin, client appends /v1/chat/completions),
 LLM_MODEL, LLM_API_KEY (never logged).
+Demo checkouts live in process memory; restart reloads the frozen extract.
 `, version.Version)
 }
 
@@ -97,11 +101,28 @@ func serve(args []string) {
 		log.Fatal(err)
 	}
 	eng := engine.New(st)
-	srv := httpapi.Server{
-		Engine: eng,
-		Web:    http.FileServer(http.Dir(*web)),
+	cat, err := academics.Load(*data)
+	if err != nil {
+		log.Fatal(err)
 	}
-	log.Printf("shelfmate librarian console on http://%s  students=%d books=%d version=%s", displayURL(listen), len(st.Students), len(st.Books), version.Version)
+	if err := cat.Validate(st); err != nil {
+		log.Fatal(err)
+	}
+	if cat.Missing {
+		log.Printf("academic_demo.json missing; reading pane will be empty")
+	}
+	guidance, err := support.Load(*data, st)
+	if err != nil {
+		log.Fatal(err)
+	}
+	svc := session.New(eng)
+	srv := httpapi.Server{
+		Support:   guidance,
+		Session:   svc,
+		Academics: cat,
+		Web:       http.FileServer(http.Dir(*web)),
+	}
+	log.Printf("shelfmate librarian console on http://%s  students=%d books=%d version=%s  session=memory (restart resets demo checkouts)", displayURL(listen), len(st.Students), len(st.Books), version.Version)
 	log.Fatal(http.ListenAndServe(listen, srv.Handler()))
 }
 

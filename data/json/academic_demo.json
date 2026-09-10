@@ -1,0 +1,446 @@
+{
+  "provenance": {
+    "synthetic": true,
+    "label": "synthetic_demo",
+    "note": "Clearly labeled synthetic desk fixture for the PoC. Not a SIS extract, not a real state assessment, and not used for ranking or model payloads. English letter grades use scale letter_A_F. Reading checks use willow_bend_reading_1_4 (1 emerging – 4 exceeding). Current semester rows stay ungraded. Checkout does not change grades.",
+    "circulation_coverage": "Circulation export covers 2026-01-13 through 2026-09-03 plus this server session. Earlier borrowing is not in the extract and is not evidence of no borrowing."
+  },
+  "students": [
+    {
+      "student_id": "S-406",
+      "semesters": [
+        {
+          "id": "SY25-S1",
+          "label": "2025–26 Semester 1",
+          "start": "2025-08-18",
+          "end": "2026-01-16",
+          "course": "English Language Arts",
+          "grade": "C+",
+          "scale": "letter_A_F",
+          "status": "final",
+          "missing_note": "Most of this term is outside the circulation export."
+        },
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "C",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-406-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-01-22",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing"
+        },
+        {
+          "id": "A-406-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Same grade-year instrument as January. Flat, not a gain."
+        },
+        {
+          "id": "A-406-3",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Grade 4 form. Do not subtract from the grade 3 checks."
+        }
+      ]
+    },
+    {
+      "student_id": "S-402",
+      "semesters": [
+        {
+          "id": "SY25-S1",
+          "label": "2025–26 Semester 1",
+          "start": "2025-08-18",
+          "end": "2026-01-16",
+          "course": "English Language Arts",
+          "grade": "A",
+          "scale": "letter_A_F",
+          "status": "final",
+          "missing_note": "Most of this term is outside the circulation export."
+        },
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "A-",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-402-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-01-22",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting"
+        },
+        {
+          "id": "A-402-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 4,
+          "band": "exceeding"
+        },
+        {
+          "id": "A-402-3",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Grade 4 form. A 3 after a grade-3 4 is not a drop."
+        }
+      ]
+    },
+    {
+      "student_id": "S-405",
+      "semesters": [
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "New this year. No prior Maple Street English grade is on file."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-405-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-01",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": null,
+          "note": "Administered; score not posted. Missing is not zero."
+        }
+      ]
+    },
+    {
+      "student_id": "S-509",
+      "semesters": [
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "New this year. No prior-year English grade at Maple Street."
+        }
+      ],
+      "assessments": []
+    },
+    {
+      "student_id": "S-301",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-301-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-01-22",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Grade 2 form from last spring of the prior year."
+        },
+        {
+          "id": "A-301-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Same grade-year instrument; lower than January. Not caused by a title."
+        },
+        {
+          "id": "A-301-3",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing"
+        }
+      ]
+    },
+    {
+      "student_id": "S-302",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "final",
+          "missing_note": "English letter grade was not transferred. Missing, not F."
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress"
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-302-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": null,
+          "note": "Absent on makeup day. Missing is not zero."
+        }
+      ]
+    },
+    {
+      "student_id": "S-305",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B+",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress"
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-305-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-01-22",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing"
+        },
+        {
+          "id": "A-305-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting"
+        }
+      ]
+    },
+    {
+      "student_id": "S-504",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "C",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress"
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-504-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-01-22",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing"
+        },
+        {
+          "id": "A-504-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Flat within grade 4. Not a success-rate metric."
+        }
+      ]
+    },
+    {
+      "student_id": "S-510",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "A",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress"
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-510-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 4,
+          "band": "exceeding"
+        }
+      ]
+    },
+    {
+      "student_id": "S-401",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B-",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress"
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-401-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting"
+        }
+      ]
+    }
+  ]
+}

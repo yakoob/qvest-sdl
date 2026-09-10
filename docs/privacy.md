@@ -15,6 +15,12 @@ Excluded: last names, DOB, address, parent contact, state ID, free/reduced lunch
 - Audit JSONL: `student_id`, `staff_id`, ranked `book_ids`, dropped reasons, explain mode, version, query *flags* (present / under_150 / short). No raw query, names, talking-point prose, or model bodies.
 - Talking points are labeled librarian-reviewed drafts. ID validation is not a claim that the prose is true.
 - No student-facing UI.
+- Synthetic academics (`academic_demo.json`) stay on the desk. They are not sent to a model and are not written to audit JSONL. First names still do not leave the console toward a model.
+- Demo checkout is localhost process memory. It is not a production ILS write.
+- Support bands and teacher observations are local display context, not recommendation/model/audit inputs. Only explicit neutral reading-theme choices affect local catalog search.
+- Counselor fixtures contain deliberately shared reading themes and approval dates, not clinical records, diagnoses or disciplinary histories. They never influence support bands.
+- Queue responses omit note bodies; full guidance is available on selected-student detail. This is data minimization, NOT authorization: selecting a staff name is attribution only. Real records require district-approved role-based access.
+- Follow-ups are structured process-memory events. Restart clears them; check-in and enjoyment reports do not change academic evidence.
 
 ## Kill switch
 

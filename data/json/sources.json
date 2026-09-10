@@ -127,6 +127,12 @@
       "notes": "data/notes/as_is_notes.md",
       "records": 1,
       "description": "Elena's sticky notes and notebook. The system we are replacing."
+    },
+    {
+      "id": "academic_demo",
+      "json": "data/json/academic_demo.json",
+      "records": 10,
+      "description": "Synthetic desk fixture: semester English letter grades and Willow Bend Reading Check (fictional 1–4 scale). Not a SIS extract. Not used for ranking or model payloads. catalog.json / circulation.json / students.json are unchanged."
     }
   ]
 }

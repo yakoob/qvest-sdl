@@ -80,3 +80,51 @@ func (s *Store) Book(id string) (domain.Book, bool) {
 	b, ok := s.BookByID[id]
 	return b, ok
 }
+
+// CloneCirculation copies Books, BookByID, Circulation, and History so a
+// session mutation can publish a new snapshot without mutating slices or maps
+// still held by readers. Catalog Subjects remain shared (read-only). Students
+// and librarians stay the same pointers; they are never mutated after Load.
+func (s *Store) CloneCirculation() *Store {
+	if s == nil {
+		return nil
+	}
+	out := &Store{
+		Dir:           s.Dir,
+		District:      s.District,
+		Books:         make([]domain.Book, len(s.Books)),
+		BookByID:      make(map[string]domain.Book, len(s.BookByID)),
+		Students:      s.Students,
+		StudentByID:   s.StudentByID,
+		Circulation:   make([]domain.CirculationEvent, len(s.Circulation)),
+		History:       make(map[string][]domain.CirculationEvent, len(s.History)),
+		Librarians:    s.Librarians,
+		LibrarianByID: s.LibrarianByID,
+	}
+	copy(out.Books, s.Books)
+	copy(out.Circulation, s.Circulation)
+	out.reindexCirculation()
+	return out
+}
+
+// reindexCirculation rebuilds BookByID and History from Books and Circulation.
+// Callers must own the destination Store; shared student/librarian maps are
+// left untouched.
+func (s *Store) reindexCirculation() {
+	s.BookByID = make(map[string]domain.Book, len(s.Books))
+	for _, b := range s.Books {
+		s.BookByID[b.BookID] = b
+	}
+	s.History = make(map[string][]domain.CirculationEvent, len(s.History))
+	for _, ev := range s.Circulation {
+		s.History[ev.StudentID] = append(s.History[ev.StudentID], ev)
+	}
+}
+
+// ApplyCirculation replaces Books and Circulation, then rebuilds indexes.
+// The receiver must not be shared with concurrent readers.
+func (s *Store) ApplyCirculation(books []domain.Book, events []domain.CirculationEvent) {
+	s.Books = books
+	s.Circulation = events
+	s.reindexCirculation()
+}

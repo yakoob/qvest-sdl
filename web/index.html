@@ -7,56 +7,117 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <a class="skip" href="#lookup">Skip to student lookup</a>
-  <header>
-    <div>
+  <a class="skip" href="#search">Skip to student lookup</a>
+  <header class="top">
+    <div class="brand">
+      <p class="eyebrow">Maple Street Elementary · librarian desk</p>
       <h1>ShelfMate</h1>
-      <p class="sub">Maple Street desk · librarian only · closed catalog</p>
+      <p class="sub">Find a title, check it out, see what changed. Closed catalog. Not a student app.</p>
     </div>
-    <label for="staff">Staff
-      <select id="staff">
-        <option value="L-001">Elena Vasquez (L-001)</option>
-        <option value="L-002">Tom Bradley (L-002)</option>
-        <option value="L-003">Priya Shah (L-003)</option>
-      </select>
-    </label>
-  </header>
-  <main>
-    <section class="lookup" id="lookup">
-      <label for="search">Find student
-        <input id="search" type="search" autocomplete="off" placeholder="Name or ID — try Mateo or S-406" />
+    <div class="top-meta">
+      <label for="staff">On desk
+        <select id="staff">
+          <option value="L-001">Elena Vasquez (L-001)</option>
+          <option value="L-002" selected>Tom Bradley (L-002)</option>
+          <option value="L-003">Priya Shah (L-003)</option>
+        </select>
       </label>
-      <label for="student">Student
-        <select id="student" size="6"></select>
+      <p id="session-banner" class="banner" role="status">Demo checkouts live in this server process. Restart restores the frozen extract.</p>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <aside class="rail" aria-label="Student list">
+      <label for="search">Find student
+        <input id="search" type="search" autocomplete="off" placeholder="Name or ID — Mateo or S-406" />
       </label>
       <div class="shortcuts" role="group" aria-label="Demo students">
         <span class="hint">Demo</span>
-        <button type="button" class="chip" data-student="S-406">Mateo S-406</button>
-        <button type="button" class="chip" data-student="S-402">Aisha S-402</button>
-        <button type="button" class="chip" data-student="S-405">Priya S-405</button>
-        <button type="button" class="chip" data-student="S-509">Olivia S-509</button>
+        <button type="button" class="chip" data-student="S-406">Mateo</button>
+        <button type="button" class="chip" data-student="S-402">Aisha</button>
+        <button type="button" class="chip" data-student="S-405">Priya</button>
+        <button type="button" class="chip" data-student="S-509">Olivia</button>
       </div>
-      <label class="grow" for="query">Ask (optional)
-        <input id="query" placeholder="funny, reluctant 4th, under 150 pages, we have copies" />
+      <label for="support-filter">Attention
+        <select id="support-filter">
+          <option value="">All students</option>
+          <option value="first">Check in first</option>
+          <option value="soon">Check in soon</option>
+          <option value="insufficient">Not enough information</option>
+          <option value="none">No current flags</option>
+        </select>
       </label>
-      <label class="check" for="stretch">
-        <input type="checkbox" id="stretch" />
-        Stretch grade band
-      </label>
-      <button id="go" type="button">Next book</button>
-    </section>
-    <p id="status" class="status" role="status" aria-live="polite"></p>
-    <section class="cols">
-      <article>
-        <h2>History</h2>
-        <div id="history" class="list muted">Pick a student. Tom: shortcut or type, then Next book.</div>
-      </article>
-      <article>
-        <h2>On the shelf now</h2>
-        <div id="recs" class="list muted">20-second path: pick student, Next book.</div>
-      </article>
-    </section>
-  </main>
+      <div id="student-list" class="student-list" aria-label="Students"></div>
+    </aside>
+
+    <main>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <section id="student-header" class="student-header" aria-live="polite">
+        <p class="muted">Pick a student. Tom: type a name or tap a demo chip.</p>
+      </section>
+
+      <section class="task" id="support-panel" aria-labelledby="support-h">
+        <div class="task-head">
+          <h2 id="support-h">Support &amp; reading interests</h2>
+          <p class="hint">Fictional, unvalidated check-in rules—not a diagnosis. Local demo has no role-based access control.</p>
+        </div>
+        <div id="support-body">Select a student to see their context.</div>
+      </section>
+
+      <section class="task" id="find" aria-labelledby="find-h">
+        <div class="task-head">
+          <h2 id="find-h">Find a book</h2>
+          <p class="hint">Recommendations first. Checkout is the action that puts a copy in their hands.</p>
+        </div>
+        <form id="find-form" class="find-bar">
+          <label class="grow" for="query">Ask (optional)
+            <input id="query" placeholder="funny, reluctant 4th, under 150 pages, we have copies" />
+          </label>
+          <label class="check" for="stretch">
+            <input type="checkbox" id="stretch" />
+            Stretch grade band
+          </label>
+          <label for="theme">Reading theme
+            <select id="theme">
+              <option value="">No theme selected</option>
+              <option value="perseverance">Perseverance</option>
+              <option value="belonging">Belonging</option>
+              <option value="sports">Sports</option>
+              <option value="underdogs">Underdogs</option>
+              <option value="creativity">Creativity</option>
+              <option value="animals">Animals</option>
+            </select>
+          </label>
+          <button id="go" type="submit">Find available books</button>
+        </form>
+        <div id="confirm" class="confirm" hidden></div>
+        <div id="recs" class="recs muted">Pick a student, then Next book.</div>
+      </section>
+
+      <section class="task" id="loans" aria-labelledby="loans-h">
+        <div class="task-head">
+          <h2 id="loans-h">Current loans &amp; history</h2>
+          <p class="hint">Open loans can be returned. History means borrowed, not finished.</p>
+        </div>
+        <div id="loans-body" class="muted">No student selected.</div>
+      </section>
+
+      <section class="task" id="academics" aria-labelledby="acad-h">
+        <div class="task-head">
+          <h2 id="acad-h">Reading &amp; learning</h2>
+          <p class="hint">Synthetic desk fixture. Grades do not change when you check out a book. Not a real state test.</p>
+        </div>
+        <div id="acad-body" class="muted">No student selected.</div>
+      </section>
+    </main>
+
+    <aside class="activity" aria-label="Session activity">
+      <h2>What just happened</h2>
+      <p class="hint">Shared across tabs of this server. Reload keeps it; restart clears it.</p>
+      <div id="activity" class="activity-list muted">No demo checkouts yet this session.</div>
+    </aside>
+  </div>
+  <script src="/progress.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

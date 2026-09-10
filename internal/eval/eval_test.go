@@ -9,6 +9,7 @@ import (
 
 	"school_district_reading/internal/domain"
 	"school_district_reading/internal/engine"
+	"school_district_reading/internal/policy"
 	"school_district_reading/internal/store"
 )
 
@@ -98,8 +99,15 @@ func TestGoldens(t *testing.T) {
 					}
 				}
 			}
+			if policy.ParseConstraints(c.Query).Under150 {
+				for _, it := range rec.Items {
+					if it.Pages >= 150 {
+						t.Fatalf("%s has %d pages; under 150 means fewer than 150", it.BookID, it.Pages)
+					}
+				}
+			}
 			if len(c.PreferAny) > 0 && !anyHit(ids, c.PreferAny) {
-				t.Logf("stretch prefer %v not in %v (soft)", c.PreferAny, keys(ids))
+				t.Fatalf("stretch prefer %v not in %v", c.PreferAny, keys(ids))
 			}
 		})
 	}
@@ -124,6 +132,46 @@ func TestBadGuysNeverSpoken(t *testing.T) {
 			if it.BookID == "B-008" {
 				t.Fatalf("%s received Bad Guys", sid)
 			}
+			if it.TalkingPoint != "" && containsID(it.TalkingPoint, "B-008") {
+				t.Fatalf("talking point leaked B-008")
+			}
+		}
+		for _, tp := range rec.TalkingPoints {
+			if containsID(tp, "The Bad Guys") && rec.Items != nil {
+				// title may be mentioned only if recommended; it must not be
+				t.Fatalf("talking points mentioned Bad Guys for %s: %s", sid, tp)
+			}
+		}
+	}
+}
+
+func TestAishaStretchHonesty(t *testing.T) {
+	root := repoRoot(t)
+	st, err := store.Load(filepath.Join(root, "data", "json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	aisha := st.StudentByID["S-402"]
+	for _, id := range []string{"B-013", "B-016", "B-017"} {
+		b := st.BookByID[id]
+		if !policy.GradeOK(aisha.Grade, b, false) {
+			t.Fatalf("%s is not default-eligible; stretch-unlock claim would be real", id)
+		}
+	}
+	eng := engine.New(st)
+	def, err := eng.Recommend(domain.Request{StudentID: "S-402", Limit: 5})
+	if err != nil {
+		t.Fatal(err)
+	}
+	str, err := eng.Recommend(domain.Request{StudentID: "S-402", Stretch: true, Limit: 5})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, rec := range []domain.Recommendation{def, str} {
+		for _, it := range rec.Items {
+			if it.BookID == "B-051" {
+				t.Fatal("Westing Game must not be recommended on lexile/stretch")
+			}
 		}
 	}
 }
@@ -143,6 +191,19 @@ func keys(m map[string]domain.RecItem) []string {
 		out = append(out, k)
 	}
 	return out
+}
+
+func containsID(s, sub string) bool {
+	return len(s) >= len(sub) && (s == sub || indexOf(s, sub) >= 0)
+}
+
+func indexOf(s, sub string) int {
+	for i := 0; i+len(sub) <= len(s); i++ {
+		if s[i:i+len(sub)] == sub {
+			return i
+		}
+	}
+	return -1
 }
 
 func repoRoot(t *testing.T) string {

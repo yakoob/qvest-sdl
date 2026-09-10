@@ -9,6 +9,18 @@ import (
 	"school_district_reading/internal/store"
 )
 
+const (
+	reasonQuery    = "matches librarian query"
+	reasonHistory  = "similar to recent checkouts"
+	reasonCF       = "borrowers with overlapping checkouts also took this"
+	reasonCluster  = "same cluster as a previous checkout"
+	reasonSeries   = "same series as a previous checkout"
+	reasonFallback = "grade-band popularity fallback (no checkout history or query match)"
+	reasonContent  = "catalog text similar to checkout history"
+)
+
+// Hybrid combines item-item cosine (circulation) with catalog TF-IDF.
+// Ranking is not specialized per student_id.
 type Hybrid struct {
 	Store *store.Store
 	idf   map[string]float64
@@ -91,18 +103,7 @@ func (h *Hybrid) itemSim(a, b string) float64 {
 	return inter / math.Sqrt(float64(len(ua)*len(ub)))
 }
 
-func (h *Hybrid) queryVec(student domain.Student, history []domain.CirculationEvent, nl string) map[string]float64 {
-	parts := []string{student.Cluster, student.PageComfort, nl}
-	seen := map[string]struct{}{}
-	for _, ev := range history {
-		if _, dup := seen[ev.BookID]; dup {
-			continue
-		}
-		seen[ev.BookID] = struct{}{}
-		if b, ok := h.Store.Book(ev.BookID); ok {
-			parts = append(parts, bookDoc(b.Title, b.Author, b.Blurb, b.Genre, b.Cluster, b.Series, b.Subjects))
-		}
-	}
+func (h *Hybrid) tfidf(parts ...string) map[string]float64 {
 	tf := map[string]int{}
 	for _, t := range tokenize(strings.Join(parts, " ")) {
 		tf[t]++
@@ -114,89 +115,206 @@ func (h *Hybrid) queryVec(student domain.Student, history []domain.CirculationEv
 	return vec
 }
 
+func (h *Hybrid) uniqueBorrowers(bookID string) int {
+	return len(h.item[bookID])
+}
+
 func (h *Hybrid) Recommend(student domain.Student, req domain.Request) []domain.ScoredBook {
 	history := h.Store.History[student.StudentID]
-	histSet := map[string]int{}
-	for i := len(history) - 1; i >= 0; i-- {
-		histSet[history[i].BookID]++
+	histIDs := uniqueHistoryIDs(history)
+	histDocs := make([]string, 0, len(histIDs))
+	histClusters := map[string]struct{}{}
+	histSeries := map[string]struct{}{}
+	for _, hid := range histIDs {
+		b, ok := h.Store.Book(hid)
+		if !ok {
+			continue
+		}
+		histDocs = append(histDocs, bookDoc(b.Title, b.Author, b.Blurb, b.Genre, b.Cluster, b.Series, b.Subjects))
+		if b.Cluster != "" && b.Cluster != "unknown" {
+			histClusters[b.Cluster] = struct{}{}
+		}
+		if b.Series != "" {
+			histSeries[b.Series] = struct{}{}
+		}
 	}
 
-	q := h.queryVec(student, history, req.Query)
+	queryVec := h.tfidf(req.Query)
+	histVec := h.tfidf(histDocs...)
+	hasQueryTokens := len(queryVec) > 0
+	hasHistory := len(histIDs) > 0
+
 	type raw struct {
-		id      string
-		cf      float64
-		content float64
-		bonus   float64
-		reasons []string
+		id        string
+		cf        float64
+		query     float64
+		hist      float64
+		bonus     float64
+		borrowers int
+		reasons   []string
 	}
-	var rows []raw
+
+	rows := make([]raw, 0, len(h.Store.Books))
+	anyQueryHit := false
 	for _, b := range h.Store.Books {
+		qScore := cosine(queryVec, h.docs[b.BookID])
+		hScore := cosine(histVec, h.docs[b.BookID])
+		if qScore > 0 {
+			anyQueryHit = true
+		}
 		cf := 0.0
-		for hid := range histSet {
+		for _, hid := range histIDs {
 			cf += h.itemSim(b.BookID, hid)
 		}
-		content := cosine(q, h.docs[b.BookID])
 		bonus := 0.0
 		var reasons []string
-		if student.Cluster != "" && student.Cluster != "unknown" && b.Cluster == student.Cluster {
+		if _, ok := histClusters[b.Cluster]; ok && b.Cluster != "" {
 			bonus += 0.15
-			reasons = append(reasons, "same cluster as checkout history")
+			reasons = append(reasons, reasonCluster)
 		}
-		for hid := range histSet {
-			hb, ok := h.Store.Book(hid)
-			if ok && hb.Series != "" && hb.Series == b.Series && hid != b.BookID {
-				bonus += 0.2
-				reasons = append(reasons, "next in "+b.Series)
-				break
-			}
+		if _, ok := histSeries[b.Series]; ok && b.Series != "" && !containsID(histIDs, b.BookID) {
+			bonus += 0.2
+			reasons = append(reasons, reasonSeries)
 		}
-		if req.Query != "" && content > 0 {
-			reasons = append(reasons, "matches librarian query")
-		}
-		if cf > 0 {
-			reasons = append(reasons, "kids with similar checkouts also took this")
-		}
-		rows = append(rows, raw{id: b.BookID, cf: cf, content: content, bonus: bonus, reasons: reasons})
+		rows = append(rows, raw{
+			id:        b.BookID,
+			cf:        cf,
+			query:     qScore,
+			hist:      hScore,
+			bonus:     bonus,
+			borrowers: h.uniqueBorrowers(b.BookID),
+			reasons:   reasons,
+		})
 	}
 
-	cfN := make([]float64, len(rows))
-	coN := make([]float64, len(rows))
-	for i, r := range rows {
-		cfN[i] = r.cf
-		coN[i] = r.content
-	}
-	cfN = minMax(cfN)
-	coN = minMax(coN)
+	useFallback := !hasHistory && !anyQueryHit
 
 	cfWeight := 0.55
 	coWeight := 0.45
-	if len(histSet) < 2 {
+	if len(histIDs) < 2 {
 		cfWeight = 0
 		coWeight = 1
 	}
-	if req.Query != "" {
+	if hasQueryTokens && !useFallback {
 		cfWeight *= 0.7
 		coWeight = 1 - cfWeight
 	}
 
+	contentScores := make([]float64, len(rows))
+	cfScores := make([]float64, len(rows))
+	for i, r := range rows {
+		cfScores[i] = r.cf
+		switch {
+		case hasQueryTokens && hasHistory:
+			contentScores[i] = 0.65*r.query + 0.35*r.hist
+		case hasQueryTokens:
+			contentScores[i] = r.query
+		default:
+			contentScores[i] = r.hist
+		}
+	}
+	cfN := minMax(cfScores)
+	coN := minMax(contentScores)
+
 	out := make([]domain.ScoredBook, 0, len(rows))
 	for i, r := range rows {
 		b := h.Store.BookByID[r.id]
-		score := cfWeight*cfN[i] + coWeight*coN[i] + r.bonus
+		reasons := append([]string(nil), r.reasons...)
+		var score float64
+		var cfOut, coOut float64
+		if useFallback {
+			score = float64(r.borrowers)
+			cfOut = 0
+			coOut = 0
+			reasons = []string{reasonFallback}
+		} else {
+			cfOut = cfN[i]
+			coOut = coN[i]
+			score = cfWeight*cfOut + coWeight*coOut + r.bonus
+			if r.query > 0 && hasQueryTokens {
+				reasons = append(reasons, reasonQuery)
+			}
+			if r.hist > 0 && hasHistory {
+				reasons = append(reasons, reasonHistory)
+			}
+			if cfWeight > 0 && r.cf > 0 {
+				reasons = append(reasons, reasonCF)
+			} else if r.hist > 0 && hasHistory && cfWeight == 0 {
+				reasons = appendIfMissing(reasons, reasonContent)
+			}
+		}
 		out = append(out, domain.ScoredBook{
 			Book:    b,
 			Score:   score,
-			CF:      cfN[i],
-			Content: coN[i],
+			CF:      cfOut,
+			Content: coOut,
 			Bonus:   r.bonus,
-			Reasons: r.reasons,
+			Reasons: uniqReasons(reasons),
 		})
 	}
-	sort.Slice(out, func(i, j int) bool {
+
+	sort.SliceStable(out, func(i, j int) bool {
 		if out[i].Score == out[j].Score {
-			return out[i].Book.Title < out[j].Book.Title
+			bi, bj := out[i].Book.BookID, out[j].Book.BookID
+			if useFallback {
+				pi, pj := h.uniqueBorrowers(bi), h.uniqueBorrowers(bj)
+				if pi != pj {
+					return pi > pj
+				}
+			}
+			return bi < bj
 		}
 		return out[i].Score > out[j].Score
 	})
+	return out
+}
+
+func uniqueHistoryIDs(history []domain.CirculationEvent) []string {
+	seen := map[string]struct{}{}
+	var ids []string
+	for _, ev := range history {
+		if ev.BookID == "" {
+			continue
+		}
+		if _, ok := seen[ev.BookID]; ok {
+			continue
+		}
+		seen[ev.BookID] = struct{}{}
+		ids = append(ids, ev.BookID)
+	}
+	return ids
+}
+
+func containsID(ids []string, id string) bool {
+	for _, x := range ids {
+		if x == id {
+			return true
+		}
+	}
+	return false
+}
+
+func appendIfMissing(in []string, s string) []string {
+	for _, x := range in {
+		if x == s {
+			return in
+		}
+	}
+	return append(in, s)
+}
+
+func uniqReasons(in []string) []string {
+	seen := map[string]struct{}{}
+	out := make([]string, 0, len(in))
+	for _, r := range in {
+		if r == "" {
+			continue
+		}
+		if _, ok := seen[r]; ok {
+			continue
+		}
+		seen[r] = struct{}{}
+		out = append(out, r)
+	}
 	return out
 }

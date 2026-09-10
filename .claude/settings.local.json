@@ -1,0 +1,118 @@
+{
+  "env": {
+    "AXON_CUSTOMER": "compeller",
+    "AXON_CUSTOMER_CP": "compeller-cp",
+    "AXON_AGENT": "ada",
+    "AXON_WEB_AGENT": "ada",
+    "CONTINUITY_AGENT": "ada",
+    "AXON_CHAT_BOOT_AGENT": "ada",
+    "AXON_HARNESS": "claude-koob",
+    "ANTHROPIC_BASE_URL": "https://axon.compeller.ai/control-plane/proxy",
+    "ANTHROPIC_AUTH_TOKEN": "local",
+    "ANTHROPIC_API_KEY": "local",
+    "ANTHROPIC_MODEL": "auto",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "auto:max",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "auto:high",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "auto:medium",
+    "ANTHROPIC_SMALL_FAST_MODEL": "auto:light",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "auto:high",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "450000",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "500000",
+    "LIBRARIAN_BASE": "https://axon.compeller.ai/librarian",
+    "BRAIN_BASE": "https://axon.compeller.ai/continuity",
+    "TOOLSHED_BASE": "https://axon.compeller.ai/toolshed"
+  },
+  "autoCompactWindow": 450000,
+  "feedbackSurveyRate": 0,
+  "includeCoAuthoredBy": false,
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/harness/claudecode/hooks/session_start_librarian.sh\"",
+            "timeout": 45
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/harness/claudecode/hooks/session_prompt_hook.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/harness/claudecode/hooks/session_activity_hook.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "AXON_HOOK_EVENT=PostToolUseFailure SMARSH_HOOK_EVENT=PostToolUseFailure bash \"${CLAUDE_PROJECT_DIR}/harness/claudecode/hooks/session_activity_hook.sh\" fail",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/harness/claudecode/hooks/session_precompact_hook.sh\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/harness/claudecode/hooks/session_response_hook.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/harness/claudecode/hooks/session_end_hook.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

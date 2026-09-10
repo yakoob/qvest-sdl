@@ -5,14 +5,17 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"school_district_reading/internal/domain"
 	"school_district_reading/internal/engine"
 	"school_district_reading/internal/httpapi"
 	"school_district_reading/internal/store"
+	"school_district_reading/internal/version"
 )
 
 func main() {
@@ -40,14 +43,16 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintf(os.Stderr, `shelfmate — librarian-in-the-loop next-book (Go skeleton)
+	fmt.Fprintf(os.Stderr, `shelfmate — librarian-in-the-loop next-book (%s)
 
   shelfmate recommend -student S-406 [-stretch] [-query "..."] [-data data/json]
-  shelfmate serve -addr :8088 [-data data/json] [-web web]
+  shelfmate serve -addr 127.0.0.1:8088 [-data data/json] [-web web]
   shelfmate eval
 
 LLM is off unless SHELFMATE_LLM=on. Recs still work.
-`)
+Optional Axon: LLM_BASE (origin, client appends /v1/chat/completions),
+LLM_MODEL, LLM_API_KEY (never logged).
+`, version.Version)
 }
 
 func recommend(args []string) {
@@ -81,11 +86,12 @@ func recommend(args []string) {
 
 func serve(args []string) {
 	fs := flag.NewFlagSet("serve", flag.ExitOnError)
-	addr := fs.String("addr", ":8088", "listen address")
+	addr := fs.String("addr", "127.0.0.1:8088", "listen address (localhost by default)")
 	data := fs.String("data", defaultData(), "json data dir")
 	web := fs.String("web", defaultWeb(), "librarian console dir")
 	_ = fs.Parse(args)
 
+	listen := normalizeAddr(*addr)
 	st, err := store.Load(*data)
 	if err != nil {
 		log.Fatal(err)
@@ -95,8 +101,31 @@ func serve(args []string) {
 		Engine: eng,
 		Web:    http.FileServer(http.Dir(*web)),
 	}
-	log.Printf("shelfmate librarian console on http://127.0.0.1%s  students=%d books=%d", *addr, len(st.Students), len(st.Books))
-	log.Fatal(http.ListenAndServe(*addr, srv.Handler()))
+	log.Printf("shelfmate librarian console on http://%s  students=%d books=%d version=%s", displayURL(listen), len(st.Students), len(st.Books), version.Version)
+	log.Fatal(http.ListenAndServe(listen, srv.Handler()))
+}
+
+func normalizeAddr(addr string) string {
+	addr = strings.TrimSpace(addr)
+	if addr == "" {
+		return "127.0.0.1:8088"
+	}
+	if strings.HasPrefix(addr, ":") {
+		return "127.0.0.1" + addr
+	}
+	host, _, err := net.SplitHostPort(addr)
+	if err == nil && (host == "" || host == "0.0.0.0") {
+		_, port, _ := net.SplitHostPort(addr)
+		return net.JoinHostPort("127.0.0.1", port)
+	}
+	return addr
+}
+
+func displayURL(addr string) string {
+	if strings.HasPrefix(addr, "127.0.0.1:") || strings.HasPrefix(addr, "localhost:") {
+		return addr
+	}
+	return addr
 }
 
 func defaultData() string {

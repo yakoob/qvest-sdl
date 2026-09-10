@@ -7,34 +7,49 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
+  <a class="skip" href="#lookup">Skip to student lookup</a>
   <header>
     <div>
       <h1>ShelfMate</h1>
-      <p class="sub">Maple Street desk · librarian only · LLM off</p>
+      <p class="sub">Maple Street desk · librarian only · closed catalog</p>
     </div>
-    <label>Staff
+    <label for="staff">Staff
       <select id="staff">
-        <option value="L-001">Elena Vasquez</option>
-        <option value="L-002">Tom Bradley</option>
-        <option value="L-003">Priya Shah</option>
+        <option value="L-001">Elena Vasquez (L-001)</option>
+        <option value="L-002">Tom Bradley (L-002)</option>
+        <option value="L-003">Priya Shah (L-003)</option>
       </select>
     </label>
   </header>
   <main>
-    <section class="lookup">
-      <label>Student
-        <select id="student"></select>
+    <section class="lookup" id="lookup">
+      <label for="search">Find student
+        <input id="search" type="search" autocomplete="off" placeholder="Name or ID — try Mateo or S-406" />
       </label>
-      <label class="grow">Ask (optional)
+      <label for="student">Student
+        <select id="student" size="6"></select>
+      </label>
+      <div class="shortcuts" role="group" aria-label="Demo students">
+        <span class="hint">Demo</span>
+        <button type="button" class="chip" data-student="S-406">Mateo S-406</button>
+        <button type="button" class="chip" data-student="S-402">Aisha S-402</button>
+        <button type="button" class="chip" data-student="S-405">Priya S-405</button>
+        <button type="button" class="chip" data-student="S-509">Olivia S-509</button>
+      </div>
+      <label class="grow" for="query">Ask (optional)
         <input id="query" placeholder="funny, reluctant 4th, under 150 pages, we have copies" />
       </label>
-      <label class="check"><input type="checkbox" id="stretch" /> Stretch</label>
+      <label class="check" for="stretch">
+        <input type="checkbox" id="stretch" />
+        Stretch grade band
+      </label>
       <button id="go" type="button">Next book</button>
     </section>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
     <section class="cols">
       <article>
         <h2>History</h2>
-        <div id="history" class="list muted">Pick a student.</div>
+        <div id="history" class="list muted">Pick a student. Tom: shortcut or type, then Next book.</div>
       </article>
       <article>
         <h2>On the shelf now</h2>

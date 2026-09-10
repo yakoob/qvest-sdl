@@ -50,14 +50,14 @@ func bookDoc(title, author, blurb, genre, cluster, series string, subjects []str
 
 func cosine(a, b map[string]float64) float64 {
 	var dot, na, nb float64
-	for k, va := range a {
+	for _, va := range a {
 		na += va * va
-		if vb, ok := b[k]; ok {
+	}
+	for k, vb := range b {
+		nb += vb * vb
+		if va, ok := a[k]; ok {
 			dot += va * vb
 		}
-	}
-	for _, vb := range b {
-		nb += vb * vb
 	}
 	if na == 0 || nb == 0 {
 		return 0

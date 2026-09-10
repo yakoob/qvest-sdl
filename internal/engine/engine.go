@@ -1,8 +1,9 @@
 package engine
 
 import (
+	"context"
 	"fmt"
-	"os"
+	"time"
 
 	"school_district_reading/internal/audit"
 	"school_district_reading/internal/domain"
@@ -10,29 +11,41 @@ import (
 	"school_district_reading/internal/policy"
 	"school_district_reading/internal/retrieve"
 	"school_district_reading/internal/store"
+	"school_district_reading/internal/version"
 )
 
 type Engine struct {
-	Store     *store.Store
-	Retrieve  *retrieve.Hybrid
-	Policy    policy.Filter
-	Explain   explain.Explainer
-	AuditPath string
+	Store    *store.Store
+	Retrieve *retrieve.Hybrid
+	Policy   policy.Filter
+	Explain  explain.Explainer
+	Audit    *audit.Log
+	LLMOn    bool
+	Version  string
 }
 
 func New(s *store.Store) *Engine {
 	return &Engine{
-		Store:     s,
-		Retrieve:  retrieve.New(s),
-		Policy:    policy.Filter{Store: s},
-		Explain:   explain.New(s),
-		AuditPath: os.Getenv("SHELFMATE_AUDIT"),
+		Store:    s,
+		Retrieve: retrieve.New(s),
+		Policy:   policy.Filter{Store: s},
+		Explain:  explain.New(),
+		Audit:    audit.FromEnv(),
+		LLMOn:    explain.LLMEnabled(),
+		Version:  version.Version,
 	}
 }
 
 func (e *Engine) Recommend(req domain.Request) (domain.Recommendation, error) {
+	return e.RecommendContext(context.Background(), req)
+}
+
+func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (domain.Recommendation, error) {
 	if req.Limit <= 0 {
 		req.Limit = 5
+	}
+	if req.Limit > 20 {
+		req.Limit = 20
 	}
 	st, ok := e.Store.Student(req.StudentID)
 	if !ok {
@@ -43,17 +56,54 @@ func (e *Engine) Recommend(req domain.Request) (domain.Recommendation, error) {
 	if len(keep) > req.Limit {
 		keep = keep[:req.Limit]
 	}
-	points := e.Explain.Explain(st, keep)
-	rec := domain.Recommendation{
-		StudentID:     st.StudentID,
-		StaffID:       req.StaffID,
-		Query:         req.Query,
-		Stretch:       req.Stretch,
-		LLM:           os.Getenv("SHELFMATE_LLM") == "on",
-		Dropped:       firstDropped(dropped, 8),
-		TalkingPoints: points,
+	constraints := policy.ParseConstraints(req.Query)
+	exp := e.Explain
+	if exp == nil {
+		exp = explain.TemplateExplainer{}
 	}
-	for i, row := range keep {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	out, err := exp.Explain(ctx, explain.Input{
+		StudentID:   st.StudentID,
+		Stretch:     req.Stretch,
+		Constraints: constraints,
+		Items:       keep,
+	})
+	if err != nil {
+		fb, _ := explain.TemplateExplainer{}.Explain(ctx, explain.Input{
+			StudentID:   st.StudentID,
+			Stretch:     req.Stretch,
+			Constraints: constraints,
+			Items:       keep,
+		})
+		out = fb
+		out.Mode = domain.ExplainFallback
+		out.Note = "Librarian-reviewed draft. Explainer error; template used. Ranking unchanged."
+	}
+	if out.Points == nil {
+		out.Points = map[string]string{}
+	}
+
+	rec := domain.Recommendation{
+		StudentID: st.StudentID,
+		StaffID:   req.StaffID,
+		Query:     req.Query,
+		QueryParsed: domain.QueryInterpretation{
+			Under150: constraints.Under150,
+			Short:    constraints.Short,
+			Raw:      req.Query,
+		},
+		Stretch:     req.Stretch,
+		LLMEnabled:  e.LLMOn,
+		ExplainMode: out.Mode,
+		ExplainNote: out.Note,
+		Version:     e.Version,
+		Dropped:     firstDropped(dropped, 8),
+	}
+	points := make([]string, 0, len(keep))
+	for _, row := range keep {
+		tp := out.Points[row.Book.BookID]
 		item := domain.RecItem{
 			BookID:          row.Book.BookID,
 			Title:           row.Book.Title,
@@ -63,15 +113,19 @@ func (e *Engine) Recommend(req domain.Request) (domain.Recommendation, error) {
 			Pages:           row.Book.Pages,
 			CopiesAvailable: row.Book.CopiesAvailable,
 			Score:           row.Score,
-			Reasons:         row.Reasons,
-		}
-		if i < len(points) {
-			item.TalkingPoint = points[i]
+			Reasons:         append([]string(nil), row.Reasons...),
+			TalkingPoint:    tp,
 		}
 		rec.Items = append(rec.Items, item)
+		if tp != "" {
+			points = append(points, tp)
+		}
 	}
-	if e.AuditPath != "" {
-		_ = audit.Append(e.AuditPath, rec)
+	rec.TalkingPoints = points
+	if e.Audit != nil {
+		if err := e.Audit.Append(audit.FromRecommendation(rec, time.Now().UTC())); err != nil {
+			rec.AuditError = "audit write failed"
+		}
 	}
 	return rec, nil
 }

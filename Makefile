@@ -13,4 +13,4 @@ recommend:
 	go run ./cmd/shelfmate recommend -student S-406
 
 serve:
-	go run ./cmd/shelfmate serve -addr :8088
+	go run ./cmd/shelfmate serve

@@ -10,15 +10,15 @@ import (
 )
 
 type Store struct {
-	Dir          string
-	District     map[string]any
-	Books        []domain.Book
-	BookByID     map[string]domain.Book
-	Students     []domain.Student
-	StudentByID  map[string]domain.Student
-	Circulation  []domain.CirculationEvent
-	History      map[string][]domain.CirculationEvent
-	Librarians   []domain.Librarian
+	Dir           string
+	District      map[string]any
+	Books         []domain.Book
+	BookByID      map[string]domain.Book
+	Students      []domain.Student
+	StudentByID   map[string]domain.Student
+	Circulation   []domain.CirculationEvent
+	History       map[string][]domain.CirculationEvent
+	Librarians    []domain.Librarian
 	LibrarianByID map[string]domain.Librarian
 }
 

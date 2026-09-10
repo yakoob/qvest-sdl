@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShelfMate — librarian-in-the-loop PoC</title>
+  <style>
+    :root { --ink:#1b1b18; --muted:#5c564c; --line:#d4cbb8; --paper:#f7f2e8; --card:#fffdf8; --accent:#2f5d50; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 20px/1.4 "Iowan Old Style", Palatino, serif; color: var(--ink); background: var(--paper); }
+    .deck { max-width: 980px; margin: 0 auto; padding: 1.5rem; }
+    section { background: var(--card); border: 1px solid var(--line); padding: 2rem 2.2rem; margin: 0 0 1.2rem; min-height: 70vh; page-break-after: always; }
+    h1, h2 { margin: 0 0 0.6rem; letter-spacing: 0.01em; }
+    h1 { font-size: 2.1rem; }
+    h2 { font-size: 1.6rem; }
+    p, li { color: var(--ink); }
+    .kicker { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.8rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { border-top: 1px solid var(--line); text-align: left; padding: 0.35rem 0.4rem; vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    .note { color: var(--muted); font-size: 0.9rem; }
+    svg { width: 100%; height: auto; background: #fff; border: 1px solid var(--line); }
+    .small { font-size: 0.92rem; }
+    @media print { section { min-height: auto; border: 0; } body { background: #fff; } }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <section>
+      <p class="kicker">Sony EIP-style hiring PoC · fictional Willow Bend / Maple Street · not a district bid</p>
+      <h1>ShelfMate is a desk tool, not a kid app</h1>
+      <p>Elena already recommends the next book in 20 seconds. This binary makes her sticky-note notebook queryable: closed catalog, copies on the shelf, human still speaks.</p>
+      <ul>
+        <li>Librarian-in-the-loop. No student login, no public feed.</li>
+        <li>Retrieve first. Optional talking points last. Kill the model: recs unchanged.</li>
+        <li>This deck is the PoC. A lighthouse rollout would be a later engagement, with privacy-officer yes in week 0.</li>
+      </ul>
+      <p class="note">Fictional children. Metrics below are from this extract’s CLI runs, not production telemetry.</p>
+    </section>
+
+    <section>
+      <h2>The job is three real windows</h2>
+      <table>
+        <tr><th>Who</th><th>When</th><th>If this fails, the PoC fails</th></tr>
+        <tr><td>Tom L-002</td><td>07:40–08:15 and lunch</td><td>Lookup without a training class</td></tr>
+        <tr><td>Elena L-001</td><td>Last 8 minutes of specials</td><td>4–5 kids, 3-minute talks</td></tr>
+        <tr><td>Elena</td><td>Friday 14:20 weekend rush</td><td>Availability wins over a better-on-paper title</td></tr>
+      </table>
+      <p>Not: kids open Netflix-for-books. Not: the model talks to a child.</p>
+    </section>
+
+    <section>
+      <h2>System context</h2>
+      <svg viewBox="0 0 900 420" role="img" aria-label="System context: desk laptop, ILS extract, retrieve, policy, optional model, audit">
+        <rect x="20" y="160" width="160" height="90" fill="#eef6f2" stroke="#2f5d50"/>
+        <text x="100" y="195" text-anchor="middle" font-size="16">Librarian desk</text>
+        <text x="100" y="218" text-anchor="middle" font-size="13">localhost console</text>
+        <rect x="240" y="160" width="170" height="90" fill="#fff" stroke="#2f5d50"/>
+        <text x="325" y="195" text-anchor="middle" font-size="16">shelfmate binary</text>
+        <text x="325" y="218" text-anchor="middle" font-size="13">retrieve + policy</text>
+        <rect x="480" y="40" width="180" height="90" fill="#fff" stroke="#5c564c"/>
+        <text x="570" y="75" text-anchor="middle" font-size="16">ILS extract</text>
+        <text x="570" y="98" text-anchor="middle" font-size="13">data/json (frozen)</text>
+        <rect x="480" y="250" width="180" height="90" fill="#fff" stroke="#5c564c"/>
+        <text x="570" y="285" text-anchor="middle" font-size="16">Audit JSONL</text>
+        <text x="570" y="308" text-anchor="middle" font-size="13">opaque IDs only</text>
+        <rect x="710" y="160" width="170" height="90" fill="#f7eee8" stroke="#8a3b2d"/>
+        <text x="795" y="195" text-anchor="middle" font-size="16">Optional Axon</text>
+        <text x="795" y="218" text-anchor="middle" font-size="13">talking points</text>
+        <line x1="180" y1="205" x2="240" y2="205" stroke="#1b1b18" marker-end="url(#a)"/>
+        <line x1="410" y1="185" x2="480" y2="85" stroke="#1b1b18"/>
+        <line x1="410" y1="225" x2="480" y2="295" stroke="#1b1b18"/>
+        <line x1="580" y1="205" x2="710" y2="205" stroke="#8a3b2d" stroke-dasharray="6 4"/>
+        <text x="640" y="195" font-size="12" fill="#8a3b2d">off by default</text>
+        <text x="40" y="390" font-size="14">Kids never see this. Elena speaks. District data stays on the desk unless a privacy officer later says otherwise.</text>
+      </svg>
+    </section>
+
+    <section>
+      <h2>Request sequence</h2>
+      <svg viewBox="0 0 900 360" role="img" aria-label="Request sequence from lookup to spoken rec">
+        <text x="30" y="40" font-size="16">1 Lookup student</text>
+        <text x="30" y="90" font-size="16">2 Hybrid retrieve (CF if history≥2, else content; query vector separate)</text>
+        <text x="30" y="140" font-size="16">3 Policy: in catalog, copies&gt;0, grade/stretch, never re-loan, page cap</text>
+        <text x="30" y="190" font-size="16">4 Template talking points (or Axon drafts keyed by book_id)</text>
+        <text x="30" y="240" font-size="16">5 Audit append · librarian copies drafts · child hears Elena, not a model</text>
+        <text x="30" y="310" font-size="14">B-008 The Bad Guys may appear only as copies_available=0. It is never a spoken rec.</text>
+      </svg>
+    </section>
+
+    <section>
+      <h2>District / model data boundary</h2>
+      <svg viewBox="0 0 900 340" role="img" aria-label="What stays in the district versus optional model payload">
+        <rect x="20" y="40" width="420" height="260" fill="#eef6f2" stroke="#2f5d50"/>
+        <text x="40" y="70" font-size="18">Stays on the desk</text>
+        <text x="40" y="105" font-size="15">First name + last initial</text>
+        <text x="40" y="130" font-size="15">Anecdotes, raw NL query</text>
+        <text x="40" y="155" font-size="15">Blurbs (one fixture names Priya)</text>
+        <text x="40" y="180" font-size="15">Full student record / lexile</text>
+        <text x="40" y="205" font-size="15">Credentials, model request bodies</text>
+        <rect x="460" y="40" width="420" height="260" fill="#f7eee8" stroke="#8a3b2d"/>
+        <text x="480" y="70" font-size="18">If LLM is on (optional)</text>
+        <text x="480" y="105" font-size="15">student_id only</text>
+        <text x="480" y="130" font-size="15">Candidate book_id + catalog fields</text>
+        <text x="480" y="155" font-size="15">Retrieve reasons, stretch / page flags</text>
+        <text x="480" y="180" font-size="15">No names, no raw query, no blurbs</text>
+        <text x="480" y="230" font-size="14">ID check ≠ factuality. Drafts, librarian-reviewed.</text>
+      </svg>
+    </section>
+
+    <section>
+      <h2>Hybrid retrieve — what we chose and what we did not</h2>
+      <table>
+        <tr><th>Signal</th><th>When</th><th>Honesty rule</th></tr>
+        <tr><td>Item-item cosine</td><td>History ≥ 2 unique titles</td><td>Do not claim CF when its weight is 0</td></tr>
+        <tr><td>Catalog TF-IDF</td><td>Always; 1.0 on sparse history</td><td>Query vector ≠ history vector</td></tr>
+        <tr><td>Cluster / series bonus</td><td>Additive</td><td>Say “same series”, never “next” without sequence metadata</td></tr>
+        <tr><td>Popularity fallback</td><td>Zero history and no query hit</td><td>Unique borrowers, book_id tie-break, labeled fallback</td></tr>
+      </table>
+      <p class="note">Alternatives rejected for v1: CF-only (Priya/Olivia empty), LLM-as-generator (invented titles), student-specific ranking rules (frozen extract, no per-id hacks).</p>
+    </section>
+
+    <section>
+      <h2>Four demo students — actual CLI this build</h2>
+      <table>
+        <tr><th>Student</th><th>Spoken top (this run)</th><th>What to point at</th></tr>
+        <tr><td>Mateo S-406</td><td>Cat Kid (B-007), Gravity in Pictures, Who Was Jackie Robinson, New Kid, Mr. Popper’s Penguins</td><td>B-008 dropped copies=0. Investigators already checked out.</td></tr>
+        <tr><td>Aisha S-402 default and stretch</td><td>Harry Potter, Endling, Gregor, Amari, Mixed-Up Files — same five either way</td><td>Gregor/Amari/Endling already grade-eligible at 4. Stretch does not fabricate a new list. Westing Game excluded without stretch.</td></tr>
+        <tr><td>Priya S-405 + under-150 query</td><td>Encyclopedia Brown 96p, I Survived 112p, Gravity 64p, Jackie Robinson 112p, Soccer Sunday 128p</td><td>CF weight 0 (one checkout). under 150 means &lt;150, not the looser “short” cap.</td></tr>
+        <tr><td>Olivia S-509</td><td>Dog Man, Wild Robot, Mr. Popper’s (7 unique borrowers), Cat Kid, Gravity (6)</td><td>Labeled popularity fallback. Honest cold start.</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Bounded LLM — optional drafts</h2>
+      <ul>
+        <li>Default: TemplateExplainer. No “funny enough to finish.”</li>
+        <li>On: OpenAI-compatible POST to $LLM_BASE/v1/chat/completions. Timeout, size cap, book_id keys.</li>
+        <li>Invented IDs dropped. Missing items filled from template. Ranking and scores unchanged (mock success and mock failure in tests).</li>
+        <li>Live Axon was not called from this worktree. Offline demo does not depend on it.</li>
+      </ul>
+      <p>Failure demo: set SHELFMATE_LLM=on with no LLM_BASE, or stop the router. Console shows explain_mode=fallback. Recs identical.</p>
+    </section>
+
+    <section>
+      <h2>Eval — what it proves and what it does not</h2>
+      <p>Executable goldens in testdata/golden/cases.json (notes field; no show field). <code>go test ./...</code>, race, and vet passed on this worktree.</p>
+      <ul>
+        <li>Proves: closed catalog, B-008 never spoken, Mateo includes Cat Kid, Priya page cap, Olivia returns ≥3, payload has no first names.</li>
+        <li>Does not prove: more reading, better grades, FERPA certification, or that checkout equals reading.</li>
+      </ul>
+      <p class="note">Checkout is a proxy. Conversion (rec → checkout in 14 days) would be a lighthouse metric, directional only, after Elena actually hands the book over.</p>
+    </section>
+
+    <section>
+      <h2>Privacy controls vs later production work</h2>
+      <div class="grid">
+        <div>
+          <h3 class="small">Implemented now</h3>
+          <ul class="small">
+            <li>No last names / DOB in extract</li>
+            <li>Model payload allowlist + tests</li>
+            <li>Audit without raw query or names</li>
+            <li>Localhost bind</li>
+            <li>LLM off by default</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="small">Not this PoC</h3>
+          <ul class="small">
+            <li>Staff SSO</li>
+            <li>Destiny nightly export</li>
+            <li>Written privacy-officer approval</li>
+            <li>Retention/deletion of audit files</li>
+            <li>Network egress policy</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>If this became a lighthouse — estimates, not a bid</h2>
+      <table>
+        <tr><th>Slice</th><th>Time</th><th>Assumptions</th></tr>
+        <tr><td>Retrieve + policy + eval (this skeleton)</td><td>3–5 days</td><td>Frozen 45-title extract; one engineer who already has the JSON</td></tr>
+        <tr><td>Librarian console</td><td>2–3 days</td><td>Tom 20s path; no SSO</td></tr>
+        <tr><td>Grounded LLM + audit</td><td>2–3 days</td><td>District endpoint; kill switch remains</td></tr>
+        <tr><td>Destiny export + redaction</td><td>~1 week with a media specialist</td><td>Same columns; not in this binary</td></tr>
+        <tr><td>12-week lighthouse</td><td>see engagement_schedule.json</td><td>Elena hours are the constraint; LLM off until written yes</td></tr>
+      </table>
+      <p class="note">Staffing guess: 1 engineer + Elena desk time + privacy officer gate. Support owner in a real rollout would be district IT + library, not a vendor model endpoint talking to kids.</p>
+    </section>
+
+    <section>
+      <h2>Adoption, support, approval gates</h2>
+      <ul>
+        <li>Adoption: Elena and Tom on the Maple Street desk. Teachers do not get a student-facing link.</li>
+        <li>Support: local binary + JSON extract. When the model is down, retrieve still works.</li>
+        <li>Gates: (1) privacy officer written yes before LLM on, (2) catalog-closed eval green, (3) Bad Guys fixture never spoken, (4) no student UI.</li>
+      </ul>
+      <p>Out of scope: student accounts, full-text generation, Battle of the Books training, replacing Destiny, patent claims from unrelated work.</p>
+    </section>
+
+    <section>
+      <h2>How to run it</h2>
+      <p><code>go test ./...</code></p>
+      <p><code>go run ./cmd/shelfmate serve</code> → http://127.0.0.1:8088</p>
+      <p>Docs: runbook.md, demo-script.md, architecture.md, privacy.md. LLM stays off unless you set SHELFMATE_LLM=on and LLM_BASE.</p>
+      <p class="note">PoC version 0.1.0-poc. This is a demonstration of retrieve, policy, audit, and human approve — not a claim that the district should buy it tomorrow.</p>
+    </section>
+  </div>
+</body>
+</html>

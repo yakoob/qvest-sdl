@@ -3,22 +3,22 @@ package domain
 // Book is a closed-world catalog title. Recommendations may only emit BookID values
 // that exist in the loaded catalog.
 type Book struct {
-	BookID           string   `json:"book_id"`
-	ISBN             string   `json:"isbn"`
-	Title            string   `json:"title"`
-	Author           string   `json:"author"`
-	Year             int      `json:"year"`
-	Pages            int      `json:"pages"`
-	LexileApprox     int      `json:"lexile_approx"`
-	GradeMin         int      `json:"grade_min"`
-	GradeMax         int      `json:"grade_max"`
-	Genre            string   `json:"genre"`
-	Cluster          string   `json:"cluster"`
-	Series           string   `json:"series"`
-	Subjects         []string `json:"subjects"`
-	CopiesTotal      int      `json:"copies_total"`
-	CopiesAvailable  int      `json:"copies_available"`
-	Blurb            string   `json:"blurb"`
+	BookID          string   `json:"book_id"`
+	ISBN            string   `json:"isbn"`
+	Title           string   `json:"title"`
+	Author          string   `json:"author"`
+	Year            int      `json:"year"`
+	Pages           int      `json:"pages"`
+	LexileApprox    int      `json:"lexile_approx"`
+	GradeMin        int      `json:"grade_min"`
+	GradeMax        int      `json:"grade_max"`
+	Genre           string   `json:"genre"`
+	Cluster         string   `json:"cluster"`
+	Series          string   `json:"series"`
+	Subjects        []string `json:"subjects"`
+	CopiesTotal     int      `json:"copies_total"`
+	CopiesAvailable int      `json:"copies_available"`
+	Blurb           string   `json:"blurb"`
 }
 
 type Student struct {
@@ -74,23 +74,42 @@ type Request struct {
 }
 
 type ScoredBook struct {
-	Book       Book
-	Score      float64
-	CF         float64
-	Content    float64
-	Bonus      float64
-	Reasons    []string
+	Book    Book
+	Score   float64
+	CF      float64
+	Content float64
+	Bonus   float64
+	Reasons []string
+}
+
+const (
+	ExplainTemplate = "template"
+	ExplainLive     = "live"
+	ExplainFallback = "fallback"
+)
+
+// QueryInterpretation is the locally parsed librarian query. Raw text stays on
+// the desk; it is not a model payload.
+type QueryInterpretation struct {
+	Under150 bool   `json:"under_150"`
+	Short    bool   `json:"short"`
+	Raw      string `json:"raw,omitempty"`
 }
 
 type Recommendation struct {
-	StudentID     string       `json:"student_id"`
-	StaffID       string       `json:"staff_id"`
-	Query         string       `json:"query,omitempty"`
-	Stretch       bool         `json:"stretch"`
-	LLM           bool         `json:"llm"`
-	Items         []RecItem    `json:"items"`
-	Dropped       []Dropped    `json:"dropped,omitempty"`
-	TalkingPoints []string     `json:"talking_points"`
+	StudentID     string              `json:"student_id"`
+	StaffID       string              `json:"staff_id"`
+	Query         string              `json:"query,omitempty"`
+	QueryParsed   QueryInterpretation `json:"query_parsed"`
+	Stretch       bool                `json:"stretch"`
+	LLMEnabled    bool                `json:"llm_enabled"`
+	ExplainMode   string              `json:"explain_mode"`
+	ExplainNote   string              `json:"explain_note,omitempty"`
+	Version       string              `json:"version,omitempty"`
+	Items         []RecItem           `json:"items"`
+	Dropped       []Dropped           `json:"dropped,omitempty"`
+	TalkingPoints []string            `json:"talking_points"`
+	AuditError    string              `json:"audit_error,omitempty"`
 }
 
 type RecItem struct {

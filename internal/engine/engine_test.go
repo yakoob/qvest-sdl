@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 	"time"
 
@@ -175,6 +176,13 @@ func TestRankedIDsUnchangedByAcademicFixture(t *testing.T) {
 		for i, bookID := range ids {
 			if rec.Items[i].BookID != bookID {
 				t.Fatalf("%s[%d]=%s want %s", id, i, rec.Items[i].BookID, bookID)
+			}
+		}
+		raw, _ := json.Marshal(rec)
+		s := strings.ToLower(string(raw))
+		for _, banned := range []string{"improving_engagement", "scenario_calendar", "w-23-s1", "synthetic:"} {
+			if strings.Contains(s, banned) {
+				t.Fatalf("%s ranking leaked scenario field %s", id, banned)
 			}
 		}
 	}

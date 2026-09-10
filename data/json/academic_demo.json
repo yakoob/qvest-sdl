@@ -2,7 +2,7 @@
   "provenance": {
     "synthetic": true,
     "label": "synthetic_demo",
-    "note": "Clearly labeled synthetic desk fixture for the PoC. Not a SIS extract, not a real state assessment, and not used for ranking or model payloads. English letter grades use scale letter_A_F. Reading checks use willow_bend_reading_1_4 (1 emerging \u2013 4 exceeding). Current semester rows stay ungraded. Checkout does not change grades. Isolated multi-year scenarios (scenario_calendar + per-student scenario) never enter circulation, retrieve, ranking, or support. Sofia S-305 is the primary illustrative case: matched 84-day windows with increasing borrowing and improving English. Incomplete extract coverage stays distinct.",
+    "note": "Clearly labeled synthetic desk fixture for the PoC. Not a SIS extract, not a real state assessment, and not used for ranking or model payloads. English letter grades use scale letter_A_F. Reading checks use willow_bend_reading_1_4 (1 emerging – 4 exceeding). Current semester rows stay ungraded. Checkout does not change grades. Isolated multi-year scenarios (scenario_calendar + per-student scenario) never enter circulation, retrieve, ranking, or support. Six matched 84-day windows span three completed years (2023-24 through 2025-26). Sofia, Mateo, and Tyler are distinct improving cases; Priya and Olivia stay empty local-history newcomers. Incomplete extract coverage stays distinct.",
     "circulation_coverage": "Circulation export covers 2026-01-13 through 2026-09-03 plus this server session. Earlier borrowing is not in the extract and is not evidence of no borrowing."
   },
   "students": [
@@ -11,7 +11,7 @@
       "semesters": [
         {
           "id": "SY25-S1",
-          "label": "2025\u201326 Semester 1",
+          "label": "2025–26 Semester 1",
           "start": "2025-08-18",
           "end": "2026-01-16",
           "course": "English Language Arts",
@@ -22,7 +22,7 @@
         },
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -32,7 +32,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -74,11 +74,77 @@
         }
       ],
       "scenario": {
-        "id": "stable_comparator_illustrative",
-        "label": "Synthetic: stable English C, even borrowing",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "id": "improving_engagement_illustrative",
+        "label": "Synthetic: rising English, more checkouts",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
+          {
+            "id": "W-23-S1",
+            "academic_year": "2023-24",
+            "semester": "S1",
+            "school_grade": 1,
+            "start": "2023-09-11",
+            "end": "2023-12-03",
+            "english_grade": "C-",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-001",
+                "checkout_date": "2023-09-11",
+                "return_date": "2023-09-25"
+              },
+              {
+                "book_id": "B-003",
+                "checkout_date": "2023-09-18",
+                "return_date": "2023-10-02"
+              }
+            ],
+            "reading_check": {
+              "date": "2023-11-14",
+              "grade_form": 1,
+              "result": 1,
+              "band": "emerging"
+            }
+          },
+          {
+            "id": "W-23-S2",
+            "academic_year": "2023-24",
+            "semester": "S2",
+            "school_grade": 1,
+            "start": "2024-02-05",
+            "end": "2024-04-28",
+            "english_grade": "C",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-001",
+                "checkout_date": "2024-02-05",
+                "return_date": "2024-02-19"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2024-02-12",
+                "return_date": "2024-02-26"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2024-02-19",
+                "return_date": "2024-03-04"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2024-02-26",
+                "return_date": "2024-03-11"
+              }
+            ],
+            "reading_check": {
+              "date": "2024-04-09",
+              "grade_form": 1,
+              "result": 2,
+              "band": "developing"
+            }
+          },
           {
             "id": "W-24-S1",
             "academic_year": "2024-25",
@@ -86,31 +152,41 @@
             "school_grade": 2,
             "start": "2024-09-09",
             "end": "2024-12-01",
-            "english_grade": "C",
+            "english_grade": "C+",
             "english_status": "final",
-            "reading_check": {
-              "date": "2024-11-12",
-              "grade_form": 2,
-              "result": 2,
-              "band": "developing"
-            },
             "borrowed": [
               {
                 "book_id": "B-001",
+                "checkout_date": "2024-09-09",
+                "return_date": "2024-09-23"
+              },
+              {
+                "book_id": "B-003",
                 "checkout_date": "2024-09-16",
                 "return_date": "2024-09-30"
               },
               {
                 "book_id": "B-006",
-                "checkout_date": "2024-10-14",
-                "return_date": "2024-10-28"
+                "checkout_date": "2024-09-23",
+                "return_date": "2024-10-07"
               },
               {
                 "book_id": "B-007",
-                "checkout_date": "2024-11-04",
-                "return_date": "2024-11-18"
+                "checkout_date": "2024-09-30",
+                "return_date": "2024-10-14"
+              },
+              {
+                "book_id": "B-025",
+                "checkout_date": "2024-10-07",
+                "return_date": "2024-10-21"
               }
-            ]
+            ],
+            "reading_check": {
+              "date": "2024-11-12",
+              "grade_form": 2,
+              "result": 2,
+              "band": "developing"
+            }
           },
           {
             "id": "W-24-S2",
@@ -119,31 +195,51 @@
             "school_grade": 2,
             "start": "2025-02-03",
             "end": "2025-04-27",
-            "english_grade": "C",
+            "english_grade": "B-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-002",
+                "checkout_date": "2025-02-03",
+                "return_date": "2025-02-17"
+              },
+              {
+                "book_id": "B-004",
+                "checkout_date": "2025-02-10",
+                "return_date": "2025-02-24"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2025-02-17",
+                "return_date": "2025-03-03"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2025-02-24",
+                "return_date": "2025-03-10"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2025-03-03",
+                "return_date": "2025-03-17"
+              },
+              {
+                "book_id": "B-001",
+                "checkout_date": "2025-03-10",
+                "return_date": "2025-03-24"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2025-03-17",
+                "return_date": "2025-03-31"
+              }
+            ],
             "reading_check": {
               "date": "2025-04-08",
               "grade_form": 2,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-003",
-                "checkout_date": "2025-02-10",
-                "return_date": "2025-02-24"
-              },
-              {
-                "book_id": "B-004",
-                "checkout_date": "2025-03-03",
-                "return_date": "2025-03-17"
-              },
-              {
-                "book_id": "B-005",
-                "checkout_date": "2025-04-07",
-                "return_date": "2025-04-21"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S1",
@@ -152,31 +248,56 @@
             "school_grade": 3,
             "start": "2025-09-08",
             "end": "2025-11-30",
-            "english_grade": "C+",
+            "english_grade": "B",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-001",
+                "checkout_date": "2025-09-08",
+                "return_date": "2025-09-22"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2025-09-15",
+                "return_date": "2025-09-29"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2025-09-22",
+                "return_date": "2025-10-06"
+              },
+              {
+                "book_id": "B-025",
+                "checkout_date": "2025-09-29",
+                "return_date": "2025-10-13"
+              },
+              {
+                "book_id": "B-003",
+                "checkout_date": "2025-10-06",
+                "return_date": "2025-10-20"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2025-10-13",
+                "return_date": "2025-10-27"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2025-10-20",
+                "return_date": "2025-11-03"
+              },
+              {
+                "book_id": "B-002",
+                "checkout_date": "2025-10-27",
+                "return_date": "2025-11-10"
+              }
+            ],
             "reading_check": {
               "date": "2025-11-10",
               "grade_form": 3,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-001",
-                "checkout_date": "2025-09-15",
-                "return_date": "2025-09-29"
-              },
-              {
-                "book_id": "B-006",
-                "checkout_date": "2025-10-13",
-                "return_date": "2025-10-27"
-              },
-              {
-                "book_id": "B-025",
-                "checkout_date": "2025-11-03",
-                "return_date": "2025-11-17"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S2",
@@ -185,43 +306,83 @@
             "school_grade": 3,
             "start": "2026-02-02",
             "end": "2026-04-26",
-            "english_grade": "C",
+            "english_grade": "A-",
             "english_status": "final",
-            "reading_check": {
-              "date": "2026-04-14",
-              "grade_form": 3,
-              "result": 2,
-              "band": "developing"
-            },
             "borrowed": [
               {
                 "book_id": "B-002",
+                "checkout_date": "2026-02-02",
+                "return_date": "2026-02-16"
+              },
+              {
+                "book_id": "B-007",
                 "checkout_date": "2026-02-09",
                 "return_date": "2026-02-23"
               },
               {
-                "book_id": "B-007",
+                "book_id": "B-043",
+                "checkout_date": "2026-02-16",
+                "return_date": "2026-03-02"
+              },
+              {
+                "book_id": "B-001",
+                "checkout_date": "2026-02-23",
+                "return_date": "2026-03-09"
+              },
+              {
+                "book_id": "B-004",
                 "checkout_date": "2026-03-02",
                 "return_date": "2026-03-16"
               },
               {
-                "book_id": "B-043",
+                "book_id": "B-005",
+                "checkout_date": "2026-03-09",
+                "return_date": "2026-03-23"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2026-03-16",
+                "return_date": "2026-03-30"
+              },
+              {
+                "book_id": "B-025",
+                "checkout_date": "2026-03-23",
+                "return_date": "2026-04-06"
+              },
+              {
+                "book_id": "B-003",
+                "checkout_date": "2026-03-30",
+                "return_date": "2026-04-13"
+              },
+              {
+                "book_id": "B-015",
                 "checkout_date": "2026-04-06",
                 "return_date": "2026-04-20"
+              },
+              {
+                "book_id": "B-050",
+                "checkout_date": "2026-04-13",
+                "return_date": "2026-04-27"
               }
-            ]
+            ],
+            "reading_check": {
+              "date": "2026-04-14",
+              "grade_form": 3,
+              "result": 3,
+              "band": "meeting"
+            }
           }
         ]
       },
-      "demo_case": "stable_comparator_illustrative",
-      "demo_note": "Synthetic: stable English C, even borrowing. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_case": "improving_engagement_illustrative",
+      "demo_note": "Synthetic: rising English, more checkouts. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-402",
       "semesters": [
         {
           "id": "SY25-S1",
-          "label": "2025\u201326 Semester 1",
+          "label": "2025–26 Semester 1",
           "start": "2025-08-18",
           "end": "2026-01-16",
           "course": "English Language Arts",
@@ -232,7 +393,7 @@
         },
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -242,7 +403,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -285,9 +446,85 @@
       "scenario": {
         "id": "strong_stable_illustrative",
         "label": "Synthetic: already strong, stays A / A-",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
+          {
+            "id": "W-23-S1",
+            "academic_year": "2023-24",
+            "semester": "S1",
+            "school_grade": 1,
+            "start": "2023-09-11",
+            "end": "2023-12-03",
+            "english_grade": "A",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-011",
+                "checkout_date": "2023-09-11",
+                "return_date": "2023-09-25"
+              },
+              {
+                "book_id": "B-013",
+                "checkout_date": "2023-09-18",
+                "return_date": "2023-10-02"
+              },
+              {
+                "book_id": "B-017",
+                "checkout_date": "2023-09-25",
+                "return_date": "2023-10-09"
+              },
+              {
+                "book_id": "B-016",
+                "checkout_date": "2023-10-02",
+                "return_date": "2023-10-16"
+              }
+            ],
+            "reading_check": {
+              "date": "2023-11-14",
+              "grade_form": 1,
+              "result": 3,
+              "band": "meeting"
+            }
+          },
+          {
+            "id": "W-23-S2",
+            "academic_year": "2023-24",
+            "semester": "S2",
+            "school_grade": 1,
+            "start": "2024-02-05",
+            "end": "2024-04-28",
+            "english_grade": "A",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-012",
+                "checkout_date": "2024-02-05",
+                "return_date": "2024-02-19"
+              },
+              {
+                "book_id": "B-014",
+                "checkout_date": "2024-02-12",
+                "return_date": "2024-02-26"
+              },
+              {
+                "book_id": "B-054",
+                "checkout_date": "2024-02-19",
+                "return_date": "2024-03-04"
+              },
+              {
+                "book_id": "B-040",
+                "checkout_date": "2024-02-26",
+                "return_date": "2024-03-11"
+              }
+            ],
+            "reading_check": {
+              "date": "2024-04-09",
+              "grade_form": 1,
+              "result": 4,
+              "band": "exceeding"
+            }
+          },
           {
             "id": "W-24-S1",
             "academic_year": "2024-25",
@@ -297,34 +534,34 @@
             "end": "2024-12-01",
             "english_grade": "A",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-011",
+                "checkout_date": "2024-09-09",
+                "return_date": "2024-09-23"
+              },
+              {
+                "book_id": "B-013",
+                "checkout_date": "2024-09-16",
+                "return_date": "2024-09-30"
+              },
+              {
+                "book_id": "B-017",
+                "checkout_date": "2024-09-23",
+                "return_date": "2024-10-07"
+              },
+              {
+                "book_id": "B-016",
+                "checkout_date": "2024-09-30",
+                "return_date": "2024-10-14"
+              }
+            ],
             "reading_check": {
               "date": "2024-11-12",
               "grade_form": 2,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-011",
-                "checkout_date": "2024-09-16",
-                "return_date": "2024-10-07"
-              },
-              {
-                "book_id": "B-013",
-                "checkout_date": "2024-10-14",
-                "return_date": "2024-11-04"
-              },
-              {
-                "book_id": "B-017",
-                "checkout_date": "2024-11-04",
-                "return_date": "2024-11-25"
-              },
-              {
-                "book_id": "B-016",
-                "checkout_date": "2024-11-18",
-                "return_date": "2024-12-09"
-              }
-            ]
+            }
           },
           {
             "id": "W-24-S2",
@@ -335,34 +572,34 @@
             "end": "2025-04-27",
             "english_grade": "A",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-012",
+                "checkout_date": "2025-02-03",
+                "return_date": "2025-02-17"
+              },
+              {
+                "book_id": "B-014",
+                "checkout_date": "2025-02-10",
+                "return_date": "2025-02-24"
+              },
+              {
+                "book_id": "B-054",
+                "checkout_date": "2025-02-17",
+                "return_date": "2025-03-03"
+              },
+              {
+                "book_id": "B-040",
+                "checkout_date": "2025-02-24",
+                "return_date": "2025-03-10"
+              }
+            ],
             "reading_check": {
               "date": "2025-04-08",
               "grade_form": 2,
               "result": 4,
               "band": "exceeding"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-012",
-                "checkout_date": "2025-02-10",
-                "return_date": "2025-03-03"
-              },
-              {
-                "book_id": "B-014",
-                "checkout_date": "2025-03-03",
-                "return_date": "2025-03-24"
-              },
-              {
-                "book_id": "B-054",
-                "checkout_date": "2025-03-24",
-                "return_date": "2025-04-14"
-              },
-              {
-                "book_id": "B-040",
-                "checkout_date": "2025-04-14",
-                "return_date": "2025-05-05"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S1",
@@ -373,34 +610,34 @@
             "end": "2025-11-30",
             "english_grade": "A",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-011",
+                "checkout_date": "2025-09-08",
+                "return_date": "2025-09-22"
+              },
+              {
+                "book_id": "B-013",
+                "checkout_date": "2025-09-15",
+                "return_date": "2025-09-29"
+              },
+              {
+                "book_id": "B-017",
+                "checkout_date": "2025-09-22",
+                "return_date": "2025-10-06"
+              },
+              {
+                "book_id": "B-016",
+                "checkout_date": "2025-09-29",
+                "return_date": "2025-10-13"
+              }
+            ],
             "reading_check": {
               "date": "2025-11-10",
               "grade_form": 3,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-011",
-                "checkout_date": "2025-09-15",
-                "return_date": "2025-10-06"
-              },
-              {
-                "book_id": "B-013",
-                "checkout_date": "2025-10-06",
-                "return_date": "2025-10-27"
-              },
-              {
-                "book_id": "B-017",
-                "checkout_date": "2025-10-27",
-                "return_date": "2025-11-17"
-              },
-              {
-                "book_id": "B-016",
-                "checkout_date": "2025-11-10",
-                "return_date": "2025-12-01"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S2",
@@ -411,46 +648,46 @@
             "end": "2026-04-26",
             "english_grade": "A-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-012",
+                "checkout_date": "2026-02-02",
+                "return_date": "2026-02-16"
+              },
+              {
+                "book_id": "B-014",
+                "checkout_date": "2026-02-09",
+                "return_date": "2026-02-23"
+              },
+              {
+                "book_id": "B-054",
+                "checkout_date": "2026-02-16",
+                "return_date": "2026-03-02"
+              },
+              {
+                "book_id": "B-022",
+                "checkout_date": "2026-02-23",
+                "return_date": "2026-03-09"
+              }
+            ],
             "reading_check": {
               "date": "2026-04-14",
               "grade_form": 3,
               "result": 4,
               "band": "exceeding"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-012",
-                "checkout_date": "2026-02-09",
-                "return_date": "2026-03-02"
-              },
-              {
-                "book_id": "B-014",
-                "checkout_date": "2026-03-02",
-                "return_date": "2026-03-23"
-              },
-              {
-                "book_id": "B-054",
-                "checkout_date": "2026-03-23",
-                "return_date": "2026-04-13"
-              },
-              {
-                "book_id": "B-022",
-                "checkout_date": "2026-04-13",
-                "return_date": "2026-05-04"
-              }
-            ]
+            }
           }
         ]
       },
       "demo_case": "strong_stable_illustrative",
-      "demo_note": "Synthetic: already strong, stays A / A-. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_note": "Synthetic: already strong, stays A / A-. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-405",
       "semesters": [
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -474,19 +711,19 @@
       "scenario": {
         "id": "newcomer_missing_illustrative",
         "label": "Synthetic: new this year, no prior Maple Street years",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": []
       },
       "demo_case": "newcomer_missing_illustrative",
-      "demo_note": "Synthetic: new this year, no prior Maple Street years. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_note": "Synthetic: new this year, no prior Maple Street years. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-509",
       "semesters": [
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -500,19 +737,19 @@
       "scenario": {
         "id": "zero_history_illustrative",
         "label": "Synthetic: new this year, empty local history",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": []
       },
       "demo_case": "zero_history_illustrative",
-      "demo_note": "Synthetic: new this year, empty local history. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_note": "Synthetic: new this year, empty local history. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-301",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -522,7 +759,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -566,9 +803,65 @@
       "scenario": {
         "id": "reluctant_graphic_illustrative",
         "label": "Synthetic: graphic cluster, mixed English",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
+          {
+            "id": "W-23-S1",
+            "academic_year": "2023-24",
+            "semester": "S1",
+            "school_grade": 0,
+            "start": "2023-09-11",
+            "end": "2023-12-03",
+            "english_grade": "C",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-003",
+                "checkout_date": "2023-09-11",
+                "return_date": "2023-09-25"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2023-09-18",
+                "return_date": "2023-10-02"
+              }
+            ],
+            "reading_check": {
+              "date": "2023-11-14",
+              "grade_form": 0,
+              "result": 2,
+              "band": "developing"
+            }
+          },
+          {
+            "id": "W-23-S2",
+            "academic_year": "2023-24",
+            "semester": "S2",
+            "school_grade": 0,
+            "start": "2024-02-05",
+            "end": "2024-04-28",
+            "english_grade": "C",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-001",
+                "checkout_date": "2024-02-05",
+                "return_date": "2024-02-19"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2024-02-12",
+                "return_date": "2024-02-26"
+              }
+            ],
+            "reading_check": {
+              "date": "2024-04-09",
+              "grade_form": 0,
+              "result": 2,
+              "band": "developing"
+            }
+          },
           {
             "id": "W-24-S1",
             "academic_year": "2024-25",
@@ -578,24 +871,24 @@
             "end": "2024-12-01",
             "english_grade": "C",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-003",
+                "checkout_date": "2024-09-09",
+                "return_date": "2024-09-23"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2024-09-16",
+                "return_date": "2024-09-30"
+              }
+            ],
             "reading_check": {
               "date": "2024-11-12",
               "grade_form": 1,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-003",
-                "checkout_date": "2024-09-16",
-                "return_date": "2024-09-30"
-              },
-              {
-                "book_id": "B-005",
-                "checkout_date": "2024-10-14",
-                "return_date": "2024-10-28"
-              }
-            ]
+            }
           },
           {
             "id": "W-24-S2",
@@ -606,29 +899,29 @@
             "end": "2025-04-27",
             "english_grade": "B",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-001",
+                "checkout_date": "2025-02-03",
+                "return_date": "2025-02-17"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2025-02-10",
+                "return_date": "2025-02-24"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2025-02-17",
+                "return_date": "2025-03-03"
+              }
+            ],
             "reading_check": {
               "date": "2025-04-08",
               "grade_form": 1,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-001",
-                "checkout_date": "2025-02-10",
-                "return_date": "2025-02-24"
-              },
-              {
-                "book_id": "B-006",
-                "checkout_date": "2025-03-03",
-                "return_date": "2025-03-17"
-              },
-              {
-                "book_id": "B-007",
-                "checkout_date": "2025-04-07",
-                "return_date": "2025-04-21"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S1",
@@ -639,29 +932,29 @@
             "end": "2025-11-30",
             "english_grade": "B",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-003",
+                "checkout_date": "2025-09-08",
+                "return_date": "2025-09-22"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2025-09-15",
+                "return_date": "2025-09-29"
+              },
+              {
+                "book_id": "B-001",
+                "checkout_date": "2025-09-22",
+                "return_date": "2025-10-06"
+              }
+            ],
             "reading_check": {
               "date": "2025-11-10",
               "grade_form": 2,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-003",
-                "checkout_date": "2025-09-15",
-                "return_date": "2025-09-29"
-              },
-              {
-                "book_id": "B-005",
-                "checkout_date": "2025-10-13",
-                "return_date": "2025-10-27"
-              },
-              {
-                "book_id": "B-001",
-                "checkout_date": "2025-11-03",
-                "return_date": "2025-11-17"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S2",
@@ -672,36 +965,36 @@
             "end": "2026-04-26",
             "english_grade": "B",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-006",
+                "checkout_date": "2026-02-02",
+                "return_date": "2026-02-16"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2026-02-09",
+                "return_date": "2026-02-23"
+              }
+            ],
             "reading_check": {
               "date": "2026-04-14",
               "grade_form": 2,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-006",
-                "checkout_date": "2026-02-09",
-                "return_date": "2026-02-23"
-              },
-              {
-                "book_id": "B-007",
-                "checkout_date": "2026-03-02",
-                "return_date": "2026-03-16"
-              }
-            ]
+            }
           }
         ]
       },
       "demo_case": "reluctant_graphic_illustrative",
-      "demo_note": "Synthetic: graphic cluster, mixed English. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_note": "Synthetic: graphic cluster, mixed English. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-302",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -712,7 +1005,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -735,7 +1028,7 @@
       "scenario": {
         "id": "missing_records_illustrative",
         "label": "Synthetic: missing English and reading stay missing",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -757,16 +1050,16 @@
         ]
       },
       "demo_case": "missing_records_illustrative",
-      "demo_note": "Synthetic: missing English and reading stay missing. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_note": "Synthetic: missing English and reading stay missing. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-305",
       "demo_case": "improving_engagement_illustrative",
-      "demo_note": "Synthetic: more borrowing, better English. Illustrative only \u2014 co-timing is not causal proof.",
+      "demo_note": "Synthetic: more borrowing, better English. Illustrative only — co-timing is not causal proof.",
       "semesters": [
         {
           "id": "SY25-S1",
-          "label": "2025\u201326 Semester 1",
+          "label": "2025–26 Semester 1",
           "start": "2025-08-18",
           "end": "2026-01-16",
           "course": "English Language Arts",
@@ -777,7 +1070,7 @@
         },
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -787,7 +1080,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -821,9 +1114,70 @@
       "scenario": {
         "id": "improving_engagement_illustrative",
         "label": "Synthetic: more borrowing, better English",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
+          {
+            "id": "W-23-S1",
+            "academic_year": "2023-24",
+            "semester": "S1",
+            "school_grade": 0,
+            "start": "2023-09-11",
+            "end": "2023-12-03",
+            "english_grade": "D",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-005",
+                "checkout_date": "2023-09-11",
+                "return_date": "2023-09-25"
+              },
+              {
+                "book_id": "B-003",
+                "checkout_date": "2023-09-18",
+                "return_date": "2023-10-02"
+              }
+            ],
+            "reading_check": {
+              "date": "2023-11-14",
+              "grade_form": 0,
+              "result": 1,
+              "band": "emerging"
+            }
+          },
+          {
+            "id": "W-23-S2",
+            "academic_year": "2023-24",
+            "semester": "S2",
+            "school_grade": 0,
+            "start": "2024-02-05",
+            "end": "2024-04-28",
+            "english_grade": "D+",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-001",
+                "checkout_date": "2024-02-05",
+                "return_date": "2024-02-19"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2024-02-12",
+                "return_date": "2024-02-26"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2024-02-19",
+                "return_date": "2024-03-04"
+              }
+            ],
+            "reading_check": {
+              "date": "2024-04-09",
+              "grade_form": 0,
+              "result": 1,
+              "band": "emerging"
+            }
+          },
           {
             "id": "W-24-S1",
             "academic_year": "2024-25",
@@ -831,26 +1185,41 @@
             "school_grade": 1,
             "start": "2024-09-09",
             "end": "2024-12-01",
-            "english_grade": "D+",
+            "english_grade": "C-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-005",
+                "checkout_date": "2024-09-09",
+                "return_date": "2024-09-23"
+              },
+              {
+                "book_id": "B-003",
+                "checkout_date": "2024-09-16",
+                "return_date": "2024-09-30"
+              },
+              {
+                "book_id": "B-001",
+                "checkout_date": "2024-09-23",
+                "return_date": "2024-10-07"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2024-09-30",
+                "return_date": "2024-10-14"
+              },
+              {
+                "book_id": "B-015",
+                "checkout_date": "2024-10-07",
+                "return_date": "2024-10-21"
+              }
+            ],
             "reading_check": {
               "date": "2024-11-12",
               "grade_form": 1,
               "result": 1,
               "band": "emerging"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-005",
-                "checkout_date": "2024-09-16",
-                "return_date": "2024-09-30"
-              },
-              {
-                "book_id": "B-003",
-                "checkout_date": "2024-10-21",
-                "return_date": "2024-11-04"
-              }
-            ]
+            }
           },
           {
             "id": "W-24-S2",
@@ -859,36 +1228,46 @@
             "school_grade": 1,
             "start": "2025-02-03",
             "end": "2025-04-27",
-            "english_grade": "C-",
+            "english_grade": "C",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-001",
+                "checkout_date": "2025-02-03",
+                "return_date": "2025-02-17"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2025-02-10",
+                "return_date": "2025-02-24"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2025-02-17",
+                "return_date": "2025-03-03"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2025-02-24",
+                "return_date": "2025-03-10"
+              },
+              {
+                "book_id": "B-034",
+                "checkout_date": "2025-03-03",
+                "return_date": "2025-03-17"
+              },
+              {
+                "book_id": "B-040",
+                "checkout_date": "2025-03-10",
+                "return_date": "2025-03-24"
+              }
+            ],
             "reading_check": {
               "date": "2025-04-08",
               "grade_form": 1,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-001",
-                "checkout_date": "2025-02-10",
-                "return_date": "2025-02-24"
-              },
-              {
-                "book_id": "B-006",
-                "checkout_date": "2025-03-03",
-                "return_date": "2025-03-17"
-              },
-              {
-                "book_id": "B-007",
-                "checkout_date": "2025-03-24",
-                "return_date": "2025-04-07"
-              },
-              {
-                "book_id": "B-043",
-                "checkout_date": "2025-04-14",
-                "return_date": "2025-04-28"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S1",
@@ -897,46 +1276,56 @@
             "school_grade": 2,
             "start": "2025-09-08",
             "end": "2025-11-30",
-            "english_grade": "C",
+            "english_grade": "B-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-015",
+                "checkout_date": "2025-09-08",
+                "return_date": "2025-09-22"
+              },
+              {
+                "book_id": "B-034",
+                "checkout_date": "2025-09-15",
+                "return_date": "2025-09-29"
+              },
+              {
+                "book_id": "B-040",
+                "checkout_date": "2025-09-22",
+                "return_date": "2025-10-06"
+              },
+              {
+                "book_id": "B-050",
+                "checkout_date": "2025-09-29",
+                "return_date": "2025-10-13"
+              },
+              {
+                "book_id": "B-062",
+                "checkout_date": "2025-10-06",
+                "return_date": "2025-10-20"
+              },
+              {
+                "book_id": "B-063",
+                "checkout_date": "2025-10-13",
+                "return_date": "2025-10-27"
+              },
+              {
+                "book_id": "B-001",
+                "checkout_date": "2025-10-20",
+                "return_date": "2025-11-03"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2025-10-27",
+                "return_date": "2025-11-10"
+              }
+            ],
             "reading_check": {
               "date": "2025-11-10",
               "grade_form": 2,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-015",
-                "checkout_date": "2025-09-15",
-                "return_date": "2025-09-29"
-              },
-              {
-                "book_id": "B-034",
-                "checkout_date": "2025-09-29",
-                "return_date": "2025-10-13"
-              },
-              {
-                "book_id": "B-040",
-                "checkout_date": "2025-10-13",
-                "return_date": "2025-10-27"
-              },
-              {
-                "book_id": "B-050",
-                "checkout_date": "2025-10-27",
-                "return_date": "2025-11-10"
-              },
-              {
-                "book_id": "B-062",
-                "checkout_date": "2025-11-10",
-                "return_date": "2025-11-24"
-              },
-              {
-                "book_id": "B-063",
-                "checkout_date": "2025-11-17",
-                "return_date": "2025-12-01"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S2",
@@ -947,59 +1336,64 @@
             "end": "2026-04-26",
             "english_grade": "B+",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-015",
+                "checkout_date": "2026-02-02",
+                "return_date": "2026-02-16"
+              },
+              {
+                "book_id": "B-001",
+                "checkout_date": "2026-02-09",
+                "return_date": "2026-02-23"
+              },
+              {
+                "book_id": "B-007",
+                "checkout_date": "2026-02-16",
+                "return_date": "2026-03-02"
+              },
+              {
+                "book_id": "B-034",
+                "checkout_date": "2026-02-23",
+                "return_date": "2026-03-09"
+              },
+              {
+                "book_id": "B-040",
+                "checkout_date": "2026-03-02",
+                "return_date": "2026-03-16"
+              },
+              {
+                "book_id": "B-042",
+                "checkout_date": "2026-03-09",
+                "return_date": "2026-03-23"
+              },
+              {
+                "book_id": "B-050",
+                "checkout_date": "2026-03-16",
+                "return_date": "2026-03-30"
+              },
+              {
+                "book_id": "B-061",
+                "checkout_date": "2026-03-23",
+                "return_date": "2026-04-06"
+              },
+              {
+                "book_id": "B-022",
+                "checkout_date": "2026-03-30",
+                "return_date": "2026-04-13"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2026-04-06",
+                "return_date": "2026-04-20"
+              }
+            ],
             "reading_check": {
               "date": "2026-04-14",
               "grade_form": 2,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-015",
-                "checkout_date": "2026-02-03",
-                "return_date": "2026-02-17"
-              },
-              {
-                "book_id": "B-001",
-                "checkout_date": "2026-02-10",
-                "return_date": "2026-02-24"
-              },
-              {
-                "book_id": "B-007",
-                "checkout_date": "2026-02-24",
-                "return_date": "2026-03-10"
-              },
-              {
-                "book_id": "B-034",
-                "checkout_date": "2026-03-03",
-                "return_date": "2026-03-17"
-              },
-              {
-                "book_id": "B-040",
-                "checkout_date": "2026-03-17",
-                "return_date": "2026-03-31"
-              },
-              {
-                "book_id": "B-042",
-                "checkout_date": "2026-03-24",
-                "return_date": "2026-04-07"
-              },
-              {
-                "book_id": "B-050",
-                "checkout_date": "2026-04-07",
-                "return_date": "2026-04-21"
-              },
-              {
-                "book_id": "B-061",
-                "checkout_date": "2026-04-14",
-                "return_date": "2026-04-28"
-              },
-              {
-                "book_id": "B-022",
-                "checkout_date": "2026-04-21",
-                "return_date": "2026-05-05"
-              }
-            ]
+            }
           }
         ]
       }
@@ -1009,7 +1403,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1019,7 +1413,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1050,11 +1444,67 @@
         }
       ],
       "scenario": {
-        "id": "support_flat_illustrative",
-        "label": "Synthetic: flat C and reading 2, even borrowing",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "id": "improving_engagement_illustrative",
+        "label": "Synthetic: C/D start, A finish",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
+          {
+            "id": "W-23-S1",
+            "academic_year": "2023-24",
+            "semester": "S1",
+            "school_grade": 2,
+            "start": "2023-09-11",
+            "end": "2023-12-03",
+            "english_grade": "D+",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-003",
+                "checkout_date": "2023-09-11",
+                "return_date": "2023-09-25"
+              }
+            ],
+            "reading_check": {
+              "date": "2023-11-14",
+              "grade_form": 2,
+              "result": 1,
+              "band": "emerging"
+            }
+          },
+          {
+            "id": "W-23-S2",
+            "academic_year": "2023-24",
+            "semester": "S2",
+            "school_grade": 2,
+            "start": "2024-02-05",
+            "end": "2024-04-28",
+            "english_grade": "C",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-004",
+                "checkout_date": "2024-02-05",
+                "return_date": "2024-02-19"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2024-02-12",
+                "return_date": "2024-02-26"
+              },
+              {
+                "book_id": "B-021",
+                "checkout_date": "2024-02-19",
+                "return_date": "2024-03-04"
+              }
+            ],
+            "reading_check": {
+              "date": "2024-04-09",
+              "grade_form": 2,
+              "result": 1,
+              "band": "emerging"
+            }
+          },
           {
             "id": "W-24-S1",
             "academic_year": "2024-25",
@@ -1062,31 +1512,36 @@
             "school_grade": 3,
             "start": "2024-09-09",
             "end": "2024-12-01",
-            "english_grade": "C",
+            "english_grade": "C+",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-003",
+                "checkout_date": "2024-09-09",
+                "return_date": "2024-09-23"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2024-09-16",
+                "return_date": "2024-09-30"
+              },
+              {
+                "book_id": "B-021",
+                "checkout_date": "2024-09-23",
+                "return_date": "2024-10-07"
+              },
+              {
+                "book_id": "B-031",
+                "checkout_date": "2024-09-30",
+                "return_date": "2024-10-14"
+              }
+            ],
             "reading_check": {
               "date": "2024-11-12",
               "grade_form": 3,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-003",
-                "checkout_date": "2024-09-16",
-                "return_date": "2024-09-30"
-              },
-              {
-                "book_id": "B-005",
-                "checkout_date": "2024-10-14",
-                "return_date": "2024-10-28"
-              },
-              {
-                "book_id": "B-021",
-                "checkout_date": "2024-11-04",
-                "return_date": "2024-11-18"
-              }
-            ]
+            }
           },
           {
             "id": "W-24-S2",
@@ -1095,31 +1550,46 @@
             "school_grade": 3,
             "start": "2025-02-03",
             "end": "2025-04-27",
-            "english_grade": "C",
+            "english_grade": "B-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-004",
+                "checkout_date": "2025-02-03",
+                "return_date": "2025-02-17"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2025-02-10",
+                "return_date": "2025-02-24"
+              },
+              {
+                "book_id": "B-031",
+                "checkout_date": "2025-02-17",
+                "return_date": "2025-03-03"
+              },
+              {
+                "book_id": "B-032",
+                "checkout_date": "2025-02-24",
+                "return_date": "2025-03-10"
+              },
+              {
+                "book_id": "B-003",
+                "checkout_date": "2025-03-03",
+                "return_date": "2025-03-17"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2025-03-10",
+                "return_date": "2025-03-24"
+              }
+            ],
             "reading_check": {
               "date": "2025-04-08",
               "grade_form": 3,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-004",
-                "checkout_date": "2025-02-10",
-                "return_date": "2025-02-24"
-              },
-              {
-                "book_id": "B-006",
-                "checkout_date": "2025-03-03",
-                "return_date": "2025-03-17"
-              },
-              {
-                "book_id": "B-031",
-                "checkout_date": "2025-04-07",
-                "return_date": "2025-04-21"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S1",
@@ -1128,31 +1598,51 @@
             "school_grade": 4,
             "start": "2025-09-08",
             "end": "2025-11-30",
-            "english_grade": "C",
+            "english_grade": "B",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-003",
+                "checkout_date": "2025-09-08",
+                "return_date": "2025-09-22"
+              },
+              {
+                "book_id": "B-021",
+                "checkout_date": "2025-09-15",
+                "return_date": "2025-09-29"
+              },
+              {
+                "book_id": "B-032",
+                "checkout_date": "2025-09-22",
+                "return_date": "2025-10-06"
+              },
+              {
+                "book_id": "B-004",
+                "checkout_date": "2025-09-29",
+                "return_date": "2025-10-13"
+              },
+              {
+                "book_id": "B-031",
+                "checkout_date": "2025-10-06",
+                "return_date": "2025-10-20"
+              },
+              {
+                "book_id": "B-005",
+                "checkout_date": "2025-10-13",
+                "return_date": "2025-10-27"
+              },
+              {
+                "book_id": "B-006",
+                "checkout_date": "2025-10-20",
+                "return_date": "2025-11-03"
+              }
+            ],
             "reading_check": {
               "date": "2025-11-10",
               "grade_form": 4,
               "result": 2,
               "band": "developing"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-003",
-                "checkout_date": "2025-09-15",
-                "return_date": "2025-09-29"
-              },
-              {
-                "book_id": "B-021",
-                "checkout_date": "2025-10-13",
-                "return_date": "2025-10-27"
-              },
-              {
-                "book_id": "B-032",
-                "checkout_date": "2025-11-03",
-                "return_date": "2025-11-17"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S2",
@@ -1161,43 +1651,73 @@
             "school_grade": 4,
             "start": "2026-02-02",
             "end": "2026-04-26",
-            "english_grade": "C",
+            "english_grade": "A",
             "english_status": "final",
-            "reading_check": {
-              "date": "2026-04-14",
-              "grade_form": 4,
-              "result": 2,
-              "band": "developing"
-            },
             "borrowed": [
               {
                 "book_id": "B-004",
+                "checkout_date": "2026-02-02",
+                "return_date": "2026-02-16"
+              },
+              {
+                "book_id": "B-005",
                 "checkout_date": "2026-02-09",
                 "return_date": "2026-02-23"
               },
               {
-                "book_id": "B-005",
+                "book_id": "B-006",
+                "checkout_date": "2026-02-16",
+                "return_date": "2026-03-02"
+              },
+              {
+                "book_id": "B-021",
+                "checkout_date": "2026-02-23",
+                "return_date": "2026-03-09"
+              },
+              {
+                "book_id": "B-031",
                 "checkout_date": "2026-03-02",
                 "return_date": "2026-03-16"
               },
               {
-                "book_id": "B-006",
-                "checkout_date": "2026-04-06",
-                "return_date": "2026-04-20"
+                "book_id": "B-032",
+                "checkout_date": "2026-03-09",
+                "return_date": "2026-03-23"
+              },
+              {
+                "book_id": "B-003",
+                "checkout_date": "2026-03-16",
+                "return_date": "2026-03-30"
+              },
+              {
+                "book_id": "B-034",
+                "checkout_date": "2026-03-23",
+                "return_date": "2026-04-06"
+              },
+              {
+                "book_id": "B-001",
+                "checkout_date": "2026-03-30",
+                "return_date": "2026-04-13"
               }
-            ]
+            ],
+            "reading_check": {
+              "date": "2026-04-14",
+              "grade_form": 4,
+              "result": 3,
+              "band": "meeting"
+            }
           }
         ]
       },
-      "demo_case": "support_flat_illustrative",
-      "demo_note": "Synthetic: flat C and reading 2, even borrowing. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_case": "improving_engagement_illustrative",
+      "demo_note": "Synthetic: C/D start, A finish. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-510",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1207,7 +1727,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1230,9 +1750,75 @@
       "scenario": {
         "id": "strong_stable_illustrative",
         "label": "Synthetic: already strong, stays A",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
+          {
+            "id": "W-23-S1",
+            "academic_year": "2023-24",
+            "semester": "S1",
+            "school_grade": 2,
+            "start": "2023-09-11",
+            "end": "2023-12-03",
+            "english_grade": "A",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-022",
+                "checkout_date": "2023-09-11",
+                "return_date": "2023-09-25"
+              },
+              {
+                "book_id": "B-027",
+                "checkout_date": "2023-09-18",
+                "return_date": "2023-10-02"
+              },
+              {
+                "book_id": "B-050",
+                "checkout_date": "2023-09-25",
+                "return_date": "2023-10-09"
+              }
+            ],
+            "reading_check": {
+              "date": "2023-11-14",
+              "grade_form": 2,
+              "result": 4,
+              "band": "exceeding"
+            }
+          },
+          {
+            "id": "W-23-S2",
+            "academic_year": "2023-24",
+            "semester": "S2",
+            "school_grade": 2,
+            "start": "2024-02-05",
+            "end": "2024-04-28",
+            "english_grade": "A",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-020",
+                "checkout_date": "2024-02-05",
+                "return_date": "2024-02-19"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2024-02-12",
+                "return_date": "2024-02-26"
+              },
+              {
+                "book_id": "B-022",
+                "checkout_date": "2024-02-19",
+                "return_date": "2024-03-04"
+              }
+            ],
+            "reading_check": {
+              "date": "2024-04-09",
+              "grade_form": 2,
+              "result": 4,
+              "band": "exceeding"
+            }
+          },
           {
             "id": "W-24-S1",
             "academic_year": "2024-25",
@@ -1242,29 +1828,29 @@
             "end": "2024-12-01",
             "english_grade": "A",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-022",
+                "checkout_date": "2024-09-09",
+                "return_date": "2024-09-23"
+              },
+              {
+                "book_id": "B-027",
+                "checkout_date": "2024-09-16",
+                "return_date": "2024-09-30"
+              },
+              {
+                "book_id": "B-050",
+                "checkout_date": "2024-09-23",
+                "return_date": "2024-10-07"
+              }
+            ],
             "reading_check": {
               "date": "2024-11-12",
               "grade_form": 3,
               "result": 4,
               "band": "exceeding"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-022",
-                "checkout_date": "2024-09-16",
-                "return_date": "2024-09-30"
-              },
-              {
-                "book_id": "B-027",
-                "checkout_date": "2024-10-14",
-                "return_date": "2024-10-28"
-              },
-              {
-                "book_id": "B-050",
-                "checkout_date": "2024-11-04",
-                "return_date": "2024-11-18"
-              }
-            ]
+            }
           },
           {
             "id": "W-24-S2",
@@ -1275,29 +1861,29 @@
             "end": "2025-04-27",
             "english_grade": "A",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-020",
+                "checkout_date": "2025-02-03",
+                "return_date": "2025-02-17"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2025-02-10",
+                "return_date": "2025-02-24"
+              },
+              {
+                "book_id": "B-022",
+                "checkout_date": "2025-02-17",
+                "return_date": "2025-03-03"
+              }
+            ],
             "reading_check": {
               "date": "2025-04-08",
               "grade_form": 3,
               "result": 4,
               "band": "exceeding"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-020",
-                "checkout_date": "2025-02-10",
-                "return_date": "2025-02-24"
-              },
-              {
-                "book_id": "B-043",
-                "checkout_date": "2025-03-03",
-                "return_date": "2025-03-17"
-              },
-              {
-                "book_id": "B-022",
-                "checkout_date": "2025-04-07",
-                "return_date": "2025-04-21"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S1",
@@ -1308,29 +1894,29 @@
             "end": "2025-11-30",
             "english_grade": "A",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-027",
+                "checkout_date": "2025-09-08",
+                "return_date": "2025-09-22"
+              },
+              {
+                "book_id": "B-050",
+                "checkout_date": "2025-09-15",
+                "return_date": "2025-09-29"
+              },
+              {
+                "book_id": "B-020",
+                "checkout_date": "2025-09-22",
+                "return_date": "2025-10-06"
+              }
+            ],
             "reading_check": {
               "date": "2025-11-10",
               "grade_form": 4,
               "result": 4,
               "band": "exceeding"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-027",
-                "checkout_date": "2025-09-15",
-                "return_date": "2025-09-29"
-              },
-              {
-                "book_id": "B-050",
-                "checkout_date": "2025-10-13",
-                "return_date": "2025-10-27"
-              },
-              {
-                "book_id": "B-020",
-                "checkout_date": "2025-11-03",
-                "return_date": "2025-11-17"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S2",
@@ -1341,41 +1927,41 @@
             "end": "2026-04-26",
             "english_grade": "A",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-022",
+                "checkout_date": "2026-02-02",
+                "return_date": "2026-02-16"
+              },
+              {
+                "book_id": "B-027",
+                "checkout_date": "2026-02-09",
+                "return_date": "2026-02-23"
+              },
+              {
+                "book_id": "B-043",
+                "checkout_date": "2026-02-16",
+                "return_date": "2026-03-02"
+              }
+            ],
             "reading_check": {
               "date": "2026-04-14",
               "grade_form": 4,
               "result": 4,
               "band": "exceeding"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-022",
-                "checkout_date": "2026-02-09",
-                "return_date": "2026-02-23"
-              },
-              {
-                "book_id": "B-027",
-                "checkout_date": "2026-03-02",
-                "return_date": "2026-03-16"
-              },
-              {
-                "book_id": "B-043",
-                "checkout_date": "2026-04-06",
-                "return_date": "2026-04-20"
-              }
-            ]
+            }
           }
         ]
       },
       "demo_case": "strong_stable_illustrative",
-      "demo_note": "Synthetic: already strong, stays A. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_note": "Synthetic: already strong, stays A. Illustrative only — co-timing is not causal proof."
     },
     {
       "student_id": "S-401",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025\u201326 Semester 2",
+          "label": "2025–26 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1385,7 +1971,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026\u201327 Semester 1",
+          "label": "2026–27 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1408,9 +1994,65 @@
       "scenario": {
         "id": "mid_stable_illustrative",
         "label": "Synthetic: mid band, B- then B-",
-        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
+        "caveat": "Illustrative only — co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
+          {
+            "id": "W-23-S1",
+            "academic_year": "2023-24",
+            "semester": "S1",
+            "school_grade": 1,
+            "start": "2023-09-11",
+            "end": "2023-12-03",
+            "english_grade": "B-",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-012",
+                "checkout_date": "2023-09-11",
+                "return_date": "2023-09-25"
+              },
+              {
+                "book_id": "B-014",
+                "checkout_date": "2023-09-18",
+                "return_date": "2023-10-02"
+              }
+            ],
+            "reading_check": {
+              "date": "2023-11-14",
+              "grade_form": 1,
+              "result": 3,
+              "band": "meeting"
+            }
+          },
+          {
+            "id": "W-23-S2",
+            "academic_year": "2023-24",
+            "semester": "S2",
+            "school_grade": 1,
+            "start": "2024-02-05",
+            "end": "2024-04-28",
+            "english_grade": "B-",
+            "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-013",
+                "checkout_date": "2024-02-05",
+                "return_date": "2024-02-19"
+              },
+              {
+                "book_id": "B-017",
+                "checkout_date": "2024-02-12",
+                "return_date": "2024-02-26"
+              }
+            ],
+            "reading_check": {
+              "date": "2024-04-09",
+              "grade_form": 1,
+              "result": 3,
+              "band": "meeting"
+            }
+          },
           {
             "id": "W-24-S1",
             "academic_year": "2024-25",
@@ -1420,24 +2062,24 @@
             "end": "2024-12-01",
             "english_grade": "B-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-012",
+                "checkout_date": "2024-09-09",
+                "return_date": "2024-09-23"
+              },
+              {
+                "book_id": "B-014",
+                "checkout_date": "2024-09-16",
+                "return_date": "2024-09-30"
+              }
+            ],
             "reading_check": {
               "date": "2024-11-12",
               "grade_form": 2,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-012",
-                "checkout_date": "2024-09-16",
-                "return_date": "2024-09-30"
-              },
-              {
-                "book_id": "B-014",
-                "checkout_date": "2024-10-14",
-                "return_date": "2024-10-28"
-              }
-            ]
+            }
           },
           {
             "id": "W-24-S2",
@@ -1448,24 +2090,24 @@
             "end": "2025-04-27",
             "english_grade": "B-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-013",
+                "checkout_date": "2025-02-03",
+                "return_date": "2025-02-17"
+              },
+              {
+                "book_id": "B-017",
+                "checkout_date": "2025-02-10",
+                "return_date": "2025-02-24"
+              }
+            ],
             "reading_check": {
               "date": "2025-04-08",
               "grade_form": 2,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-013",
-                "checkout_date": "2025-02-10",
-                "return_date": "2025-02-24"
-              },
-              {
-                "book_id": "B-017",
-                "checkout_date": "2025-03-03",
-                "return_date": "2025-03-17"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S1",
@@ -1476,24 +2118,24 @@
             "end": "2025-11-30",
             "english_grade": "B-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-012",
+                "checkout_date": "2025-09-08",
+                "return_date": "2025-09-22"
+              },
+              {
+                "book_id": "B-016",
+                "checkout_date": "2025-09-15",
+                "return_date": "2025-09-29"
+              }
+            ],
             "reading_check": {
               "date": "2025-11-10",
               "grade_form": 3,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-012",
-                "checkout_date": "2025-09-15",
-                "return_date": "2025-09-29"
-              },
-              {
-                "book_id": "B-016",
-                "checkout_date": "2025-10-13",
-                "return_date": "2025-10-27"
-              }
-            ]
+            }
           },
           {
             "id": "W-25-S2",
@@ -1504,29 +2146,29 @@
             "end": "2026-04-26",
             "english_grade": "B-",
             "english_status": "final",
+            "borrowed": [
+              {
+                "book_id": "B-014",
+                "checkout_date": "2026-02-02",
+                "return_date": "2026-02-16"
+              },
+              {
+                "book_id": "B-013",
+                "checkout_date": "2026-02-09",
+                "return_date": "2026-02-23"
+              }
+            ],
             "reading_check": {
               "date": "2026-04-14",
               "grade_form": 3,
               "result": 3,
               "band": "meeting"
-            },
-            "borrowed": [
-              {
-                "book_id": "B-014",
-                "checkout_date": "2026-02-09",
-                "return_date": "2026-02-23"
-              },
-              {
-                "book_id": "B-013",
-                "checkout_date": "2026-03-02",
-                "return_date": "2026-03-16"
-              }
-            ]
+            }
           }
         ]
       },
       "demo_case": "mid_stable_illustrative",
-      "demo_note": "Synthetic: mid band, B- then B-. Illustrative only \u2014 co-timing is not causal proof."
+      "demo_note": "Synthetic: mid band, B- then B-. Illustrative only — co-timing is not causal proof."
     }
   ],
   "scenario_calendar": {
@@ -1535,10 +2177,26 @@
     "current_academic_year": "2026-27",
     "terms": [
       {
+        "id": "SY23-S1",
+        "academic_year": "2023-24",
+        "semester": "S1",
+        "label": "2023–24 Semester 1",
+        "start": "2023-08-18",
+        "end": "2024-01-16"
+      },
+      {
+        "id": "SY23-S2",
+        "academic_year": "2023-24",
+        "semester": "S2",
+        "label": "2023–24 Semester 2",
+        "start": "2024-01-20",
+        "end": "2024-06-05"
+      },
+      {
         "id": "SY24-S1",
         "academic_year": "2024-25",
         "semester": "S1",
-        "label": "2024\u201325 Semester 1",
+        "label": "2024–25 Semester 1",
         "start": "2024-08-18",
         "end": "2025-01-16"
       },
@@ -1546,7 +2204,7 @@
         "id": "SY24-S2",
         "academic_year": "2024-25",
         "semester": "S2",
-        "label": "2024\u201325 Semester 2",
+        "label": "2024–25 Semester 2",
         "start": "2025-01-20",
         "end": "2025-06-05"
       },
@@ -1554,7 +2212,7 @@
         "id": "SY25-S1",
         "academic_year": "2025-26",
         "semester": "S1",
-        "label": "2025\u201326 Semester 1",
+        "label": "2025–26 Semester 1",
         "start": "2025-08-18",
         "end": "2026-01-16"
       },
@@ -1562,12 +2220,30 @@
         "id": "SY25-S2",
         "academic_year": "2025-26",
         "semester": "S2",
-        "label": "2025\u201326 Semester 2",
+        "label": "2025–26 Semester 2",
         "start": "2026-01-20",
         "end": "2026-06-05"
       }
     ],
     "matched_windows": [
+      {
+        "id": "W-23-S1",
+        "academic_year": "2023-24",
+        "semester": "S1",
+        "label": "Fall 2023 observation",
+        "start": "2023-09-11",
+        "end": "2023-12-03",
+        "inclusive_days": 84
+      },
+      {
+        "id": "W-23-S2",
+        "academic_year": "2023-24",
+        "semester": "S2",
+        "label": "Spring 2024 observation",
+        "start": "2024-02-05",
+        "end": "2024-04-28",
+        "inclusive_days": 84
+      },
       {
         "id": "W-24-S1",
         "academic_year": "2024-25",

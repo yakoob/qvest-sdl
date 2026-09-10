@@ -132,7 +132,7 @@
       "id": "academic_demo",
       "json": "data/json/academic_demo.json",
       "records": 10,
-      "description": "Synthetic desk fixture: semester English letter grades, Willow Bend Reading Check, and isolated 84-day matched-window scenarios. Sofia S-305 is the primary illustrative story (checkouts 2→4→6→9, English D+→C-→C→B+). Not a SIS extract. Not used for ranking, retrieve, support, or model payloads. catalog.json / circulation.json / students.json are unchanged."
+      "description": "Synthetic desk fixture: semester English letter grades, Willow Bend Reading Check, and isolated 84-day matched-window scenarios spanning three completed years (six windows). Sofia S-305 is the primary illustrative story (checkouts 2→3→5→6→8→10, English D→D+→C-→C→B-→B+). Mateo and Tyler have distinct improving isolated trajectories. Priya/Olivia stay empty local-history newcomers. Not a SIS extract. Not used for ranking, retrieve, support, or model payloads. catalog.json / circulation.json / students.json are unchanged."
     }
   ]
 }

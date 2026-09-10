@@ -51,10 +51,12 @@ python3 scripts/csv_to_json.py
 
 ## Demo IDs
 
-- Mateo `S-406` — graphic cluster, Friday rush
-- Aisha `S-402` — stretch toggle
-- Priya `S-405` — cold start (sharks)
-- Olivia `S-509` — true zero history
+- Mateo `S-406` — graphic cluster, Friday rush; isolated 6-window improving scenario (C-→A-, 2→11 checkouts). Operational spring English stays C.
+- Aisha `S-402` — stretch toggle; strong-stable isolated scenario (A/A-, 4 checkouts × 6 windows)
+- Priya `S-405` — cold start (sharks); empty local-history windows
+- Olivia `S-509` — true zero history; empty local-history windows
+- Sofia `S-305` — primary isolated 3-year story: 6×84-day windows, D→B+, 2→10 checkouts. Operational spring English stays B+.
+- Tyler `S-504` — Check in first; isolated improving scenario (D+→A, 1→9 checkouts). Operational spring English stays C.
 - Elena `L-001` / Tom `L-002` / Priya Shah `L-003`
 
 Fictional children. Not real student data.

@@ -18,6 +18,13 @@ const (
 	DemoSupportFlat         = "support_flat_illustrative"
 	MatchedWindowDays       = 84
 	CurrentAcademicYear     = "2026-27"
+	// ScenarioAsOf is the extract date. Completed scenario observations
+	// must not end after it.
+	ScenarioAsOf = "2026-09-04"
+	// CompletedScenarioYears / CompletedScenarioWindows describe the
+	// isolated three-year, six-semester matched-window coverage.
+	CompletedScenarioYears   = 3
+	CompletedScenarioWindows = 6
 )
 
 type ScenarioCalendar struct {
@@ -181,7 +188,18 @@ func (c *Catalog) validateCalendar() error {
 		}
 		return a.Before(b)
 	})
-	var prev *WindowSpec
+	asOf, err := ParseDateOnly(ScenarioAsOf)
+	if err != nil {
+		return fmt.Errorf("scenario as_of: %w", err)
+	}
+	type calSpan struct {
+		idx        int
+		id         string
+		start, end time.Time
+		days       int
+	}
+	spans := make([]calSpan, 0, len(cal.MatchedWindows))
+	var windowDays int
 	for i, win := range cal.MatchedWindows {
 		start, end, err := parseClosedRange(win.Start, win.End)
 		if err != nil {
@@ -194,6 +212,14 @@ func (c *Catalog) validateCalendar() error {
 		if days != MatchedWindowDays {
 			return fmt.Errorf("matched window %s is %d days, want %d", win.ID, days, MatchedWindowDays)
 		}
+		if windowDays == 0 {
+			windowDays = days
+		} else if days != windowDays {
+			return fmt.Errorf("matched window %s length %d != %d", win.ID, days, windowDays)
+		}
+		if end.After(asOf) {
+			return fmt.Errorf("matched window %s completed observation ends after %s", win.ID, ScenarioAsOf)
+		}
 		term, ok := byTerm[win.AcademicYear+"|"+strings.ToUpper(win.Semester)]
 		if !ok {
 			return fmt.Errorf("matched window %s has no term %s %s", win.ID, win.AcademicYear, win.Semester)
@@ -205,17 +231,27 @@ func (c *Catalog) validateCalendar() error {
 		if start.Before(termStart) || end.After(termEnd) {
 			return fmt.Errorf("matched window %s outside %s %s", win.ID, win.AcademicYear, win.Semester)
 		}
-		if prev != nil {
-			ps, pe, _ := parseClosedRange(prev.Start, prev.End)
-			if RangesOverlap(ps, pe, start, end) {
-				return fmt.Errorf("matched windows %s and %s overlap", prev.ID, win.ID)
-			}
-		}
 		cal.MatchedWindows[i].Start = FormatDateOnly(start)
 		cal.MatchedWindows[i].End = FormatDateOnly(end)
 		cal.MatchedWindows[i].InclusiveDays = days
-		copyWin := cal.MatchedWindows[i]
-		prev = &copyWin
+		spans = append(spans, calSpan{idx: i, id: win.ID, start: start, end: end, days: days})
+	}
+	sort.SliceStable(spans, func(i, j int) bool {
+		if spans[i].start.Equal(spans[j].start) {
+			return spans[i].id < spans[j].id
+		}
+		return spans[i].start.Before(spans[j].start)
+	})
+	ordered := make([]WindowSpec, 0, len(spans))
+	for i, sp := range spans {
+		if i > 0 && RangesOverlap(spans[i-1].start, spans[i-1].end, sp.start, sp.end) {
+			return fmt.Errorf("matched windows %s and %s overlap", spans[i-1].id, sp.id)
+		}
+		ordered = append(ordered, cal.MatchedWindows[sp.idx])
+	}
+	cal.MatchedWindows = ordered
+	if n := len(cal.MatchedWindows); n != 0 && n != CompletedScenarioWindows {
+		return fmt.Errorf("scenario calendar has %d matched windows, want %d", n, CompletedScenarioWindows)
 	}
 	return nil
 }
@@ -239,7 +275,17 @@ func (c *Catalog) validateScenario(sid string, rec Record, st *store.Store) erro
 	if c.Calendar != nil && c.Calendar.CurrentAcademicYear != "" {
 		currentYear = c.Calendar.CurrentAcademicYear
 	}
+	asOf, err := ParseDateOnly(ScenarioAsOf)
+	if err != nil {
+		return fmt.Errorf("scenario as_of: %w", err)
+	}
 	seen := map[string]bool{}
+	type span struct {
+		id         string
+		start, end time.Time
+	}
+	spans := make([]span, 0, len(sc.Windows))
+	var windowDays int
 	for i := range sc.Windows {
 		w := &sc.Windows[i]
 		if seen[w.ID] {
@@ -252,6 +298,18 @@ func (c *Catalog) validateScenario(sid string, rec Record, st *store.Store) erro
 		}
 		w.Start = FormatDateOnly(start)
 		w.End = FormatDateOnly(end)
+		days := InclusiveDays(start, end)
+		if days != MatchedWindowDays {
+			return fmt.Errorf("%s window %s is %d days, want %d", sid, w.ID, days, MatchedWindowDays)
+		}
+		if windowDays == 0 {
+			windowDays = days
+		} else if days != windowDays {
+			return fmt.Errorf("%s window %s length %d != %d", sid, w.ID, days, windowDays)
+		}
+		if strings.EqualFold(strings.TrimSpace(w.EnglishStatus), "final") && end.After(asOf) {
+			return fmt.Errorf("%s window %s completed observation ends after %s", sid, w.ID, ScenarioAsOf)
+		}
 		termStart, termEnd, err := TermBounds(w.AcademicYear, w.Semester)
 		if err != nil {
 			return fmt.Errorf("%s window %s year: %w", sid, w.ID, err)
@@ -292,15 +350,7 @@ func (c *Catalog) validateScenario(sid string, rec Record, st *store.Store) erro
 				return fmt.Errorf("%s window %s reading result", sid, w.ID)
 			}
 		}
-		if i > 0 {
-			ps, pe, err := parseClosedRange(sc.Windows[i-1].Start, sc.Windows[i-1].End)
-			if err != nil {
-				return err
-			}
-			if RangesOverlap(ps, pe, start, end) {
-				return fmt.Errorf("%s windows %s and %s overlap", sid, sc.Windows[i-1].ID, w.ID)
-			}
-		}
+		spans = append(spans, span{id: w.ID, start: start, end: end})
 		for j, loan := range w.Borrowed {
 			ld, err := ParseDateOnly(loan.CheckoutDate)
 			if err != nil {
@@ -320,6 +370,17 @@ func (c *Catalog) validateScenario(sid string, rec Record, st *store.Store) erro
 				w.Borrowed[j].ReturnDate = FormatDateOnly(rd)
 			}
 			w.Borrowed[j].CheckoutDate = FormatDateOnly(ld)
+		}
+	}
+	sort.SliceStable(spans, func(i, j int) bool {
+		if spans[i].start.Equal(spans[j].start) {
+			return spans[i].id < spans[j].id
+		}
+		return spans[i].start.Before(spans[j].start)
+	})
+	for i := 1; i < len(spans); i++ {
+		if RangesOverlap(spans[i-1].start, spans[i-1].end, spans[i].start, spans[i].end) {
+			return fmt.Errorf("%s windows %s and %s overlap", sid, spans[i-1].id, spans[i].id)
 		}
 	}
 	return nil

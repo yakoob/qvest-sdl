@@ -206,54 +206,79 @@ func TestAcademicsEndpoint(t *testing.T) {
 func TestSofiaImprovingAcademicsHTTP(t *testing.T) {
 	srv := newTestServer(t)
 	h := srv.Handler()
-	rr := httptest.NewRecorder()
-	h.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/students/S-305/academics", nil))
-	if rr.Code != 200 {
-		t.Fatal(rr.Body.String())
+	type want struct {
+		id, opGrade string
+		counts      []float64
+		grades      []string
+		shortcut    bool
 	}
-	var payload map[string]any
-	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+	cases := []want{
+		{id: "S-305", opGrade: "B+", counts: []float64{2, 3, 5, 6, 8, 10}, grades: []string{"D", "D+", "C-", "C", "B-", "B+"}, shortcut: true},
+		{id: "S-406", opGrade: "C", counts: []float64{2, 4, 5, 7, 8, 11}, grades: []string{"C-", "C", "C+", "B-", "B", "A-"}, shortcut: true},
+		{id: "S-504", opGrade: "C", counts: []float64{1, 3, 4, 6, 7, 9}, grades: []string{"D+", "C", "C+", "B-", "B", "A"}},
+	}
+	if len(cases) < 3 {
+		t.Fatal("need at least three improving scenarios")
+	}
+	for _, tc := range cases {
+		rr := httptest.NewRecorder()
+		h.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/students/"+tc.id+"/academics", nil))
+		if rr.Code != 200 {
+			t.Fatal(rr.Body.String())
+		}
+		var payload map[string]any
+		if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+			t.Fatal(err)
+		}
+		acad := payload["academics"].(map[string]any)
+		if acad["demo_case"] != "improving_engagement_illustrative" {
+			t.Fatalf("%s demo_case %v", tc.id, acad["demo_case"])
+		}
+		sc := acad["scenario"].(map[string]any)
+		if sc["id"] != "improving_engagement_illustrative" || sc["isolated_from_operations"] != true {
+			t.Fatalf("%s scenario %+v", tc.id, sc)
+		}
+		windows := sc["windows"].([]any)
+		if len(windows) != academics.CompletedScenarioWindows {
+			t.Fatalf("%s windows %d want %d (not just non-nil)", tc.id, len(windows), academics.CompletedScenarioWindows)
+		}
+		years := map[string]bool{}
+		for i, raw := range windows {
+			row := raw.(map[string]any)
+			years[fmt.Sprint(row["academic_year"])] = true
+			if row["inclusive_days"].(float64) != float64(academics.MatchedWindowDays) {
+				t.Fatalf("%s window %d days %v", tc.id, i, row["inclusive_days"])
+			}
+			if row["checkout_count"].(float64) != tc.counts[i] {
+				t.Fatalf("%s window %d checkouts %v want %v", tc.id, i, row["checkout_count"], tc.counts[i])
+			}
+			if row["english_grade"] != tc.grades[i] {
+				t.Fatalf("%s window %d grade %v want %s", tc.id, i, row["english_grade"], tc.grades[i])
+			}
+		}
+		if len(years) != academics.CompletedScenarioYears {
+			t.Fatalf("%s years %d want %d", tc.id, len(years), academics.CompletedScenarioYears)
+		}
+		var s2 map[string]any
+		for _, raw := range acad["semesters"].([]any) {
+			row := raw.(map[string]any)
+			if row["id"] == "SY25-S2" {
+				s2 = row
+			}
+		}
+		if s2["english_grade"] != tc.opGrade {
+			t.Fatalf("%s operational latest grade %v want %s", tc.id, s2["english_grade"], tc.opGrade)
+		}
+	}
+	rr := httptest.NewRecorder()
+	h.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/students/S-405/academics", nil))
+	var priya map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &priya); err != nil {
 		t.Fatal(err)
 	}
-	acad := payload["academics"].(map[string]any)
-	if acad["demo_case"] != "improving_engagement_illustrative" {
-		t.Fatalf("demo_case %v", acad["demo_case"])
-	}
-	note := strings.ToLower(fmt.Sprint(acad["demo_note"]))
-	if !strings.Contains(note, "illustrative") {
-		t.Fatalf("demo_note %v", acad["demo_note"])
-	}
-	sc := acad["scenario"].(map[string]any)
-	if sc["id"] != "improving_engagement_illustrative" || sc["isolated_from_operations"] != true {
-		t.Fatalf("scenario %+v", sc)
-	}
-	windows := sc["windows"].([]any)
-	if len(windows) != 4 {
-		t.Fatalf("windows %d", len(windows))
-	}
-	wantCounts := []float64{2, 4, 6, 9}
-	wantGrades := []string{"D+", "C-", "C", "B+"}
-	for i, raw := range windows {
-		row := raw.(map[string]any)
-		if row["inclusive_days"].(float64) != 84 {
-			t.Fatalf("window %d days %v", i, row["inclusive_days"])
-		}
-		if row["checkout_count"].(float64) != wantCounts[i] {
-			t.Fatalf("window %d checkouts %v want %v", i, row["checkout_count"], wantCounts[i])
-		}
-		if row["english_grade"] != wantGrades[i] {
-			t.Fatalf("window %d grade %v want %s", i, row["english_grade"], wantGrades[i])
-		}
-	}
-	var s2 map[string]any
-	for _, raw := range acad["semesters"].([]any) {
-		row := raw.(map[string]any)
-		if row["id"] == "SY25-S2" {
-			s2 = row
-		}
-	}
-	if s2["english_grade"] != "B+" {
-		t.Fatalf("operational latest grade %v", s2["english_grade"])
+	priyaSc := priya["academics"].(map[string]any)["scenario"].(map[string]any)
+	if wins, _ := priyaSc["windows"].([]any); len(wins) != 0 {
+		t.Fatalf("Priya invented prior years: %d windows", len(wins))
 	}
 	rr = httptest.NewRecorder()
 	h.ServeHTTP(rr, httptest.NewRequest(http.MethodGet, "/api/students", nil))

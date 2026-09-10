@@ -99,12 +99,46 @@ func TestDemoFixtures(t *testing.T) {
 	for id, want := range map[string]string{"S-406": Soon, "S-402": None, "S-405": Insufficient, "S-509": Insufficient, "S-504": First, "S-510": None, "S-305": None} {
 		r := ac.ByStudent[id]
 		r.StudentID = id
-		if got := Evaluate(r, c.ByStudent[id], DefaultConfig()); got.Band != want {
+		got := Evaluate(r, c.ByStudent[id], DefaultConfig())
+		if got.Band != want {
 			t.Fatalf("%s: %+v", id, got)
 		}
+	}
+	mateo := ac.ByStudent["S-406"]
+	mateo.StudentID = "S-406"
+	if mateo.Scenario == nil || len(mateo.Scenario.Windows) == 0 || mateo.Scenario.Windows[len(mateo.Scenario.Windows)-1].EnglishGrade == nil || *mateo.Scenario.Windows[len(mateo.Scenario.Windows)-1].EnglishGrade != "A-" {
+		t.Fatal("mateo scenario last grade")
+	}
+	mg := Evaluate(mateo, c.ByStudent["S-406"], DefaultConfig())
+	if evidenceValue(mg, "english") != "C" {
+		t.Fatalf("mateo support english %q; scenario must not feed support", evidenceValue(mg, "english"))
+	}
+	tyler := ac.ByStudent["S-504"]
+	tyler.StudentID = "S-504"
+	if tyler.Scenario == nil || len(tyler.Scenario.Windows) == 0 || tyler.Scenario.Windows[len(tyler.Scenario.Windows)-1].EnglishGrade == nil || *tyler.Scenario.Windows[len(tyler.Scenario.Windows)-1].EnglishGrade != "A" {
+		t.Fatal("tyler scenario last grade")
+	}
+	tg := Evaluate(tyler, c.ByStudent["S-504"], DefaultConfig())
+	if evidenceValue(tg, "english") != "C" {
+		t.Fatalf("tyler support english %q; scenario must not feed support", evidenceValue(tg, "english"))
+	}
+	sofia := ac.ByStudent["S-305"]
+	sofia.StudentID = "S-305"
+	sg := Evaluate(sofia, c.ByStudent["S-305"], DefaultConfig())
+	if evidenceValue(sg, "english") != "B+" {
+		t.Fatalf("sofia support english %q", evidenceValue(sg, "english"))
 	}
 	missing, err := Load(t.TempDir(), st)
 	if err != nil || !missing.Missing {
 		t.Fatalf("optional missing fixture: %v", err)
 	}
+}
+
+func evidenceValue(r Result, kind string) string {
+	for _, e := range r.Evidence {
+		if e.Kind == kind && e.Included {
+			return e.Value
+		}
+	}
+	return ""
 }

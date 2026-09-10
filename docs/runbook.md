@@ -62,11 +62,12 @@ curl -s -X POST http://127.0.0.1:8088/api/checkouts \
 
 | ID | Who | Point |
 |----|-----|--------|
-| S-406 | Mateo | Cat Kid; Bad Guys out of copies |
-| S-402 | Aisha | Fantasy cluster; stretch is grade policy |
-| S-405 | Priya | Sparse history + under-150 query |
-| S-509 | Olivia | Zero history fallback |
-| S-305 | Sofia | Primary synthetic story: matched windows, more borrowing, better English |
+| S-406 | Mateo | Cat Kid recs; isolated improving scenario C-→A- (2→11 checkouts); operational spring C |
+| S-402 | Aisha | Fantasy cluster; stretch is grade policy; strong-stable scenario |
+| S-405 | Priya | Sparse history + under-150 query; empty local-history windows |
+| S-509 | Olivia | Zero history fallback; empty local-history windows |
+| S-305 | Sofia | Primary synthetic story: six 84-day windows / three years, 2→10 checkouts, D→B+ |
+| S-504 | Tyler | Check in first; isolated improving scenario D+→A (1→9 checkouts); operational spring C |
 
 Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 
@@ -88,7 +89,7 @@ Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 3. Check out an available book. The loan and copy count change; academic results and support band do not.
 4. Record a check-in only if it happened. The dated follow-up is process-local and separate from academic evidence.
 5. Open **Reading & learning**: exact letter grades (plus/minus labeled), separate assessment grade forms, and observed borrowing. Hover/focus marks or expand the data tables. Incomplete extract coverage is under details, not the primary story.
-6. Shortcut **Sofia · illustrative (S-305)** is the primary labeled story: 84-day matched windows, checkouts 2→4→6→9, English D+ → C- → C → B+. Isolated from operational loans, ranking, and support. Latest support band stays No current flags. Mateo/Aisha remain stable comparators; Priya/Olivia stay insufficient-evidence.
+6. Shortcut **Sofia · illustrative (S-305)** is the primary labeled story: six 84-day matched windows over three completed years, checkouts 2→3→5→6→8→10, English D → D+ → C- → C → B- → B+. Isolated from operational loans, ranking, and support. Latest support band stays No current flags. Mateo and Tyler have distinct improving isolated scenarios; Aisha remains a strong-stable comparator; Priya/Olivia stay insufficient-evidence with empty local-history windows.
 7. Compare Aisha (`S-402`, no current flags), Mateo (`S-406`, check in soon), and Priya/Olivia (insufficient evidence). Missing records never become zeros or an inactivity penalty.
 8. Restart with `./run.sh`: loans, copy counts, activity and follow-ups reset. Base JSON is unchanged.
 

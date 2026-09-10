@@ -17,7 +17,7 @@ Closed world: `data/json/catalog.json` is the only title source. Policy re-reads
 
 Serve path adds a process-local `session.Service`. Checkout and return clone Books + Circulation, rebuild retrieve/policy, and publish a new immutable snapshot with a monotonic revision. Restart reloads the frozen extract. Session activity is memory-only and is not appended to the optional CLI audit JSONL.
 
-Synthetic academics (`data/json/academic_demo.json`) load beside the store. They never enter retrieve, policy, explainer payloads, or audit records.
+Synthetic academics (`data/json/academic_demo.json`) load beside the store. Isolated matched-window scenarios (six 84-day windows over three completed years) never enter retrieve, ranking, support, policy, explainer payloads, or audit records. Operational semester rows that feed support stay unchanged.
 
 ## Request sequence
 

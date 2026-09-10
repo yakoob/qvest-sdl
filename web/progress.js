@@ -13,6 +13,23 @@
     return s.length >= 10 ? s.slice(0, 10) : s;
   }
 
+  function dateValue(value) {
+    const s = isoDate(value);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return NaN;
+    const time = Date.parse(s + "T00:00:00Z");
+    return Number.isFinite(time) && new Date(time).toISOString().slice(0, 10) === s ? time : NaN;
+  }
+
+  function byUTC(a, b) {
+    const da = dateValue(a), db = dateValue(b);
+    if (Number.isFinite(da) && Number.isFinite(db) && da !== db) return da - db;
+    return isoDate(a).localeCompare(isoDate(b));
+  }
+
+  function sortedWindows(scenario) {
+    return (scenario.windows || []).slice().sort((a, b) => byUTC(a.start, b.start) || String(a.id || "").localeCompare(String(b.id || "")));
+  }
+
   window.renderProgress = function (acad) {
     const root = document.createElement("div");
     root.className = "progress-grid";
@@ -25,9 +42,9 @@
       const title = document.createElement("strong");
       title.textContent = scenario.label;
       const body = document.createElement("p");
-      body.textContent = isPrimary
-        ? "Checkouts 2 → 4 → 6 → 9 · English D+ → C- → C → B+. " + (scenario.caveat || "Illustrative only — co-timing is not causal proof.")
-        : (scenario.caveat || "Illustrative only — co-timing is not causal proof.");
+      const ordered = sortedWindows(scenario);
+      body.textContent = (ordered.length ? `Checkouts ${ordered.map(w => w.borrowing_known ? w.checkout_count : "—").join(" → ")} · English ${ordered.map(w => w.english_status === "final" ? w.english_grade ?? "—" : "—").join(" → ")}. ` : "")
+        + (scenario.caveat || "Illustrative only — co-timing is not causal proof.");
       banner.append(title, body);
       root.append(banner);
     }
@@ -103,8 +120,98 @@
       table.append(tbody); details.append(table); card.append(details); root.append(card);
     }
 
+    function linkedChart(windows) {
+      const card = make("section", null, "progress-card coordinated-chart");
+      card.append(make("h3", "Borrowing, reading checks & English"), make("p", "One semester timeline, three separate measures. Hover or focus a semester to compare all values. Reading-check forms are labeled; no cross-form growth is inferred.", "hint"));
+      const width = Math.max(800, windows.length * 130 + 170);
+      const left = 140, right = width - 65;
+      const times = windows.map(w => dateValue(w.end));
+      if (times.some(t => !Number.isFinite(t))) {
+        card.append(make("p", "Cannot plot an invalid observation date."));
+        root.insertBefore(card, root.querySelector(".timeline-card"));
+        return;
+      }
+      const start = Math.min(...times), span = Math.max(1, Math.max(...times) - start);
+      const x = i => times.length === 1 ? (left + right) / 2 : left + (times[i] - start) / span * (right - left);
+      const svg = svgNode("svg", { viewBox: `0 0 ${width} 680`, role: "group", "aria-label": "Semester-aligned borrowing, reading checks and English grades" });
+      const label = (text, xx, yy, anchor = "start") => {
+        const n = svgNode("text", { x: xx, y: yy, fill: INK, "font-size": 12, "text-anchor": anchor });
+        n.textContent = text; svg.append(n);
+      };
+      const maxBorrowing = Math.max(1, ...windows.map(w => w.borrowing_known && Number.isFinite(w.checkout_count) ? w.checkout_count : 0));
+      const lanes = [
+        { name: "Borrowing", unit: "checkout events", top: 45, bottom: 175, max: maxBorrowing },
+        { name: "Reading check", unit: "1–4 · form-specific", top: 265, bottom: 370, max: 3 },
+        { name: "English", unit: "letter categories", top: 460, bottom: 590, max: LETTERS.length - 1 },
+      ];
+      const y = (lane, value) => lane.bottom - value / lane.max * (lane.bottom - lane.top);
+      lanes.forEach((lane, index) => {
+        label(lane.name, 8, lane.top + 8); label(lane.unit, 8, lane.top + 27);
+        const ticks = index === 0 ? [0, maxBorrowing] : index === 1 ? [0, 1, 2, 3] : [0, 2, 5, 8, 11];
+        ticks.forEach(t => {
+          const yy = y(lane, t);
+          svg.append(svgNode("line", { x1: left - 25, x2: right + 25, y1: yy, y2: yy, stroke: GRID }));
+          label(index === 1 ? t + 1 : index === 2 ? LETTERS[t] : t, left - 30, yy + 4, "end");
+        });
+      });
+      const cursor = svgNode("line", { x1: x(0), x2: x(0), y1: 25, y2: 605, stroke: SERIES, "stroke-width": 1, opacity: .45 });
+      svg.append(cursor);
+      const detail = make("p", null, "chart-detail linked-detail");
+      detail.setAttribute("aria-live", "polite");
+      const controls = make("div", null, "semester-controls");
+      controls.setAttribute("role", "group"); controls.setAttribute("aria-label", "Inspect a semester");
+      const rows = windows.map(w => {
+        const r = w.reading_check;
+        const borrowing = w.borrowing_known && Number.isInteger(w.checkout_count) && w.checkout_count >= 0 ? w.checkout_count : null;
+        const reading = r && Number.isInteger(r.result) && r.result >= 1 && r.result <= 4 ? r.result : null;
+        const english = w.english_status === "final" && LETTERS.includes(w.english_grade) ? w.english_grade : null;
+        return { w, borrowing, reading, english,
+          readingText: reading == null ? "Not posted" : `${reading}/4 · grade ${r.grade_form} form · ${isoDate(r.date)}` };
+      });
+      const show = index => {
+        const { w, borrowing, readingText, english } = rows[index];
+        cursor.setAttribute("x1", x(index)); cursor.setAttribute("x2", x(index));
+        detail.textContent = `${w.academic_year} ${w.semester} · ${isoDate(w.start)}–${isoDate(w.end)} (${w.inclusive_days} days) · Borrowing: ${borrowing ?? "not available"} · Reading check: ${readingText} · English: ${english ?? "not posted"}`;
+        [...controls.children].forEach((b, i) => b.setAttribute("aria-pressed", String(i === index)));
+      };
+      rows.forEach(({ w, borrowing, reading, readingText, english }, i) => {
+        const xx = x(i);
+        const values = [borrowing, reading == null ? null : reading - 1, english == null ? null : LETTERS.indexOf(english)];
+        values.forEach((value, j) => {
+          const lane = lanes[j];
+          if (value == null) { label("Not posted", xx, lane.bottom - 8, "middle"); return; }
+          const yy = y(lane, value);
+          if (j === 0) svg.append(svgNode("rect", { x: xx - 10, y: yy, width: 20, height: lane.bottom - yy, rx: 4, fill: SERIES }));
+          else svg.append(svgNode("circle", { cx: xx, cy: yy, r: 5, fill: SERIES, stroke: SURFACE, "stroke-width": 2 }));
+          label(j === 0 ? borrowing : j === 1 ? reading : english, xx, yy - 10, "middle");
+        });
+        label(w.reading_check ? `Grade ${w.reading_check.grade_form} form` : "No assessment", xx, 398, "middle");
+        label(w.academic_year, xx, 630, "middle"); label(w.semester, xx, 650, "middle");
+        const hit = svgNode("rect", { x: xx - 28, y: 20, width: 56, height: 585, fill: "transparent", tabindex: 0, role: "img", "aria-label": `${w.academic_year} ${w.semester}: ${borrowing ?? "unknown"} checkouts, reading ${readingText}, English ${english ?? "not posted"}` });
+        hit.addEventListener("mouseenter", () => show(i)); hit.addEventListener("focus", () => show(i)); hit.addEventListener("click", () => show(i));
+        svg.append(hit);
+        const button = make("button", `${w.academic_year} ${w.semester}`, "secondary"); button.type = "button";
+        button.addEventListener("click", () => show(i)); button.addEventListener("focus", () => show(i)); controls.append(button);
+      });
+      const scroll = make("div", null, "coordinated-scroll"); scroll.append(svg);
+      card.append(controls, scroll, detail);
+      const tableDetails = make("details"); tableDetails.append(make("summary", "View all three measures as a table"));
+      const table = make("table", null, "sem"), head = make("thead"), tr = make("tr");
+      ["Year / semester", "Window (UTC)", "Checkouts", "Reading check", "English"].forEach(v => { const th = make("th", v); th.scope = "col"; tr.append(th); });
+      head.append(tr); table.append(head);
+      const body = make("tbody");
+      rows.forEach(({ w, borrowing, readingText, english }) => {
+        const row = make("tr");
+        [`${w.academic_year} ${w.semester}`, `${isoDate(w.start)}–${isoDate(w.end)}`, borrowing ?? "Not available", readingText, english ?? "Not posted"].forEach(v => row.append(make("td", v)));
+        body.append(row);
+      });
+      table.append(body); tableDetails.append(table); card.append(tableDetails);
+      root.insertBefore(card, root.querySelector(".timeline-card"));
+      show(rows.length - 1);
+    }
+
     if (scenario && (scenario.windows || []).length) {
-      const windows = scenario.windows.slice().sort((a, b) => isoDate(a.start).localeCompare(isoDate(b.start)));
+      const windows = sortedWindows(scenario);
       const events = [];
       windows.forEach(w => {
         if (w.english_status === "final") {
@@ -118,7 +225,7 @@
           events.push({ date: isoDate(b.checkout_date), kind: "Borrowed", detail: `${b.title}${b.renewal_or_repeat ? " · repeat/renewal" : ""}. Borrowed does not mean finished.` });
         });
       });
-      events.sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind));
+      events.sort((a, b) => byUTC(a.date, b.date) || a.kind.localeCompare(b.kind));
       const card = make("section", null, "progress-card timeline-card");
       card.append(make("h3", "Matched observation windows"), make("p", `${scenario.matched_window_days || 84}-day windows · isolated synthetic timeline · not operational loans`, "hint"));
       const controls = make("div", null, "timeline-controls");
@@ -141,50 +248,11 @@
       };
       select.addEventListener("change", draw); draw(); card.append(list); root.append(card);
 
-      plot(
-        "English · exact letter grades",
-        windows.map(w => {
-          const valid = w.english_status === "final" && LETTERS.includes(w.english_grade);
-          return {
-            date: isoDate(w.end),
-            value: valid ? w.english_grade : null,
-            label: valid ? w.english_grade : null,
-            detail: `${w.academic_year} ${w.semester} · grade ${w.school_grade}: ${valid ? w.english_grade : "not posted"}.`,
-          };
-        }),
-        LETTERS,
-        "Plus and minus are distinct steps. Ordinal categories, not a numeric growth scale.",
-      );
-
-      const byForm = new Map();
-      windows.forEach(w => {
-        const r = w.reading_check;
-        if (!r) return;
-        const key = `Willow Bend Reading Check · grade ${r.grade_form}`;
-        if (!byForm.has(key)) byForm.set(key, []);
-        byForm.get(key).push({
-          date: isoDate(r.date),
-          value: Number.isInteger(r.result) ? r.result : null,
-          label: r.result == null ? null : r.result,
-          detail: `${isoDate(r.date)}: ${r.result == null ? "not posted" : r.result + " / 4"} · grade ${r.grade_form} form.`,
-        });
-      });
-      byForm.forEach((rows, title) => {
-        plot(title, rows.sort((a, b) => a.date.localeCompare(b.date)), [1, 2, 3, 4], "Fictional reading check. Different grade forms are separate charts.");
-      });
-
-      const borrowing = windows.map(w => ({
-        date: isoDate(w.end),
-        value: w.borrowing_known ? w.checkout_count : null,
-        label: w.borrowing_known ? w.checkout_count : null,
-        detail: `${w.academic_year} ${w.semester}: ${w.borrowing_known ? w.checkout_count + " checkouts, " + w.unique_titles + " unique titles" : "not a covered window"} (${w.inclusive_days} days).`,
-      }));
-      const max = Math.max(1, ...borrowing.map(b => b.value || 0));
-      plot("Borrowing · matched windows", borrowing, Array.from({ length: max + 1 }, (_, i) => i), "Equal-length synthetic windows. Not operational circulation and not books finished.", true);
+      linkedChart(windows);
       return root;
     }
 
-    const semesters = (acad.semesters || []).slice().sort((a, b) => isoDate(a.start).localeCompare(isoDate(b.start)) || isoDate(a.end).localeCompare(isoDate(b.end)));
+    const semesters = (acad.semesters || []).slice().sort((a, b) => byUTC(a.start, b.start) || byUTC(a.end, b.end) || String(a.id || "").localeCompare(String(b.id || "")));
     const events = [];
     const seenLoans = new Set();
     semesters.forEach(s => {
@@ -233,7 +301,7 @@
       groups.get(key).push(a);
     });
     groups.forEach((assessments, title) => {
-      plot(title, assessments.sort((a, b) => isoDate(a.date).localeCompare(isoDate(b.date))).map(a => ({
+      plot(title, assessments.sort((a, b) => byUTC(a.date, b.date)).map(a => ({
         date: isoDate(a.date), value: a.scale === "willow_bend_reading_1_4" && Number.isInteger(a.result) ? a.result : null,
         label: a.result, detail: `${isoDate(a.date)}: ${a.result == null ? "not posted" : a.result + " / 4"}. ${a.compare_note || ""} ${a.note || ""}`,
       })), [1, 2, 3, 4], "Fictional reading check. Different grade forms are separate; no cross-form growth is calculated.");

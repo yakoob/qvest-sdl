@@ -2,6 +2,7 @@ package academics
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -310,13 +311,16 @@ func TestSofiaImprovingEngagementScenario(t *testing.T) {
 		t.Fatal("one caveat required")
 	}
 	wins := view.Scenario.Windows
-	if len(wins) != 4 {
-		t.Fatalf("windows %d", len(wins))
+	if len(wins) != CompletedScenarioWindows {
+		t.Fatalf("windows %d want %d", len(wins), CompletedScenarioWindows)
 	}
-	wantCounts := []int{2, 4, 6, 9}
-	wantGrades := []string{"D+", "C-", "C", "B+"}
-	wantReading := []*int{ptrInt(1), ptrInt(2), ptrInt(2), ptrInt(3)}
+	wantCounts := []int{2, 3, 5, 6, 8, 10}
+	wantGrades := []string{"D", "D+", "C-", "C", "B-", "B+"}
+	wantReading := []*int{ptrInt(1), ptrInt(1), ptrInt(1), ptrInt(2), ptrInt(2), ptrInt(3)}
+	wantGradesSchool := []int{0, 0, 1, 1, 2, 2}
+	years := map[string]bool{}
 	for i, w := range wins {
+		years[w.AcademicYear] = true
 		if w.InclusiveDays != MatchedWindowDays {
 			t.Fatalf("window %s days %d", w.ID, w.InclusiveDays)
 		}
@@ -329,6 +333,9 @@ func TestSofiaImprovingEngagementScenario(t *testing.T) {
 		if w.ReadingCheck == nil || w.ReadingCheck.Result == nil || *w.ReadingCheck.Result != *wantReading[i] {
 			t.Fatalf("window %s reading %+v", w.ID, w.ReadingCheck)
 		}
+		if w.SchoolGrade != wantGradesSchool[i] {
+			t.Fatalf("window %s school_grade %d want %d", w.ID, w.SchoolGrade, wantGradesSchool[i])
+		}
 		if i > 0 && w.CheckoutCount <= wins[i-1].CheckoutCount {
 			t.Fatalf("borrowing did not increase at %s", w.ID)
 		}
@@ -336,8 +343,8 @@ func TestSofiaImprovingEngagementScenario(t *testing.T) {
 			t.Fatalf("english did not improve at %s", w.ID)
 		}
 	}
-	if wins[0].SchoolGrade != 1 || wins[2].SchoolGrade != 2 {
-		t.Fatalf("school grades %+v %+v", wins[0], wins[2])
+	if len(years) != CompletedScenarioYears {
+		t.Fatalf("years %d want %d", len(years), CompletedScenarioYears)
 	}
 	s2 := semester(view, "SY25-S2")
 	if s2.EnglishGrade == nil || *s2.EnglishGrade != "B+" {
@@ -355,12 +362,15 @@ func TestStableAndMissingAcademicCasesPreserved(t *testing.T) {
 	if len(mateo.Semesters) != 3 || gradeOf(mateo, "SY25-S2") != "C" {
 		t.Fatalf("mateo drift semesters=%d grade=%s", len(mateo.Semesters), gradeOf(mateo, "SY25-S2"))
 	}
-	if mateo.DemoCase != DemoStableComparator {
+	if mateo.DemoCase != DemoImprovingEngagement {
 		t.Fatalf("mateo demo %q", mateo.DemoCase)
 	}
 	aisha := cat.View("S-402", st)
 	if gradeOf(aisha, "SY25-S2") != "A-" || aisha.DemoCase != DemoStrongStable {
 		t.Fatalf("aisha spring %s demo %s", gradeOf(aisha, "SY25-S2"), aisha.DemoCase)
+	}
+	if aisha.Scenario == nil || len(aisha.Scenario.Windows) != CompletedScenarioWindows {
+		t.Fatalf("aisha windows %d", len(aisha.Scenario.Windows))
 	}
 	priya := cat.View("S-405", st)
 	if len(priya.Assessments) != 1 || priya.Assessments[0].Result != nil {
@@ -380,6 +390,9 @@ func TestStableAndMissingAcademicCasesPreserved(t *testing.T) {
 	if gradeOf(tyler, "SY25-S2") != "C" {
 		t.Fatalf("tyler spring %s", gradeOf(tyler, "SY25-S2"))
 	}
+	if tyler.DemoCase != DemoImprovingEngagement {
+		t.Fatalf("tyler demo %q", tyler.DemoCase)
+	}
 	luis := cat.View("S-302", st)
 	if gradeOf(luis, "SY25-S2") != "" {
 		t.Fatalf("luis missing grade became %s", gradeOf(luis, "SY25-S2"))
@@ -396,6 +409,75 @@ func TestStableAndMissingAcademicCasesPreserved(t *testing.T) {
 	}
 	if miss.CheckoutCount != 0 {
 		t.Fatalf("luis scenario invented borrowing %d", miss.CheckoutCount)
+	}
+}
+
+func TestThreeImprovingScenariosDistinct(t *testing.T) {
+	st, cat := loadAll(t)
+	type want struct {
+		id, last string
+		counts   []int
+		grades   []string
+		school   []int
+	}
+	cases := map[string]want{
+		"S-305": {id: DemoImprovingEngagement, last: "B+", counts: []int{2, 3, 5, 6, 8, 10}, grades: []string{"D", "D+", "C-", "C", "B-", "B+"}, school: []int{0, 0, 1, 1, 2, 2}},
+		"S-406": {id: DemoImprovingEngagement, last: "A-", counts: []int{2, 4, 5, 7, 8, 11}, grades: []string{"C-", "C", "C+", "B-", "B", "A-"}, school: []int{1, 1, 2, 2, 3, 3}},
+		"S-504": {id: DemoImprovingEngagement, last: "A", counts: []int{1, 3, 4, 6, 7, 9}, grades: []string{"D+", "C", "C+", "B-", "B", "A"}, school: []int{2, 2, 3, 3, 4, 4}},
+	}
+	if len(cases) < 3 {
+		t.Fatal("need at least three improving scenarios")
+	}
+	seenSeq := map[string]string{}
+	for sid, w := range cases {
+		view := cat.View(sid, st)
+		if view.Scenario == nil {
+			t.Fatalf("%s missing scenario pointer", sid)
+		}
+		wins := view.Scenario.Windows
+		if len(wins) != CompletedScenarioWindows {
+			t.Fatalf("%s windows %d want %d (not just non-nil)", sid, len(wins), CompletedScenarioWindows)
+		}
+		years := map[string]bool{}
+		seq := ""
+		for i, win := range wins {
+			years[win.AcademicYear] = true
+			if win.InclusiveDays != MatchedWindowDays {
+				t.Fatalf("%s %s days %d", sid, win.ID, win.InclusiveDays)
+			}
+			if win.CheckoutCount != w.counts[i] {
+				t.Fatalf("%s %s checkouts %d want %d", sid, win.ID, win.CheckoutCount, w.counts[i])
+			}
+			if win.EnglishGrade == nil || *win.EnglishGrade != w.grades[i] {
+				t.Fatalf("%s %s grade %+v want %s", sid, win.ID, win.EnglishGrade, w.grades[i])
+			}
+			if win.SchoolGrade != w.school[i] {
+				t.Fatalf("%s %s school_grade %d want %d", sid, win.ID, win.SchoolGrade, w.school[i])
+			}
+			if i > 0 && win.CheckoutCount <= wins[i-1].CheckoutCount {
+				t.Fatalf("%s borrowing did not increase at %s", sid, win.ID)
+			}
+			if i > 0 && letterRank(*win.EnglishGrade) < letterRank(*wins[i-1].EnglishGrade) {
+				t.Fatalf("%s english did not improve at %s", sid, win.ID)
+			}
+			seq += fmt.Sprintf("%s/%d;", *win.EnglishGrade, win.CheckoutCount)
+		}
+		if len(years) != CompletedScenarioYears {
+			t.Fatalf("%s years %d want %d", sid, len(years), CompletedScenarioYears)
+		}
+		if *wins[len(wins)-1].EnglishGrade != w.last {
+			t.Fatalf("%s last grade %s want %s", sid, *wins[len(wins)-1].EnglishGrade, w.last)
+		}
+		if other, ok := seenSeq[seq]; ok {
+			t.Fatalf("%s sequence identical to %s", sid, other)
+		}
+		seenSeq[seq] = sid
+	}
+	if gradeOf(cat.View("S-406", st), "SY25-S2") != "C" {
+		t.Fatal("Mateo operational spring grade drifted")
+	}
+	if gradeOf(cat.View("S-504", st), "SY25-S2") != "C" {
+		t.Fatal("Tyler operational spring grade drifted")
 	}
 }
 

@@ -57,6 +57,28 @@ func TestCohortMaturityAndFeedback(t *testing.T) {
 		}
 	}
 }
+func TestFollowupReschedulingAsOf(t *testing.T) {
+	created := instant("2026-09-01T16:00:00Z")
+	due := created.Add(24 * time.Hour)
+	moved := due.Add(24 * time.Hour)
+	completed := moved.Add(time.Hour)
+	s := engagement.State{Interactions: []engagement.Interaction{{ID: "i", StudentID: "s", Facilitator: "original", CompletedAt: &created}}, Followups: []engagement.Followup{{ID: "f", InteractionID: "i", CreatedAt: created, Due: moved, AppointmentID: "new", CompletedAt: &completed, ContactID: "contact", StaffID: "other", Reservations: []engagement.Reservation{{At: created, Due: due, AppointmentID: "old", Status: "scheduled"}, {At: due.Add(time.Minute), Due: moved, AppointmentID: "new", Status: "scheduled"}}}}}
+	filter := Filter{Start: created, End: due.Add(time.Hour), AsOf: due.Add(2 * time.Hour), StaffID: "original"}
+	r := Aggregate(s, filter)
+	if r.Overdue != 1 || r.FollowupCoverage.Denominator != 1 || r.Followups[0].ContactID != "" || !r.Followups[0].Due.Equal(due) {
+		t.Fatalf("late rebooking erased due cohort: %+v", r)
+	}
+	filter.AsOf = completed
+	r = Aggregate(s, filter)
+	if r.FollowupCoverage != (Ratio{1, 1}) {
+		t.Fatalf("contact not counted: %+v", r)
+	}
+	filter.StaffID = "other"
+	if Aggregate(s, filter).FollowupCoverage.Denominator != 0 {
+		t.Fatal("booking staff changed cohort owner")
+	}
+}
+
 func TestEmptyAndExclusiveBoundary(t *testing.T) {
 	at := instant("2026-09-01T00:00:00Z")
 	end := at.Add(24 * time.Hour)

@@ -36,6 +36,7 @@ func (s Server) Handler() http.Handler {
 	mux.HandleFunc("/api/agenda", s.agenda)
 	mux.HandleFunc("/api/availability", s.availability)
 	mux.HandleFunc("/api/engagement", s.engagementCommand)
+	mux.HandleFunc("/api/metrics/progress", s.studentProgress)
 	mux.HandleFunc("/api/metrics", s.engagementMetrics)
 	mux.HandleFunc("/api/support/queue", s.supportQueue)
 	mux.HandleFunc("/api/support/followups", s.followup)

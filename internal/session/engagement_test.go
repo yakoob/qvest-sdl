@@ -69,7 +69,7 @@ func TestEngagementAtomicCheckoutAndRetry(t *testing.T) {
 	if _, e := s.EngagementCommand(context.Background(), c); e == nil {
 		t.Fatal("payload mismatch accepted")
 	}
-	command(t, s, engagement.Command{Action: "complete", InteractionID: in.ID, Due: "2026-09-17T09:00"})
+	command(t, s, engagement.Command{Action: "complete", InteractionID: in.ID, Start: "2026-09-17T09:00", Duration: 10, StaffID: "L-002", Confirmed: true})
 	command(t, s, engagement.Command{Action: "feedback", InteractionID: in.ID, BookID: "B-007", StaffID: "L-002", Source: "student_reported", Reading: "finished", Enjoyment: "yes"})
 	if s.EngagementSnapshot().Feedback[0].LoanID != snap.Choices[0].LoanID {
 		t.Fatal("feedback unlinked")

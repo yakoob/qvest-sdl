@@ -30,6 +30,22 @@ Feedback attaches to an interaction/book pair, optionally its loan. Recorder, ti
 - **Response coverage:** report the number of eligible book pairs with a report alongside all eligible book pairs. Report reading-known and enjoyment-known counts separately; a response of unknown is contact evidence but not a known outcome.
 - **Follow-up coverage:** completed due follow-up records / eligible due follow-up records in the reporting period, observed by report-as-of. Future due records are pending, not overdue. Only an explicit completed follow-up counts as contact; a checkout, return or generic action does not.
 
+## Reservation-backed follow-ups
+
+Booking a follow-up creates a real appointment under the same conflict validator used for other meetings. New bookings use available five-minute-start slots with explicit staff confirmation. Completing the linked follow-up conversation records contact; cancellation and no-show do not. The originating interaction retains outcome attribution even when another staff member conducts the follow-up.
+
+Reservation history is dated. Reports use the due time known at report-as-of; once a due time has passed, a later rebooking cannot remove that overdue obligation from its original reporting cohort. The agenda shows the current reservation, which can differ from the metric's retained due date. One fulfilled obligation counts once.
+
+## Student-progress portfolio
+
+Outcomes also projects the same `academics.Catalog.View` records used by each student workspace. Portfolio data is not attributed to a librarian. Extract plus session borrowing and the isolated historical scenario are separate sources.
+
+- Checkout events include repeated borrowing/renewals. Student–title pairs sum unique titles per student; district distinct titles deduplicate book IDs across students in a period.
+- Full, partial and missing coverage counts account for every roster student per period. Missing windows are unknown. An observed event outside full coverage does not establish coverage for the entire window.
+- English results are exact letter-grade distributions, never averaged GPA or a percentage gain.
+- Reading observation deltas compare only the same student, instrument, scale and grade form. Different forms are not subtracted.
+- All six 84-day scenario windows remain intact. Per-student records and period aggregates reconcile; source values are not changed to create a preferred trend.
+
 ## Evidence and limitations
 
 Every reported number needs supporting IDs and dates, and ratio rows need their numerator, denominator and exclusions. The source and filter labels must remain visible in the UI and drill-down. Missing academic data does not exclude students from the activity cohort. A newly completed session conversation has no mature 14-day conversion window and no months-later outcomes.

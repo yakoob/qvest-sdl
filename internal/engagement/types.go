@@ -65,13 +65,25 @@ type Feedback struct {
 	At            time.Time `json:"at"`
 }
 type Followup struct {
-	ID            string     `json:"id"`
-	InteractionID string     `json:"interaction_id"`
-	Due           time.Time  `json:"due"`
-	CreatedAt     time.Time  `json:"created_at"`
-	CompletedAt   *time.Time `json:"completed_at,omitempty"`
-	StaffID       string     `json:"staff_id,omitempty"`
+	AppointmentID string        `json:"appointment_id,omitempty"`
+	ContactID     string        `json:"contact_id,omitempty"`
+	Reservations  []Reservation `json:"reservations,omitempty"`
+	ID            string        `json:"id"`
+	InteractionID string        `json:"interaction_id"`
+	Due           time.Time     `json:"due"`
+	CreatedAt     time.Time     `json:"created_at"`
+	CompletedAt   *time.Time    `json:"completed_at,omitempty"`
+	StaffID       string        `json:"staff_id,omitempty"`
 }
+
+// Reservation preserves dated scheduling changes for as-of reports.
+type Reservation struct {
+	At            time.Time `json:"at"`
+	AppointmentID string    `json:"appointment_id"`
+	Due           time.Time `json:"due"`
+	Status        string    `json:"status"`
+}
+
 type Event struct {
 	ID       string    `json:"id"`
 	Action   string    `json:"action"`

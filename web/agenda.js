@@ -71,19 +71,57 @@ window.engagement = {
     }
     for (const i of this.snapshot.interactions || []) if (!i.completed_at && i.facilitator === staffId() && mode.value === "upcoming") agenda.append(el("div", { class: "agenda-row" }, [el("strong", { text: `Open conversation · ${this.name(i.student_id)}` }), this.button("Continue", () => selectStudent(i.student_id))]));
     const follow = el("section", { class: "task" }, [el("h2", { text: "Follow-ups" })]);
-    for (const f of this.snapshot.followups || []) { const i = this.snapshot.interactions.find(i => i.id === f.interaction_id); if (!i || i.facilitator !== staffId() || f.completed_at) continue; follow.append(el("div", { class: "agenda-row" }, [el("strong", { text: `${this.name(i.student_id)} · ${new Date(f.due) <= new Date(this.now) ? "Due / overdue" : "Pending"}` }), el("p", { text: this.local(f.due) }), this.button("Open book feedback", () => selectStudent(i.student_id)), this.button("Record follow-up contact", () => this.command({ action: "followup", id: f.id, staff_id: staffId() }))])); }
+    for (const f of this.snapshot.followups || []) {
+      const i = this.snapshot.interactions.find(i => i.id === f.interaction_id);
+      const appointment = (this.snapshot.appointments || []).find(a => a.id === f.appointment_id);
+      if (!i || (i.facilitator !== staffId() && appointment?.staff_id !== staffId()) || f.completed_at) continue;
+      const rebook = !appointment || ["cancelled", "no_show"].includes(appointment.status);
+      const label = !appointment ? "Unscheduled follow-up" : rebook ? "Needs rebooking" : appointment.status === "in_progress" ? "Contact in progress" : new Date(f.due) <= new Date(this.now) ? "Due / overdue" : "Booked";
+      const row = el("div", { class: "agenda-row" }, [el("strong", { text: `${this.name(i.student_id)} · ${label}` }), el("p", { text: `${this.local(f.due)} · Original facilitator ${i.facilitator}${appointment ? ` · Assigned ${appointment.staff_id}` : ""}` }), this.button("Open book feedback", () => selectStudent(i.student_id))]);
+      if (rebook) row.append(this.button("Book a slot", () => this.schedule(i.student_id, null, null, f)));
+      else if (appointment.status === "scheduled") row.append(this.button("Start follow-up conversation", async () => { await this.command({ action: "start", appointment_id: appointment.id, staff_id: staffId() }); await selectStudent(i.student_id); }), this.button("Reschedule follow-up", () => this.schedule(i.student_id, appointment)));
+      else if (appointment.status === "in_progress") row.append(this.button("Continue follow-up", () => selectStudent(i.student_id)));
+      follow.append(row);
+    }
     if (follow.children.length === 1) follow.append(el("p", { text: "No open follow-ups for this facilitator." }));
     const attention = el("section", { class: "task" }, [el("h2", { text: "Needs attention" }), el("p", { class: "hint", text: "Explainable, unvalidated bands—not diagnosis. Missing academic data never hides a student. All readers remain in Students." })]);
     for (const row of data.students || []) { if (row.band === "none") continue; const contacts = (this.snapshot.interactions || []).filter(i => i.student_id === row.student_id && i.completed_at); const next = (this.snapshot.appointments || []).filter(a => a.student_id === row.student_id && a.status === "scheduled").sort((a,b) => a.start.localeCompare(b.start))[0]; attention.append(el("div", { class: "agenda-row" }, [el("strong", { text: `${this.name(row.student_id)} · ${row.label}` }), el("p", { class: "hint", text: `${row.coverage} · ${(row.reason_codes || []).join(", ")}` }), el("p", { class: "hint", text: `Last contact: ${contacts.length ? this.local(contacts[contacts.length-1].completed_at) : "none this session"}. Next: ${next ? this.local(next.start) : "not scheduled"}.` }), this.button("Open student", () => selectStudent(row.student_id)), this.button("Schedule", () => this.schedule(row.student_id))])); }
     target.replaceChildren(agenda, follow, attention);
   },
-  async schedule(student, existing) {
+  async schedule(student, existing, completion, followup) {
     await this.refresh();
-    const dialog = el("dialog", { class: "engagement-dialog", "aria-label": "Schedule conversation" });
-    const form = el("form"); const date = el("input", { type: "date", required: true, value: existing ? this.day(existing.start) : this.day() }); const duration = el("input", { type: "number", min: 5, max: 60, value: 10, required: true }); const staff = el("select", {}, [...document.getElementById("staff").options].map(o => el("option", { value: o.value, text: o.text }))); staff.value = existing?.staff_id || staffId(); if (existing) staff.disabled = true;
-    const start = el("input", { type: "datetime-local", required: true }); const place = el("input", { value: existing?.place || "Library", maxlength: 100 }); const confirm = el("input", { type: "checkbox", required: true }); const slots = el("div"); const message = el("p", { role: "status" });
-    form.append(el("h2", { text: `${existing ? "Reschedule" : "Schedule"} · ${this.name(student)}` }), el("p", { class: "hint", text: `School time: ${this.timezone}. Internal appointment only—no notifications. Suggestions exclude structured blocks; duty is not guaranteed free time. Confirm unstructured duties and student availability.` }), el("label", {}, ["Assigned librarian", staff]), el("label", {}, ["Date for suggestions", date]), el("label", {}, ["Minutes", duration]), this.button("Show available slots", async () => { const q = new URLSearchParams({ student_id: student, staff_id: staff.value, date: date.value, duration: duration.value, exclude: existing?.id || "" }); const r = await fetch(`/api/availability?${q}`); const d = await r.json(); if (!r.ok) { message.textContent = d.error; return; } slots.replaceChildren(); for (const a of d.slots) { const b = this.button(this.local(a.start), () => { const parts = new Intl.DateTimeFormat("en-GB", { timeZone: this.timezone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date(a.start)); start.value = `${this.day(a.start)}T${parts}`; }); slots.append(b); } if (!d.slots.length) slots.textContent = "No suggested slots; choose another date or librarian." }), slots, el("label", {}, ["School-local start", start]), el("label", {}, ["Place (no confidential notes)", place]), el("label", { class: "check" }, [confirm, "I confirmed staff and student availability"]), message, el("button", { type: "submit", text: "Save appointment" }), this.button("Close", () => dialog.close()));
-    form.addEventListener("submit", async e => { e.preventDefault(); try { await this.command({ action: existing ? "reschedule" : "schedule", id: existing?.id || "", student_id: student, staff_id: staff.value, start: start.value, duration: Number(duration.value), place: place.value, confirmed: confirm.checked }); dialog.close(); } catch (err) { message.textContent = err.message; } }); dialog.append(form); document.body.append(dialog); dialog.addEventListener("close", () => dialog.remove()); dialog.showModal();
+    const title = completion ? "Complete and book follow-up" : followup ? "Book follow-up" : existing ? "Reschedule conversation" : "Schedule conversation";
+    const dialog = el("dialog", { class: "engagement-dialog", "aria-label": title });
+    const form = el("form");
+    const save = el("button", { type: "submit", text: title, disabled: true });
+    const message = el("p", { role: "status" });
+    const place = el("input", { value: existing?.place || "Library", maxlength: 100 });
+    const picker = createSlotPicker({ student, staff: existing?.staff_id || staffId(), lockStaff: !!existing,
+      date: existing ? this.day(existing.start) : this.day(), exclude: existing?.id,
+      duration: existing ? Math.round((new Date(existing.end) - new Date(existing.start)) / 60000) : 10,
+      onChange: value => { save.disabled = !value; },
+    });
+    form.append(el("h2", { text: title }), picker.element, el("label", {}, ["Place (no confidential notes)", place]), message, save, this.button("Close", () => dialog.close()));
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const slot = picker.value();
+      if (!slot) return;
+      save.disabled = true;
+      try {
+        await this.command({ ...slot, place: place.value, student_id: student,
+          action: completion ? "complete" : followup ? "book_followup" : existing ? "reschedule" : "schedule",
+          ...(completion ? { interaction_id: completion.id } : {}),
+          ...(followup || existing ? { id: (followup || existing).id } : {}),
+        });
+        dialog.close();
+      } catch (error) {
+        message.textContent = error.message;
+        await picker.reload();
+      }
+    });
+    dialog.append(form); document.body.append(dialog);
+    dialog.addEventListener("close", () => { picker.dispose(); dialog.remove(); });
+    dialog.showModal(); await picker.reload();
   },
   renderConversation() {
     const target = document.getElementById("conversation-body"); if (!target) return;
@@ -97,7 +135,7 @@ window.engagement = {
       if (!choice) nodes.push(this.button("None today", () => this.command({ action: "choose", interaction_id: active.id, source: "none" })));
       if (choice) nodes.push(el("p", { text: choice.book_id ? `Chosen ${choice.book_id} · ${choice.loan_id || "not checked out"}` : "No book chosen today" }));
       if (choice?.book_id && !choice.loan_id) nodes.push(this.button("Check out chosen book", () => this.command({ action: "checkout", id: choice.id, staff_id: staffId() })));
-      const due = el("input", { type: "datetime-local" }); nodes.push(el("label", {}, [`Follow-up due (optional, ${this.timezone})`, due]), this.button("Complete conversation", () => this.command({ action: "complete", interaction_id: active.id, due: due.value })));
+      nodes.push(this.button("Complete without follow-up", () => this.command({ action: "complete", interaction_id: active.id })), this.button("Complete and book follow-up", () => this.schedule(id, null, active)));
     }
     for (const i of (this.snapshot.interactions || []).filter(i => i.student_id === id && i.completed_at)) {
       const c = (this.snapshot.choices || []).find(c => c.interaction_id === i.id);

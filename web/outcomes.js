@@ -1,6 +1,12 @@
 /* Tables keep denominators and supporting records visible without color coding. */
 window.engagement.loadOutcomes = async function () {
   const target = document.getElementById("outcomes-body");
+  const navigation = el("div", { class: "engagement-actions", "aria-label": "Outcome sections" }, [
+    this.button("Librarian activity", () => { this.outcomeSection = "activity"; return this.loadOutcomes(); }),
+    this.button("Student progress", () => { this.outcomeSection = "progress"; return this.loadOutcomes(); }),
+  ]);
+  if (this.outcomeSection === "progress") return this.loadStudentProgress(target, navigation);
+  this.progressSeq = (this.progressSeq || 0) + 1;
   const staff = el("select", {}, [el("option", { value: "", text: "All librarians (deduplicated)" }), ...[...document.getElementById("staff").options].map(o => el("option", { value: o.value, text: o.text }))]);
   staff.value = this.metricsStaff || "";
   const start = el("input", { type: "date", value: this.metricsStart || "" });
@@ -9,7 +15,7 @@ window.engagement.loadOutcomes = async function () {
   const seq = this.metricsSeq = (this.metricsSeq || 0) + 1;
   const res = await fetch(`/api/metrics?${new URLSearchParams({ staff_id: staff.value, start: start.value, end: end.value, source: "session" })}`);
   const d = await res.json(); if (seq !== this.metricsSeq || this.view !== "outcomes") return;
-  target.replaceChildren(controls);
+  target.replaceChildren(navigation, controls);
   if (!res.ok) { target.append(el("p", { role: "alert", text: d.error || "Could not load outcomes" })); return; }
   const ratio = v => v.denominator ? `${v.numerator} / ${v.denominator} (${Math.round(100*v.numerator/v.denominator)}%)` : `${v.numerator} / 0 · not yet available`;
   const table = (headers, rows) => el("div", { class: "table-scroll", tabindex: "0" }, [el("table", { class: "engagement-table" }, [el("thead", {}, [el("tr", {}, headers.map(h => el("th", { scope: "col", text: h })))]), el("tbody", {}, rows.map(row => el("tr", {}, row.map(v => el("td", { text: v })))))] )]);

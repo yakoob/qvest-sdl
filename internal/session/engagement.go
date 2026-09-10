@@ -90,6 +90,10 @@ func (s *Service) slotLocked(staff, student, start string, duration int, exclude
 		return a, a, e
 	}
 	b := a.Add(time.Duration(duration) * time.Minute)
+	local := a.In(s.calendar.Location)
+	if local.Minute()%5 != 0 || local.Hour() < 7 || local.Hour() >= 16 {
+		return a, b, fmt.Errorf("choose a suggested five-minute slot")
+	}
 	st, ok := s.snap.Engine.Store.Student(student)
 	if !ok {
 		return a, b, ErrUnknownStudent
@@ -186,19 +190,8 @@ func (s *Service) EngagementCommand(ctx context.Context, c engagement.Command) (
 	id := fmt.Sprintf("ENG-%06d", s.engagement.Revision+1)
 	out := EngagementResult{ID: id}
 	fail := func(msg string) (EngagementResult, error) { return EngagementResult{}, fmt.Errorf("%s", msg) }
-	var due *time.Time
 	if c.Due != "" {
-		if s.calendar == nil {
-			return fail("school calendar not loaded")
-		}
-		v, e := s.calendar.ParseLocal(c.Due)
-		if e != nil {
-			return EngagementResult{}, e
-		}
-		if !v.After(now) {
-			return fail("follow-up must be in future")
-		}
-		due = &v
+		return fail("choose an available follow-up slot with start, duration, staff_id and confirmation")
 	}
 	st := s.snap.Engine.Store
 	switch c.Action {
@@ -281,13 +274,35 @@ func (s *Service) EngagementCommand(ctx context.Context, c engagement.Command) (
 		if in == nil || in.CompletedAt != nil {
 			return fail("open interaction required")
 		}
+		var booking *engagement.Appointment
+		if c.Start != "" {
+			if !c.Confirmed || len(c.Place) > 100 {
+				return fail("confirm availability and use a short place label")
+			}
+			a, b, err := s.slotLocked(c.StaffID, in.StudentID, c.Start, c.Duration, "")
+			if err != nil {
+				return EngagementResult{}, err
+			}
+			booking = &engagement.Appointment{ID: "AP-" + id, StudentID: in.StudentID, StaffID: c.StaffID, Start: a, End: b, Place: c.Place, Status: "scheduled", CreatedAt: now}
+		}
 		in.CompletedAt = &now
 		id = in.ID
 		if a := s.appointmentLocked(in.AppointmentID); a != nil {
 			a.Status = "completed"
 		}
-		if due != nil {
-			s.engagement.Followups = append(s.engagement.Followups, engagement.Followup{ID: "F-" + id, InteractionID: id, Due: *due, CreatedAt: now})
+		for j := range s.engagement.Followups {
+			f := &s.engagement.Followups[j]
+			if f.AppointmentID != "" && f.AppointmentID == in.AppointmentID && f.CompletedAt == nil {
+				f.CompletedAt = &now
+				f.ContactID = in.ID
+				f.StaffID = in.Facilitator
+			}
+		}
+		if booking != nil {
+			s.engagement.Appointments = append(s.engagement.Appointments, *booking)
+			f := engagement.Followup{ID: "F-" + booking.ID, InteractionID: id, Due: booking.Start, CreatedAt: now, AppointmentID: booking.ID}
+			f.Reservations = []engagement.Reservation{{At: now, AppointmentID: booking.ID, Due: booking.Start, Status: "scheduled"}}
+			s.engagement.Followups = append(s.engagement.Followups, f)
 		}
 	case "offer":
 		books := []string{}
@@ -388,27 +403,48 @@ func (s *Service) EngagementCommand(ctx context.Context, c engagement.Command) (
 			return fail("feedback book must be chosen in this conversation")
 		}
 		s.engagement.Feedback = append(s.engagement.Feedback, engagement.Feedback{ID: id, InteractionID: in.ID, BookID: c.BookID, LoanID: loan, Reading: c.Reading, Enjoyment: c.Enjoyment, Source: c.Source, StaffID: c.StaffID, At: now})
-	case "followup":
-		if _, ok := st.LibrarianByID[c.StaffID]; !ok {
-			return EngagementResult{}, ErrUnknownStaff
-		}
+	case "book_followup":
 		var f *engagement.Followup
-		for i := range s.engagement.Followups {
-			if s.engagement.Followups[i].ID == c.ID {
-				f = &s.engagement.Followups[i]
+		for j := range s.engagement.Followups {
+			if s.engagement.Followups[j].ID == c.ID {
+				f = &s.engagement.Followups[j]
+				break
 			}
 		}
 		if f == nil || f.CompletedAt != nil {
 			return fail("open follow-up required")
 		}
-		f.CompletedAt = &now
-		f.StaffID = c.StaffID
-		id = f.ID
-		if due != nil {
-			s.engagement.Followups = append(s.engagement.Followups, engagement.Followup{ID: fmt.Sprintf("F-%06d", s.engagement.Revision+1), InteractionID: f.InteractionID, Due: *due, CreatedAt: now})
+		if previous := s.appointmentLocked(f.AppointmentID); previous != nil && (previous.Status == "scheduled" || previous.Status == "in_progress") {
+			return fail("reschedule the existing reservation")
 		}
+		if !c.Confirmed || len(c.Place) > 100 {
+			return fail("confirm availability and use a short place label")
+		}
+		in := s.interactionLocked(f.InteractionID)
+		a, b, err := s.slotLocked(c.StaffID, in.StudentID, c.Start, c.Duration, "")
+		if err != nil {
+			return EngagementResult{}, err
+		}
+		booking := engagement.Appointment{ID: "AP-" + id, StudentID: in.StudentID, StaffID: c.StaffID, Start: a, End: b, Place: c.Place, Status: "scheduled", CreatedAt: now}
+		s.engagement.Appointments = append(s.engagement.Appointments, booking)
+		f.AppointmentID = booking.ID
+		f.Due = a
+		f.Reservations = append(f.Reservations, engagement.Reservation{At: now, AppointmentID: booking.ID, Due: a, Status: "scheduled"})
+		id = f.ID
+	case "followup":
+		return fail("book and complete a follow-up conversation to record contact")
 	default:
 		return fail("unknown engagement action")
+	}
+	if c.Action == "reschedule" || c.Action == "cancel" || c.Action == "no_show" {
+		appointment := s.appointmentLocked(id)
+		for j := range s.engagement.Followups {
+			f := &s.engagement.Followups[j]
+			if f.AppointmentID == id {
+				f.Due = appointment.Start
+				f.Reservations = append(f.Reservations, engagement.Reservation{At: now, AppointmentID: id, Due: appointment.Start, Status: appointment.Status})
+			}
+		}
 	}
 	s.engagement.Revision++
 	out.ID = id

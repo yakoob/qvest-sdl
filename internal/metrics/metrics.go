@@ -178,17 +178,35 @@ func Aggregate(s engagement.State, f Filter) Report {
 		return r.Pairs[i].InteractionID+r.Pairs[i].BookID < r.Pairs[j].InteractionID+r.Pairs[j].BookID
 	})
 	for _, fu := range s.Followups {
+		// Reconstruct scheduling evidence known at as-of. Once an obligation is
+		// overdue, later rebooking must not hide it from its original due cohort.
+		visible := fu
+		visible.Reservations = nil
+		if len(fu.Reservations) > 0 {
+			visible.AppointmentID = ""
+			visible.Due = fu.Reservations[0].Due
+			for _, change := range fu.Reservations {
+				if !observed(change.At) {
+					continue
+				}
+				if change.At.Before(visible.Due) {
+					visible.Due = change.Due
+				}
+				visible.AppointmentID = change.AppointmentID
+				visible.Reservations = append(visible.Reservations, change)
+			}
+		}
 		in, ok := all[fu.InteractionID]
-		if !ok || !observed(fu.CreatedAt) || (f.StaffID != "" && in.Facilitator != f.StaffID) || fu.Due.Before(f.Start) || !fu.Due.Before(f.End) {
+		if !ok || !observed(fu.CreatedAt) || (f.StaffID != "" && in.Facilitator != f.StaffID) || visible.Due.Before(f.Start) || !visible.Due.Before(f.End) {
 			continue
 		}
-		visible := fu
 		if fu.CompletedAt != nil && !observed(*fu.CompletedAt) {
 			visible.CompletedAt = nil
 			visible.StaffID = ""
+			visible.ContactID = ""
 		}
 		r.Followups = append(r.Followups, visible)
-		if fu.Due.After(f.AsOf) {
+		if visible.Due.After(f.AsOf) {
 			r.PendingFollowups++
 			continue
 		}

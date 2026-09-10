@@ -53,6 +53,9 @@ small, .hint, .muted { color: var(--muted); }
 .table-scroll { overflow-x: auto; }
 .engagement-dialog { width: min(640px, 94vw); max-height: 90dvh; overflow: auto; border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
 .engagement-dialog::backdrop { background: #172b3b66; }
+.slot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; max-height: 280px; overflow-y: auto; padding: 4px; }
+.slot-grid button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.slot-selection { margin: 12px 0; font-weight: 600; }
 .engagement-dialog form { display: grid; gap: 16px; }
 @media (max-width: 800px) { .app-nav { padding: 8px 16px; } .overview { padding: 20px 16px; } }
 

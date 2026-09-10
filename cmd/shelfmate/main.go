@@ -13,6 +13,7 @@ import (
 
 	"school_district_reading/internal/academics"
 	"school_district_reading/internal/domain"
+	"school_district_reading/internal/engagement"
 	"school_district_reading/internal/engine"
 	"school_district_reading/internal/httpapi"
 	"school_district_reading/internal/session"
@@ -116,6 +117,11 @@ func serve(args []string) {
 		log.Fatal(err)
 	}
 	svc := session.New(eng)
+	calendar, err := engagement.LoadCalendar(*data)
+	if err != nil {
+		log.Fatal(err)
+	}
+	svc.SetCalendar(calendar)
 	srv := httpapi.Server{
 		Support:   guidance,
 		Session:   svc,

@@ -38,6 +38,17 @@ Copy talking points after Mateo. Say out loud they are drafts.
 
 If Tom cannot finish step 1 without a walkthrough, the UX is not done.
 
+## Connected support-loop demo (Friday-critical slice)
+
+Start a fresh server with `SHELFMATE_LLM=off` before this path so Mateo's Cat Kid copy has not already been checked out in a preceding demo.
+
+1. Open My day, review Needs attention, and explain the dated support evidence—not a diagnosis. Schedule a student with confirmed availability in a suggested future slot; reschedule/cancel visibly if demonstrating calendar behavior. Future bookings cannot be started early.
+2. Open Mateo and Start walk-in conversation for an immediate demo. Find available books → Choose together on Cat Kid → Check out chosen book. Choice alone leaves inventory unchanged; checkout records the exact loan link.
+3. Explicitly Complete conversation, optionally with a school-local follow-up due date. Record illustrative student-reported reading/enjoyment responses using the bounded form; make clear that these are manually entered fictional reports, not inferred outcomes.
+4. Open Outcomes. Point out distinct students served, completed conversations, linked checkouts, report coverage and supporting rows. The new choice is pending its 14-day window. It is not valid to claim mature conversion or academic gains immediately.
+5. My day shows open follow-ups; Record follow-up contact only represents an actual recorded contact. Feedback and contact completion are separate.
+6. Restart: session engagement and inventory changes clear. Existing academic scenarios remain separate. Historical engagement fixtures, paired outcomes, external calendars and production access controls are deferred.
+
 ## Offline fallback rehearsal
 
 Leave `SHELFMATE_LLM` unset. Recs still return. If you enable `SHELFMATE_LLM=on` without `LLM_BASE`, explain mode is `fallback` and ranking is unchanged.

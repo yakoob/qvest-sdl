@@ -203,7 +203,12 @@ function renderRecs(rec, firstName) {
       type: "button",
       text: `Check out to ${firstName}`,
     });
-    checkout.addEventListener("click", () => checkoutBook(it, checkout));
+    if (window.engagement?.active()) {
+      checkout.textContent = "Choose together";
+      checkout.addEventListener("click", () => window.engagement.choose(it).catch(e => window.engagement.error(e)));
+    } else {
+      checkout.addEventListener("click", () => checkoutBook(it, checkout));
+    }
     const copy = el("button", { class: "secondary", type: "button", text: "Copy talking point" });
     copy.addEventListener("click", () => copyTalkingItem(it));
     nodes.push(el("div", { class: "card" }, [
@@ -388,6 +393,7 @@ function closeDirectory() {
 
 async function selectStudent(id, opts) {
   closeDirectory();
+  if (window.engagement) window.engagement.showView("students");
   if (state.selectedId !== id) {
     state.recSeq++;
     goBtn.disabled = false;
@@ -399,10 +405,15 @@ async function selectStudent(id, opts) {
     recsEl.replaceChildren();
   }
   state.selectedId = id;
+  if (window.engagement) {
+    window.engagement.offer = null;
+    window.engagement.renderConversation();
+  }
   renderStudentList();
   confirmEl.hidden = true;
   confirmEl.replaceChildren();
   await refreshStudent(opts);
+  if (window.engagement) await window.engagement.refresh();
 }
 
 async function refreshStudent(opts) {
@@ -494,12 +505,21 @@ async function recommend(ev) {
     limit: 5,
   };
   try {
-    const res = await fetch("/api/recommend", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    const rec = await parseJSON(res);
+    const active = window.engagement?.active();
+    let res, rec;
+    if (active) {
+      const result = await window.engagement.command({ action: "offer", interaction_id: active.id, query: `${body.query} ${body.theme}`.trim(), stretch: body.stretch });
+      window.engagement.offer = { id: result.id, interaction: active.id };
+      rec = { ...result.recommendation, revision: result.inventory_revision };
+      res = { ok: true };
+    } else {
+      res = await fetch("/api/recommend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      rec = await parseJSON(res);
+    }
     if (seq !== state.recSeq) return;
     if (state.selectedId !== id) return;
     if (newerThan(rec.revision) || (typeof rec.revision === "number" && rec.revision < expectedRev)) {

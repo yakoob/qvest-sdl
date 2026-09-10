@@ -38,6 +38,18 @@ Synthetic academics (`data/json/academic_demo.json`) load beside the store. Isol
 - Recommendation and explanation run after the lock is released. Older in-flight recs may finish; checkout always re-checks current inventory.
 - No reset HTTP endpoint. Restart is the reset.
 
+## Engagement coordinator
+
+`session.Service` also owns typed engagement state under its existing inventory mutex. New commands use process-lifetime request receipts with payload equality and an engagement revision separate from inventory revision. Linked checkout validates the accepted choice, calls the existing `checkoutLocked`, and records the loan association before releasing the lock. No second best-effort linkage request is needed. Legacy desk checkouts remain unlinked.
+
+Recommendation generation runs on an immutable engine snapshot outside the writer lock. Commit rechecks both engagement and inventory revisions; the offer saves candidate IDs, constraint flags, evidence version and time. Offer responses carry inventory revision for UI stale-result checks. Raw query text is not in the offer record. Engagement receipts are memory-only; unlike the optional CLI audit they are not persisted.
+
+Calendar validation uses district IANA timezone, school-year bounds, structured shifts/blocks/closures and manually confirmed availability. Whole-minute local inputs reject DST gaps/folds unless an explicit matching offset disambiguates. Prose-only duties are not silently parsed.
+
+`internal/metrics` is a pure projection over a cloned typed snapshot. Completed-at cohorts, original-facilitator attribution and due-at follow-up cohorts have distinct definitions. Latest student book reports are separate from staff observations. No legacy check-in, circulation heuristic or isolated academic scenario becomes a book report. See metric-definitions.md.
+
+GET agenda/availability/metrics and POST engagement reuse existing bounded-body and same-origin helpers. This is localhost attribution, not production authorization. Restart clears session state; no historical engagement fixture is loaded in this cut.
+
 ## Why hybrid, not CF-only or LLM-first
 
 | Approach | Why not alone |

@@ -95,6 +95,24 @@ Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 
 Support rules in `internal/support/evaluate.go` are **unvalidated synthetic demo rules**, reviewed as of 2026-09-04—not a clinical screen or failure prediction. The UI has no real authentication/RBAC; staff choice is attribution only. Counselor data is deliberately shared reading guidance, not clinical records. Live Axon remains unverified; mock failure/privacy tests cover the integration.
 
+## Complete librarian support loop (session only)
+
+Use **My day · Students · Outcomes**. The existing Books/Support/Progress tabs are preserved.
+
+1. In My day, review Needs attention; open a student or choose Schedule. All students remain discoverable in Students, even without academics.
+2. Scheduling uses `America/Los_Angeles`, whole-minute times, declared shifts minus structured circulation/class/club blocks, closures, early closing, and existing appointments. Suggestions are not guaranteed free time: confirm staff/student availability and prose-only duties before saving. Internal bookings send no notifications.
+3. On a future open school day, choose Elena and a suggested slot (Friday 2026-09-11 at 09:00 is a fixture example). Reschedule/cancel keep the appointment ID and append trace events. Future appointments cannot be started early; use a walk-in for an immediate demo.
+4. Select Mateo, start a walk-in, then Find available books. Choose together records the offered book; it does not reserve a copy. Check out chosen book revalidates live inventory and atomically records its loan link.
+5. Complete conversation explicitly. Optionally set a follow-up due time. Later Save book feedback records structured reading/enjoyment and student-reported versus staff-observed source. Only record actual reports; a return is not evidence of finishing.
+6. My day lists open follow-ups for the original facilitator. Record follow-up contact is separate from saving book feedback or returning a book.
+7. Outcomes shows session-only counts and supporting tables. Choose the original facilitator or deduplicated all-staff totals. End dates are exclusive. New choices have a pending 14-day observation window, not instant mature conversion.
+
+New API: GET `/api/agenda`, GET `/api/availability`, POST `/api/engagement`, GET `/api/metrics`. Engagement commands require `request_id` and `expected_revision`; duplicate matching requests replay, changed payloads or stale revisions fail. Actions: schedule, reschedule, cancel, no_show, start, offer, choose, checkout, complete, feedback, followup. Existing checkout/return routes remain available but unlinked desk checkouts do not become engagement conversions.
+
+Reload preserves state; restart clears all engagement records, retry receipts and session inventory changes. There is no historical engagement seed or source toggle in this cut. Existing isolated academic scenarios stay separate. Paired academic/borrowing aggregates, preference learning, external calendars, notifications, SSO and production ILS writeback are deferred. See `metric-definitions.md` and `pilot-proposal.md`.
+
+If a transport error leaves an action uncertain, use Retry last interrupted action rather than creating another command. This retains the exact request body. No reset URL exists.
+
 ## Rehearsal if the model is down
 
 Keep LLM off. The Friday (or any) talk still has retrieve, policy, console, and eval.

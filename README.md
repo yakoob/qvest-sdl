@@ -40,6 +40,17 @@ Regenerate JSON from CSV:
 python3 scripts/csv_to_json.py
 ```
 
+## Librarian support loop
+
+**My day → Schedule → Conversation → Choose together → Checkout → Book feedback → Outcomes** is available in the local console. Existing student Books/Support/Progress tabs remain intact.
+
+- Internal appointments use school-local time and conflict checks; staff must confirm availability.
+- Book choices do not consume inventory. Linked checkout and its conversation association are atomic.
+- Explicit conversation completion and structured book feedback drive session-only activity/outcome tables, with exact denominators and supporting records.
+- Restart clears engagement records and session loans. Historical engagement fixtures and paired academic/borrowing outcome aggregates are deferred; existing student academic scenarios remain separate.
+
+See [the walkthrough](docs/runbook.md#complete-librarian-support-loop-session-only), [metric definitions](docs/metric-definitions.md), and [pilot proposal](docs/pilot-proposal.md). Staff selection is attribution, not authentication.
+
 ## Rules that do not move
 
 - Closed-world catalog. No invented titles.

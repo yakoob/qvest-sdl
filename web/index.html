@@ -17,7 +17,10 @@
       <label class="staff-label" for="staff"><span>On desk</span><select id="staff"><option value="L-001">Elena · Librarian</option><option value="L-002" selected>Tom · Library desk</option><option value="L-003">Priya · Library team</option></select></label>
     </div>
   </header>
-  <div class="workspace">
+  <nav class="app-nav" aria-label="Main navigation"><button type="button" data-view="day">My day</button><button type="button" data-view="students" aria-current="page">Students</button><button type="button" data-view="outcomes">Outcomes</button></nav>
+  <main id="day-view" class="overview" hidden><div class="workspace-heading"><h1>My day</h1><span class="session-pill">This server session</span></div><p class="hint">Plan a conversation, listen to the reader, and find their next book together. Staff selection is attribution, not authorization.</p><p id="engagement-status" role="status" aria-live="polite"></p><div id="agenda-body">Loading agenda…</div></main>
+  <main id="outcomes-view" class="overview" hidden><div class="workspace-heading"><h1>Outcomes</h1><span class="session-pill">This server session</span></div><p class="hint">Observed activity and explicit book feedback—not evidence of academic impact. Restart clears session records.</p><div id="outcomes-body"></div></main>
+  <div class="workspace" id="students-view">
     <aside class="rail" id="student-directory" aria-label="Student directory">
       <div class="directory-heading"><div><p class="eyebrow">YOUR READERS</p><h2>Students <span id="student-count" class="count"></span></h2></div><button id="close-students" class="ghost mobile-only" type="button">Close</button></div>
       <label for="search">Find a student<input id="search" type="search" autocomplete="off" placeholder="Search name or student ID" /></label>
@@ -29,6 +32,7 @@
     <main id="main-workspace">
       <div class="workspace-heading"><span class="eyebrow">LIBRARIAN WORKSPACE</span><span class="session-pill">Session only · restart to reset</span></div>
       <section id="student-header" class="student-header" aria-live="polite"><p>Select a student to get started.</p></section>
+      <section id="conversation-panel" class="task" aria-label="Reading conversation"><div id="conversation-body"></div></section>
       <nav id="student-tabs" class="tabs" role="tablist" aria-label="Student workspace">
         <button id="tab-books" role="tab" aria-selected="true" aria-controls="panel-books" tabindex="0" type="button">Books &amp; loans</button>
         <button id="tab-support" role="tab" aria-selected="false" aria-controls="panel-support" tabindex="-1" type="button">Support &amp; interests</button>
@@ -60,6 +64,8 @@
   </div>
   <dialog id="activity-dialog" class="activity-dialog" aria-labelledby="activity-heading"><div class="drawer-heading"><div><p class="eyebrow">THIS SESSION</p><h2 id="activity-heading">What just happened</h2></div><button id="close-activity" type="button" class="ghost" aria-label="Close session activity">Close</button></div><p class="hint">Checkout and return activity across this server. Restart clears the log.</p><div id="activity" class="activity-list">No actions yet.</div></dialog>
   <script src="/progress.js"></script>
+  <script src="/agenda.js"></script>
+  <script src="/outcomes.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

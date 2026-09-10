@@ -21,6 +21,9 @@ Excluded: last names, DOB, address, parent contact, state ID, free/reduced lunch
 - Counselor fixtures contain deliberately shared reading themes and approval dates, not clinical records, diagnoses or disciplinary histories. They never influence support bands.
 - Queue responses omit note bodies; full guidance is available on selected-student detail. This is data minimization, NOT authorization: selecting a staff name is attribution only. Real records require district-approved role-based access.
 - Follow-ups are structured process-memory events. Restart clears them; check-in and enjoyment reports do not change academic evidence.
+- Engagement appointments, interactions, choices, loan links and book feedback are process-memory records. Book feedback stores bounded responses, source, recorder and time; no confidential counseling-note field is provided. Place is a short label, not a private-notes field.
+- Offered-candidate snapshots store IDs, constraints, evidence version and timestamps. Raw recommendation query text may remain in process-memory retry receipts until restart; it is not sent to the model or persisted in engagement/audit logs.
+- Outcomes currently use only this server session. Legacy generic check-ins and isolated academic scenarios are excluded. No staff leaderboard, causal performance claim or historical engagement source is implemented. Production must add district-approved aggregate access and small-cohort suppression.
 
 ## Kill switch
 

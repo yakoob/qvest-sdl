@@ -3,7 +3,7 @@
 **Assignment:** Sony EIP hiring presentation  
 **Product:** librarian-in-the-loop next-book assistant for a fictional K-5 district  
 **Language:** Go, single binary  
-**Status:** retrieve + policy + eval + librarian console + optional Axon explainer + audit + HTML deck in this worktree.
+**Status:** retrieve + policy + eval + librarian console + optional Axon explainer + audit + HTML deck. The Friday-critical engagement slice adds My day, internal scheduling, linked conversations/choices/checkouts, book feedback and session-only metrics. Historical paired engagement outcomes remain deferred; see docs/runbook.md and docs/metric-definitions.md.
 
 This is not Netflix-for-kids. Students already take librarian recs. ShelfMate makes Elena's sticky-note notebook queryable in the 20-second desk window.
 

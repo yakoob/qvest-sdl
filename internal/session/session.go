@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"school_district_reading/internal/domain"
+	"school_district_reading/internal/engagement"
 	"school_district_reading/internal/engine"
 	"school_district_reading/internal/store"
 )
@@ -110,13 +111,16 @@ type ReturnResult struct {
 }
 
 type Service struct {
-	mu            sync.Mutex
-	snap          Snapshot
-	activity      []Activity
-	checkoutRetry map[string]CheckoutResult
-	returnRetry   map[string]ReturnResult
-	nextLoan      int64
-	clock         func() time.Time
+	mu              sync.Mutex
+	snap            Snapshot
+	activity        []Activity
+	checkoutRetry   map[string]CheckoutResult
+	returnRetry     map[string]ReturnResult
+	nextLoan        int64
+	clock           func() time.Time
+	engagement      engagement.State
+	calendar        *engagement.Calendar
+	engagementRetry map[string]engagementReceipt
 }
 
 func New(eng *engine.Engine) *Service {
@@ -182,6 +186,11 @@ func (s *Service) Checkout(req CheckoutRequest) (CheckoutResult, error) {
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	return s.checkoutLocked(req)
+}
+
+// checkoutLocked is also used by engagement under the same inventory mutex.
+func (s *Service) checkoutLocked(req CheckoutRequest) (CheckoutResult, error) {
 	if req.RetryID != "" {
 		if cached, ok := s.checkoutRetry[req.RetryID]; ok {
 			cached.Idempotent = true

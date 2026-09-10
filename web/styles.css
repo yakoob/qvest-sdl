@@ -39,6 +39,23 @@ small, .hint, .muted { color: var(--muted); }
 .skip { position: absolute; left: -10000px; }
 .skip:focus { left: 16px; top: 16px; z-index: 100; padding: 12px; background: #fff; }
 
+/* Engagement pages keep the student workspace intact. */
+.app-nav { display: flex; gap: 12px; padding: 12px 32px; background: var(--card); border-bottom: 1px solid var(--line); }
+.app-nav button { background: transparent; color: var(--ink-soft); }
+.app-nav button[aria-current="page"] { background: var(--accent-soft); color: var(--ink); }
+.overview { max-width: 1200px; }
+.agenda-controls, .engagement-actions { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 16px 0; }
+.agenda-controls label { flex: 1 1 150px; }
+.agenda-row { padding: 16px 0; border-bottom: 1px solid var(--line); }
+.agenda-row:last-child { border-bottom: 0; }
+.engagement-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.engagement-table th, .engagement-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.table-scroll { overflow-x: auto; }
+.engagement-dialog { width: min(640px, 94vw); max-height: 90dvh; overflow: auto; border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+.engagement-dialog::backdrop { background: #172b3b66; }
+.engagement-dialog form { display: grid; gap: 16px; }
+@media (max-width: 800px) { .app-nav { padding: 8px 16px; } .overview { padding: 20px 16px; } }
+
 /* Application shell. Activity is a drawer, never a third column. */
 .top { height: 88px; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 16px 32px; border-bottom: 1px solid var(--line); background: #fff; }
 .brand { display: flex; gap: 12px; align-items: center; color: var(--ink); text-decoration: none; font-size: 1.45rem; font-weight: 750; letter-spacing: -.04em; }

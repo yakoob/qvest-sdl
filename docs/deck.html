@@ -52,6 +52,35 @@
     </section>
 
     <section>
+      <h2>Scale trusted conversations, not replace them</h2>
+      <p>Needs attention → Schedule → Conversation → Choose together → Checkout → Follow up → Outcomes.</p>
+      <p>The local console now connects an internal appointment or walk-in to offered books, an explicit choice, an atomic loan link, and book-specific feedback. The existing student workspace stays intact.</p>
+      <pre class="small" aria-label="Librarian journey diagram">Attention queue → Internal appointment → Conversation
+                                           ↓
+                            Available candidates → Student choice
+                                                        ↓
+Activity + reported outcomes ← Book feedback ← Linked checkout</pre>
+      <p class="note">Choosing does not reserve copies. Checkout revalidates inventory. Only an explicit action completes the conversation; borrowing is not finishing or enjoyment.</p>
+    </section>
+
+    <section>
+      <h2>Linked evidence and an honest stopping point</h2>
+      <pre class="small" aria-label="Engagement architecture diagram">Catalog + circulation → Retrieve → Policy → Optional explanation
+                                        ↓
+Calendar → Session coordinator → Offer → Choice → Loan
+                  ↓                (one inventory/link transaction)
+          Completed interaction → Structured feedback
+                  ↓
+          Pure metrics → Counts + supporting tables</pre>
+      <ul>
+        <li>Built: My day, conflicts and rescheduling, conversations, linked checkouts, structured feedback, session activity and reading-feedback tables.</li>
+        <li>Exact denominators: distinct students, completed conversations, mature 14-day choice conversion, known reading/enjoyment responses and due follow-up coverage.</li>
+        <li>Deferred: historical engagement fixtures, paired borrowing/academic aggregates, calendar notifications, production permissions and ILS writeback.</li>
+      </ul>
+      <p class="note">A new conversation has no months-later outcomes. Pending observation windows and missing responses remain visible. Existing academic scenarios are isolated illustrations, not evidence of staff effectiveness.</p>
+    </section>
+
+    <section>
       <h2>System context</h2>
       <svg viewBox="0 0 900 420" role="img" aria-label="System context: desk laptop, ILS extract, retrieve, policy, optional model, audit">
         <rect x="20" y="160" width="160" height="90" fill="#eef6f2" stroke="#2f5d50"/>
@@ -153,7 +182,7 @@
         <li>Proves: closed catalog, B-008 never spoken, Mateo includes Cat Kid, Priya page cap, Olivia returns ≥3, payload has no first names.</li>
         <li>Does not prove: more reading, better grades, FERPA certification, or that checkout equals reading.</li>
       </ul>
-      <p class="note">Checkout is a proxy. This PoC can demo a desk checkout in process memory; it does not write Destiny. Conversion (rec → checkout in 14 days) would be a lighthouse metric, directional only. Borrowed is not finished. Synthetic grades are not caused by a title.</p>
+      <p class="note">Checkout is not completion or enjoyment. Session Outcomes now reports explicitly linked choice-to-checkout conversion within 14 days, using only choices with a full observation window; new choices remain pending. Synthetic grades are not caused by a title.</p>
     </section>
 
     <section>
@@ -192,7 +221,7 @@
         <tr><td>Destiny export + redaction</td><td>~1 week with a media specialist</td><td>Same columns; not in this binary</td></tr>
         <tr><td>12-week lighthouse</td><td>see engagement_schedule.json</td><td>Elena hours are the constraint; LLM off until written yes</td></tr>
       </table>
-      <p class="note">Staffing guess: 1 engineer + Elena desk time + privacy officer gate. Support owner in a real rollout would be district IT + library, not a vendor model endpoint talking to kids.</p>
+      <p class="note">PoC estimates above are engineering effort, not district elapsed time. A bounded district engagement is approximately 11–16 elapsed weeks: discovery/co-design 1–2, integration 3–4, onboarding 1–2, measured pilot 6–8. Assumes two engineers, fractional UX/delivery, district IT/privacy availability and protected librarian time. Re-estimate after export discovery. Library lead owns reading policy; IT owns access/imports/hosting; privacy lead owns retention/egress; a named engineering team owns defects and support. Academic connectors are separately scoped. See pilot-proposal.md.</p>
     </section>
 
     <section>

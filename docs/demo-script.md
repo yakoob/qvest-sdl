@@ -44,10 +44,11 @@ Start a fresh server with `SHELFMATE_LLM=off` before this path so Mateo's Cat Ki
 
 1. Open My day, review Needs attention, and explain the dated support evidence—not a diagnosis. Schedule a student with confirmed availability in a suggested future slot; reschedule/cancel visibly if demonstrating calendar behavior. Future bookings cannot be started early.
 2. Open Mateo and Start walk-in conversation for an immediate demo. Find available books → Choose together on Cat Kid → Check out chosen book. Choice alone leaves inventory unchanged; checkout records the exact loan link.
-3. Explicitly Complete conversation, optionally with a school-local follow-up due date. Record illustrative student-reported reading/enjoyment responses using the bounded form; make clear that these are manually entered fictional reports, not inferred outcomes.
+3. Choose Complete without follow-up, or Complete and book follow-up using a displayed available slot. Changing date, duration or assigned staff clears the selection. Confirm availability, then save. This reserves time; there is no arbitrary time field. Record illustrative student-reported reading/enjoyment responses in the separate bounded form.
 4. Open Outcomes. Point out distinct students served, completed conversations, linked checkouts, report coverage and supporting rows. The new choice is pending its 14-day window. It is not valid to claim mature conversion or academic gains immediately.
-5. My day shows open follow-ups; Record follow-up contact only represents an actual recorded contact. Feedback and contact completion are separate.
-6. Restart: session engagement and inventory changes clear. Existing academic scenarios remain separate. Historical engagement fixtures, paired outcomes, external calendars and production access controls are deferred.
+5. My day shows booked follow-ups. Start and explicitly complete the linked follow-up conversation to record contact; cancellation/no-show leaves the obligation needing rebooking. Feedback and contact completion are separate. In Outcomes → Student progress, compare source-labelled portfolio totals with a student's records; do not attribute those trends to a librarian.
+6. Open Students served · observed changes, historical source. The default eight-student cohort has six eligible pairs and two exclusions. Inspect Sofia's evidence (borrowing 8→10; English B-→B+), then Aisha's English decline and stable borrowing. Filter to Tom: Sofia does not transfer to Tom merely because a later shared contact exists. Switch to session: no historical academic evidence is borrowed.
+7. Restart: live engagement and inventory changes clear; historical contact and academic fixtures reload unchanged. Historical recommendation/feedback funnels, external calendars and production access controls remain deferred.
 
 ## Offline fallback rehearsal
 

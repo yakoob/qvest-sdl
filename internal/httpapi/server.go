@@ -12,6 +12,7 @@ import (
 
 	"school_district_reading/internal/academics"
 	"school_district_reading/internal/domain"
+	"school_district_reading/internal/engagement"
 	"school_district_reading/internal/explain"
 	"school_district_reading/internal/session"
 	"school_district_reading/internal/support"
@@ -21,6 +22,7 @@ import (
 const maxBodyBytes = 8 << 10
 
 type Server struct {
+	Demo      *engagement.Demo
 	Session   *session.Service
 	Academics *academics.Catalog
 	Support   *support.Catalog
@@ -36,6 +38,7 @@ func (s Server) Handler() http.Handler {
 	mux.HandleFunc("/api/agenda", s.agenda)
 	mux.HandleFunc("/api/availability", s.availability)
 	mux.HandleFunc("/api/engagement", s.engagementCommand)
+	mux.HandleFunc("/api/metrics/paired", s.pairedOutcomes)
 	mux.HandleFunc("/api/metrics/progress", s.studentProgress)
 	mux.HandleFunc("/api/metrics", s.engagementMetrics)
 	mux.HandleFunc("/api/support/queue", s.supportQueue)

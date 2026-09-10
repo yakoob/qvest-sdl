@@ -4,7 +4,7 @@ ShelfMate is a fictional, localhost librarian prototype. These are descriptive a
 
 ## Scope
 
-The Friday-critical slice reports process-memory engagement records from **This server session**. Restart clears newly recorded engagement actions and restores operational inventory. Existing academic/borrowing scenarios and generic student check-ins are not engagement events and must not be silently included. Historical engagement examples, if supplied, require an explicitly separate source and declared coverage. Paired borrowing and academic aggregates are deferred.
+Operational activity reports process-memory records from **This server session**. Restart clears those actions and restores inventory. The separate **Students served · observed changes** section supports illustrative historical contacts and a session cohort. Historical contacts and explicit window coverage come from `engagement_demo.json`; they never seed live appointments, loans or feedback. Generic student check-ins are not engagement evidence.
 
 All metrics must derive from typed records, not stored KPI totals. Summary and supporting records use the same source, period, report-as-of instant and facilitator filter. Time ranges are half-open `[start, end)`; display dates use the school timezone. Exclude evidence recorded after report-as-of. Return exact counts and use an unavailable ratio, not zero percent, for an empty denominator.
 
@@ -45,6 +45,20 @@ Outcomes also projects the same `academics.Catalog.View` records used by each st
 - English results are exact letter-grade distributions, never averaged GPA or a percentage gain.
 - Reading observation deltas compare only the same student, instrument, scale and grade form. Different forms are not subtracted.
 - All six 84-day scenario windows remain intact. Per-student records and period aggregates reconcile; source values are not changed to create a preferred trend.
+
+## Served-cohort paired observations
+
+`GET /api/metrics/paired` uses `source=historical|session`, contact-period `start`/exclusive `end`, optional `staff_id`, and an RFC3339 `as_of` no later than now. Historical defaults cover 2025-07-01 through 2026-07-01. Session defaults cover the current server session. The UI's optional as-of date means the start of that UTC day, explicitly labelled.
+
+- Select the first completed contact per student in the period before applying the facilitator filter. Later completed contacts stay visible; cancelled/no-show contacts do not establish service.
+- Historical borrowing uses the nearest eligible pre-contact and first eligible post-contact 84-day windows within ±365 days. Both must have declared enrollment/coverage and be fully observed. Counts include repeats/renewals; these are events, not distinct titles.
+- English uses the nearest valid pre-contact and first compatible post-contact observation within ±180 days, matching course, school grade and letter scale. Letter ordering classifies direction only.
+- Reading uses the same ±180-day rule and matching instrument/scale/grade form. No pooled score or cross-form subtraction.
+- Date-only observations must be strictly before or after the school-local contact date. They become available only after their school day ends. No same-day ordering is invented.
+- Each measure reports eligible N, increased/unchanged/decreased counts and excluded reasons, calculated directly from the returned student evidence rows. Increases are descriptive, not proof of benefit.
+- Session contacts cannot borrow historical scenario evidence. Without declared full enrollment/export coverage, session pairs are explicitly excluded. Missing optional academics or historical fixtures do not block the librarian workflow.
+
+The historical fixture is limited to contacts and coverage links for paired observations. It does not seed historical recommendation offers, loan conversions, or book-feedback funnels. Its historical meeting times are explicitly illustrative, not validated against current-year staff shifts.
 
 ## Evidence and limitations
 

@@ -122,7 +122,12 @@ func serve(args []string) {
 		log.Fatal(err)
 	}
 	svc.SetCalendar(calendar)
+	demo, err := engagement.LoadDemo(*data, st, cat)
+	if err != nil {
+		log.Printf("historical engagement unavailable: %v", err)
+	}
 	srv := httpapi.Server{
+		Demo:      demo,
 		Support:   guidance,
 		Session:   svc,
 		Academics: cat,

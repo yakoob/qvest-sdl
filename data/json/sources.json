@@ -24,6 +24,12 @@
   },
   "files": [
     {
+      "id": "engagement_demo",
+      "json": "data/json/engagement_demo.json",
+      "origin": "hand-authored fictional historical evidence",
+      "description": "Read-only historical contacts and explicit academic-window coverage; isolated from live inventory and reservations. No causal effectiveness claim."
+    },
+    {
       "id": "district",
       "json": "data/json/district.json",
       "origin": "hand-authored",

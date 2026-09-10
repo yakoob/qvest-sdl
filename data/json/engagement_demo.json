@@ -1,0 +1,543 @@
+{
+  "source": "illustrative_historical",
+  "timezone": "America/Los_Angeles",
+  "provenance": "Deterministic fictional contacts, not reconstructed from circulation. Historical meeting times are illustrative, not validated against current-year shifts. Coverage declares only the linked isolated 84-day scenario windows; English grades are fictionally posted at window end. No operational inventory or retrieval changes.",
+  "contacts": [
+    {
+      "id": "H-23-S-305",
+      "student_id": "S-305",
+      "staff_id": "L-001",
+      "at": "2024-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-23-S-406",
+      "student_id": "S-406",
+      "staff_id": "L-002",
+      "at": "2024-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-23-S-402",
+      "student_id": "S-402",
+      "staff_id": "L-001",
+      "at": "2024-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-23-S-510",
+      "student_id": "S-510",
+      "staff_id": "L-002",
+      "at": "2024-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-23-S-301",
+      "student_id": "S-301",
+      "staff_id": "L-001",
+      "at": "2024-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-23-S-302",
+      "student_id": "S-302",
+      "staff_id": "L-002",
+      "at": "2024-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-23-S-405",
+      "student_id": "S-405",
+      "staff_id": "L-001",
+      "at": "2024-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-23-shared",
+      "student_id": "S-305",
+      "staff_id": "L-002",
+      "at": "2024-01-15T18:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-S-305",
+      "student_id": "S-305",
+      "staff_id": "L-001",
+      "at": "2025-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-S-406",
+      "student_id": "S-406",
+      "staff_id": "L-002",
+      "at": "2025-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-S-402",
+      "student_id": "S-402",
+      "staff_id": "L-001",
+      "at": "2025-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-S-510",
+      "student_id": "S-510",
+      "staff_id": "L-002",
+      "at": "2025-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-S-301",
+      "student_id": "S-301",
+      "staff_id": "L-001",
+      "at": "2025-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-S-302",
+      "student_id": "S-302",
+      "staff_id": "L-002",
+      "at": "2025-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-S-405",
+      "student_id": "S-405",
+      "staff_id": "L-001",
+      "at": "2025-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-24-shared",
+      "student_id": "S-305",
+      "staff_id": "L-002",
+      "at": "2025-01-15T18:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-S-305",
+      "student_id": "S-305",
+      "staff_id": "L-001",
+      "at": "2026-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-S-406",
+      "student_id": "S-406",
+      "staff_id": "L-002",
+      "at": "2026-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-S-402",
+      "student_id": "S-402",
+      "staff_id": "L-001",
+      "at": "2026-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-S-510",
+      "student_id": "S-510",
+      "staff_id": "L-002",
+      "at": "2026-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-S-301",
+      "student_id": "S-301",
+      "staff_id": "L-001",
+      "at": "2026-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-S-302",
+      "student_id": "S-302",
+      "staff_id": "L-002",
+      "at": "2026-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-S-405",
+      "student_id": "S-405",
+      "staff_id": "L-001",
+      "at": "2026-01-15T17:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-25-shared",
+      "student_id": "S-305",
+      "staff_id": "L-002",
+      "at": "2026-01-15T18:00:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "H-cancel",
+      "student_id": "S-509",
+      "staff_id": "L-001",
+      "at": "2026-01-16T17:00:00Z",
+      "status": "cancelled"
+    },
+    {
+      "id": "H-missed",
+      "student_id": "S-401",
+      "staff_id": "L-002",
+      "at": "2026-01-16T18:00:00Z",
+      "status": "no_show"
+    },
+    {
+      "id": "H-moved",
+      "student_id": "S-504",
+      "staff_id": "L-001",
+      "at": "2026-01-19T17:00:00Z",
+      "status": "completed",
+      "previous_start": "2026-01-16T17:00:00Z"
+    }
+  ],
+  "coverage": [
+    {
+      "student_id": "S-406",
+      "window_id": "W-23-S1",
+      "enrollment_start": "2023-09-11",
+      "enrollment_end": "2023-12-03",
+      "english_date": "2023-12-03",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-406",
+      "window_id": "W-23-S2",
+      "enrollment_start": "2024-02-05",
+      "enrollment_end": "2024-04-28",
+      "english_date": "2024-04-28",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-406",
+      "window_id": "W-24-S1",
+      "enrollment_start": "2024-09-09",
+      "enrollment_end": "2024-12-01",
+      "english_date": "2024-12-01",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-406",
+      "window_id": "W-24-S2",
+      "enrollment_start": "2025-02-03",
+      "enrollment_end": "2025-04-27",
+      "english_date": "2025-04-27",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-406",
+      "window_id": "W-25-S1",
+      "enrollment_start": "2025-09-08",
+      "enrollment_end": "2025-11-30",
+      "english_date": "2025-11-30",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-406",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-402",
+      "window_id": "W-23-S1",
+      "enrollment_start": "2023-09-11",
+      "enrollment_end": "2023-12-03",
+      "english_date": "2023-12-03",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-402",
+      "window_id": "W-23-S2",
+      "enrollment_start": "2024-02-05",
+      "enrollment_end": "2024-04-28",
+      "english_date": "2024-04-28",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-402",
+      "window_id": "W-24-S1",
+      "enrollment_start": "2024-09-09",
+      "enrollment_end": "2024-12-01",
+      "english_date": "2024-12-01",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-402",
+      "window_id": "W-24-S2",
+      "enrollment_start": "2025-02-03",
+      "enrollment_end": "2025-04-27",
+      "english_date": "2025-04-27",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-402",
+      "window_id": "W-25-S1",
+      "enrollment_start": "2025-09-08",
+      "enrollment_end": "2025-11-30",
+      "english_date": "2025-11-30",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-402",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-301",
+      "window_id": "W-23-S1",
+      "enrollment_start": "2023-09-11",
+      "enrollment_end": "2023-12-03",
+      "english_date": "2023-12-03",
+      "course": "English-grade-0"
+    },
+    {
+      "student_id": "S-301",
+      "window_id": "W-23-S2",
+      "enrollment_start": "2024-02-05",
+      "enrollment_end": "2024-04-28",
+      "english_date": "2024-04-28",
+      "course": "English-grade-0"
+    },
+    {
+      "student_id": "S-301",
+      "window_id": "W-24-S1",
+      "enrollment_start": "2024-09-09",
+      "enrollment_end": "2024-12-01",
+      "english_date": "2024-12-01",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-301",
+      "window_id": "W-24-S2",
+      "enrollment_start": "2025-02-03",
+      "enrollment_end": "2025-04-27",
+      "english_date": "2025-04-27",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-301",
+      "window_id": "W-25-S1",
+      "enrollment_start": "2025-09-08",
+      "enrollment_end": "2025-11-30",
+      "english_date": "2025-11-30",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-301",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-302",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-305",
+      "window_id": "W-23-S1",
+      "enrollment_start": "2023-09-11",
+      "enrollment_end": "2023-12-03",
+      "english_date": "2023-12-03",
+      "course": "English-grade-0"
+    },
+    {
+      "student_id": "S-305",
+      "window_id": "W-23-S2",
+      "enrollment_start": "2024-02-05",
+      "enrollment_end": "2024-04-28",
+      "english_date": "2024-04-28",
+      "course": "English-grade-0"
+    },
+    {
+      "student_id": "S-305",
+      "window_id": "W-24-S1",
+      "enrollment_start": "2024-09-09",
+      "enrollment_end": "2024-12-01",
+      "english_date": "2024-12-01",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-305",
+      "window_id": "W-24-S2",
+      "enrollment_start": "2025-02-03",
+      "enrollment_end": "2025-04-27",
+      "english_date": "2025-04-27",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-305",
+      "window_id": "W-25-S1",
+      "enrollment_start": "2025-09-08",
+      "enrollment_end": "2025-11-30",
+      "english_date": "2025-11-30",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-305",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-504",
+      "window_id": "W-23-S1",
+      "enrollment_start": "2023-09-11",
+      "enrollment_end": "2023-12-03",
+      "english_date": "2023-12-03",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-504",
+      "window_id": "W-23-S2",
+      "enrollment_start": "2024-02-05",
+      "enrollment_end": "2024-04-28",
+      "english_date": "2024-04-28",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-504",
+      "window_id": "W-24-S1",
+      "enrollment_start": "2024-09-09",
+      "enrollment_end": "2024-12-01",
+      "english_date": "2024-12-01",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-504",
+      "window_id": "W-24-S2",
+      "enrollment_start": "2025-02-03",
+      "enrollment_end": "2025-04-27",
+      "english_date": "2025-04-27",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-504",
+      "window_id": "W-25-S1",
+      "enrollment_start": "2025-09-08",
+      "enrollment_end": "2025-11-30",
+      "english_date": "2025-11-30",
+      "course": "English-grade-4"
+    },
+    {
+      "student_id": "S-504",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-4"
+    },
+    {
+      "student_id": "S-510",
+      "window_id": "W-23-S1",
+      "enrollment_start": "2023-09-11",
+      "enrollment_end": "2023-12-03",
+      "english_date": "2023-12-03",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-510",
+      "window_id": "W-23-S2",
+      "enrollment_start": "2024-02-05",
+      "enrollment_end": "2024-04-28",
+      "english_date": "2024-04-28",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-510",
+      "window_id": "W-24-S1",
+      "enrollment_start": "2024-09-09",
+      "enrollment_end": "2024-12-01",
+      "english_date": "2024-12-01",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-510",
+      "window_id": "W-24-S2",
+      "enrollment_start": "2025-02-03",
+      "enrollment_end": "2025-04-27",
+      "english_date": "2025-04-27",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-510",
+      "window_id": "W-25-S1",
+      "enrollment_start": "2025-09-08",
+      "enrollment_end": "2025-11-30",
+      "english_date": "2025-11-30",
+      "course": "English-grade-4"
+    },
+    {
+      "student_id": "S-510",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-4"
+    },
+    {
+      "student_id": "S-401",
+      "window_id": "W-23-S1",
+      "enrollment_start": "2023-09-11",
+      "enrollment_end": "2023-12-03",
+      "english_date": "2023-12-03",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-401",
+      "window_id": "W-23-S2",
+      "enrollment_start": "2024-02-05",
+      "enrollment_end": "2024-04-28",
+      "english_date": "2024-04-28",
+      "course": "English-grade-1"
+    },
+    {
+      "student_id": "S-401",
+      "window_id": "W-24-S1",
+      "enrollment_start": "2024-09-09",
+      "enrollment_end": "2024-12-01",
+      "english_date": "2024-12-01",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-401",
+      "window_id": "W-24-S2",
+      "enrollment_start": "2025-02-03",
+      "enrollment_end": "2025-04-27",
+      "english_date": "2025-04-27",
+      "course": "English-grade-2"
+    },
+    {
+      "student_id": "S-401",
+      "window_id": "W-25-S1",
+      "enrollment_start": "2025-09-08",
+      "enrollment_end": "2025-11-30",
+      "english_date": "2025-11-30",
+      "course": "English-grade-3"
+    },
+    {
+      "student_id": "S-401",
+      "window_id": "W-25-S2",
+      "enrollment_start": "2026-02-02",
+      "enrollment_end": "2026-04-26",
+      "english_date": "2026-04-26",
+      "course": "English-grade-3"
+    }
+  ]
+}

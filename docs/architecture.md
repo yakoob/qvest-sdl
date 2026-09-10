@@ -44,11 +44,13 @@ Synthetic academics (`data/json/academic_demo.json`) load beside the store. Isol
 
 Recommendation generation runs on an immutable engine snapshot outside the writer lock. Commit rechecks both engagement and inventory revisions; the offer saves candidate IDs, constraint flags, evidence version and time. Offer responses carry inventory revision for UI stale-result checks. Raw query text is not in the offer record. Engagement receipts are memory-only; unlike the optional CLI audit they are not persisted.
 
-Calendar validation uses district IANA timezone, school-year bounds, structured shifts/blocks/closures and manually confirmed availability. Whole-minute local inputs reject DST gaps/folds unless an explicit matching offset disambiguates. Prose-only duties are not silently parsed.
+Calendar validation uses district IANA timezone, school-year bounds, structured shifts/blocks/closures and manually confirmed availability. Whole-minute local inputs reject DST gaps/folds unless an explicit matching offset disambiguates. Prose-only duties are not silently parsed. The shared `web/slots.js` picker and server saves enforce the same five-minute-start candidates. Changing picker inputs invalidates the selection. Completing a conversation with a follow-up validates then atomically creates a linked appointment; completing the follow-up conversation fulfills contact. Dated reservation changes preserve as-of due cohorts without counting cancellations as contact.
+
+Student portfolio rollups reuse `academics.Catalog.View`, not a second JavaScript calculator. `metrics.Progress` returns exact period aggregates and student rows with full/partial/missing coverage, grade distributions and compatible reading-form deltas. Extract and scenario sources stay distinct, and portfolio progress has no librarian attribution.
 
 `internal/metrics` is a pure projection over a cloned typed snapshot. Completed-at cohorts, original-facilitator attribution and due-at follow-up cohorts have distinct definitions. Latest student book reports are separate from staff observations. No legacy check-in, circulation heuristic or isolated academic scenario becomes a book report. See metric-definitions.md.
 
-GET agenda/availability/metrics and POST engagement reuse existing bounded-body and same-origin helpers. This is localhost attribution, not production authorization. Restart clears session state; no historical engagement fixture is loaded in this cut.
+GET agenda/availability/metrics and POST engagement reuse existing bounded-body and same-origin helpers. This is localhost attribution, not production authorization. Restart clears session state. The optional read-only `engagement_demo.json` fixture loads separately for `/api/metrics/paired`; it never populates session state. `metrics.Paired` indexes first completed contacts before facilitator filtering, then pairs covered and compatible observations from academic scenario views. Missing fixtures disable historical pairing without blocking the core workflow.
 
 ## Why hybrid, not CF-only or LLM-first
 

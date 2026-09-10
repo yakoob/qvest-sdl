@@ -23,7 +23,7 @@ Excluded: last names, DOB, address, parent contact, state ID, free/reduced lunch
 - Follow-ups are structured process-memory events. Restart clears them; check-in and enjoyment reports do not change academic evidence.
 - Engagement appointments, interactions, choices, loan links and book feedback are process-memory records. Book feedback stores bounded responses, source, recorder and time; no confidential counseling-note field is provided. Place is a short label, not a private-notes field.
 - Offered-candidate snapshots store IDs, constraints, evidence version and timestamps. Raw recommendation query text may remain in process-memory retry receipts until restart; it is not sent to the model or persisted in engagement/audit logs.
-- Outcomes currently use only this server session. Legacy generic check-ins and isolated academic scenarios are excluded. No staff leaderboard, causal performance claim or historical engagement source is implemented. Production must add district-approved aggregate access and small-cohort suppression.
+- Outcomes separates session activity, student portfolio records and read-only fictional historical served-cohort pairs. Historical contacts never seed live appointments, inventory or model payloads. Legacy generic check-ins are excluded from book-feedback metrics. No staff leaderboard or causal performance claim is implemented. Production must add district-approved aggregate access and small-cohort suppression.
 
 ## Kill switch
 

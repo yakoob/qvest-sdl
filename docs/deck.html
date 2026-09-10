@@ -21,9 +21,10 @@
     th { color: var(--muted); font-weight: 600; }
     .note { color: var(--muted); font-size: 0.9rem; }
     svg { width: 100%; height: auto; background: #fff; border: 1px solid var(--line); }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
     .small { font-size: 0.92rem; }
     @media print { section { min-height: auto; border: 0; } body { background: #fff; } }
-    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } .deck { padding: .75rem; } section { padding: 1rem; } table { table-layout: fixed; overflow-wrap: anywhere; } code { overflow-wrap: anywhere; } }
   </style>
 </head>
 <body>
@@ -73,9 +74,11 @@ Calendar → Session coordinator → Offer → Choice → Loan
                   ↓
           Pure metrics → Counts + supporting tables</pre>
       <ul>
-        <li>Built: My day, conflicts and rescheduling, conversations, linked checkouts, structured feedback, session activity and reading-feedback tables.</li>
+        <li>Built: My day, available-slot booking and rescheduling, reserved follow-up conversations, linked checkouts, structured book feedback, and session activity tables.</li>
+        <li>Student progress: borrowing totals, English-grade distributions and compatible reading observations roll up from the same student records, with source-labelled drill-downs.</li>
         <li>Exact denominators: distinct students, completed conversations, mature 14-day choice conversion, known reading/enjoyment responses and due follow-up coverage.</li>
-        <li>Deferred: historical engagement fixtures, paired borrowing/academic aggregates, calendar notifications, production permissions and ILS writeback.</li>
+        <li>Built: descriptive served-cohort pairs from isolated fictional historical contacts, with sample sizes, exclusions and supporting observations—not a causal staff score.</li>
+        <li>Deferred: historical recommendation/feedback funnels, calendar notifications, production permissions and ILS writeback.</li>
       </ul>
       <p class="note">A new conversation has no months-later outcomes. Pending observation windows and missing responses remain visible. Existing academic scenarios are isolated illustrations, not evidence of staff effectiveness.</p>
     </section>

@@ -3,8 +3,11 @@ window.engagement.loadOutcomes = async function () {
   const target = document.getElementById("outcomes-body");
   const navigation = el("div", { class: "engagement-actions", "aria-label": "Outcome sections" }, [
     this.button("Librarian activity", () => { this.outcomeSection = "activity"; return this.loadOutcomes(); }),
+    this.button("Students served · observed changes", () => { this.outcomeSection = "paired"; return this.loadOutcomes(); }),
     this.button("Student progress", () => { this.outcomeSection = "progress"; return this.loadOutcomes(); }),
   ]);
+  this.pairedSeq = (this.pairedSeq || 0) + 1;
+  if (this.outcomeSection === "paired") return this.loadPairedOutcomes(target, navigation);
   if (this.outcomeSection === "progress") return this.loadStudentProgress(target, navigation);
   this.progressSeq = (this.progressSeq || 0) + 1;
   const staff = el("select", {}, [el("option", { value: "", text: "All librarians (deduplicated)" }), ...[...document.getElementById("staff").options].map(o => el("option", { value: o.value, text: o.text }))]);
@@ -37,5 +40,5 @@ window.engagement.loadOutcomes = async function () {
   target.append(el("h2", { text: "Choices and loan links" }), table(["Choice / interaction", "Book / source", "Accepted", "Loan / checkout"], d.choices.map(c => [`${c.id} / ${c.interaction_id}`, `${c.book_id || "None today"} / ${c.source}`, this.local(c.at), `${c.loan_id || "Not linked"}${c.checkout_at ? " / "+this.local(c.checkout_at) : ""}`])));
   target.append(el("h2", { text: "Latest student-reported book evidence" }), table(["Interaction / student", "Book / loan", "Reading", "Enjoyment", "Source"], d.pairs.map(p => [`${p.interaction_id} / ${this.name(p.student_id)}`, `${p.book_id} / ${p.loan_id || "no loan"}`, p.reading, p.enjoyment, p.source])));
   target.append(el("h2", { text: "Follow-up records" }), table(["Follow-up / interaction", "Due", "Contact completed", "Recorder"], d.followups.map(f => [`${f.id} / ${f.interaction_id}`, this.local(f.due), f.completed_at ? this.local(f.completed_at) : "Not recorded", f.staff_id || "—"])));
-  target.append(el("p", { class: "hint", text: "Paired borrowing and academic outcomes and illustrative historical engagement are deferred. Existing student academic scenarios stay separate. These counts do not establish causal staff effectiveness." }));
+  target.append(el("p", { class: "hint", text: "These activity counts use this server session only. Historical paired observations are in Students served · observed changes; portfolio trends remain separate. None establishes causal staff effectiveness." }));
 };

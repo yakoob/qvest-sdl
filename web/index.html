@@ -19,7 +19,7 @@
   </header>
   <nav class="app-nav" aria-label="Main navigation"><button type="button" data-view="day">My day</button><button type="button" data-view="students" aria-current="page">Students</button><button type="button" data-view="outcomes">Outcomes</button></nav>
   <main id="day-view" class="overview" hidden><div class="workspace-heading"><h1>My day</h1><span class="session-pill">This server session</span></div><p class="hint">Plan a conversation, listen to the reader, and find their next book together. Staff selection is attribution, not authorization.</p><p id="engagement-status" role="status" aria-live="polite"></p><div id="agenda-body">Loading agenda…</div></main>
-  <main id="outcomes-view" class="overview" hidden><div class="workspace-heading"><h1>Outcomes</h1><span class="session-pill">Source labelled in each section</span></div><p class="hint">Librarian activity and student progress are separate evidence. Neither establishes causal academic impact. Restart clears session records, not the illustrative academic fixtures.</p><div id="outcomes-body"></div></main>
+  <main id="outcomes-view" class="overview" hidden><div class="workspace-heading"><h1>Outcomes</h1><span class="session-pill">Source labelled in each section</span></div><p class="hint">A clear view of the work, the changes, and the evidence behind them.</p><div id="outcomes-body"></div></main>
   <div class="workspace" id="students-view">
     <aside class="rail" id="student-directory" aria-label="Student directory">
       <div class="directory-heading"><div><p class="eyebrow">YOUR READERS</p><h2>Students <span id="student-count" class="count"></span></h2></div><button id="close-students" class="ghost mobile-only" type="button">Close</button></div>
@@ -66,6 +66,7 @@
   <script src="/progress.js"></script>
   <script src="/slots.js"></script>
   <script src="/agenda.js"></script>
+  <script src="/charts.js"></script>
   <script src="/outcomes.js"></script>
   <script src="/progress-outcomes.js"></script>
   <script src="/paired-outcomes.js"></script>

@@ -1,38 +1,43 @@
-/* Served-cohort evidence stays separate from portfolio and operational metrics. */
+/* Paired changes are descriptive, never a causal staff score. */
 window.engagement.loadPairedOutcomes = async function (target, navigation) {
-  this.metricsSeq = (this.metricsSeq || 0) + 1;
-  this.progressSeq = (this.progressSeq || 0) + 1;
-  const seq = this.pairedSeq;
-  const source = el("select", {}, [el("option", {value:"historical",text:"Illustrative historical contacts"}), el("option", {value:"session",text:"This server session"})]);
+  const source = el("select", {}, [el("option", { value: "historical", text: "Illustrative history" }), el("option", { value: "session", text: "Live session" })]);
   source.value = this.pairedSource || "historical";
-  const staff = el("select", {}, [el("option", {value:"",text:"All facilitators"}), ...[...document.getElementById("staff").options].map(o => el("option", {value:o.value,text:o.text}))]);
+  const staff = el("select", {}, [el("option", { value: "", text: "All librarians" }), ...[...document.getElementById("staff").options].map(o => el("option", { value: o.value, text: o.text }))]);
   staff.value = this.pairedStaff || "";
-  const start = el("input", {type:"date", value:this.pairedStart || ""});
-  const end = el("input", {type:"date", value:this.pairedEnd || ""});
-  const asof = el("input", {type:"date", value:this.pairedAsOf || ""});
-  const controls = el("div", {class:"agenda-controls"}, [el("label", {}, ["Contact source", source]), el("label", {}, ["Index-contact facilitator", staff]), el("label", {}, ["Contact period from (optional)", start]), el("label", {}, ["Contact period until (exclusive)", end]), el("label", {}, ["Evidence as of (UTC day start; blank: now)", asof]), this.button("Apply cohort filters", () => {
-    this.pairedSource=source.value; this.pairedStaff=staff.value; this.pairedStart=start.value; this.pairedEnd=end.value; this.pairedAsOf=asof.value;
-    return this.loadOutcomes();
-  })]);
-  source.addEventListener("change", () => { this.pairedSource=source.value; this.pairedStart=""; this.pairedEnd=""; this.pairedAsOf=""; this.loadOutcomes().catch(e=>this.error(e)); });
-  target.replaceChildren(navigation, controls, el("p", {role:"status",text:"Loading paired observations…"}));
-  const query = new URLSearchParams({source:source.value, staff_id:staff.value, start:start.value, end:end.value});
-  if (asof.value) query.set("as_of", `${asof.value}T00:00:00Z`);
-  const response = await fetch(`/api/metrics/paired?${query}`);
-  const report = await response.json();
-  if (seq !== this.pairedSeq || this.view !== "outcomes" || this.outcomeSection !== "paired") return;
-  target.replaceChildren(navigation, controls);
-  if (!response.ok) { target.append(el("p", {role:"alert",text:report.error || "Could not load paired outcomes"})); return; }
-  const table = (headers,rows) => el("div", {class:"table-scroll",tabindex:"0"}, [el("table", {class:"engagement-table"}, [el("thead", {}, [el("tr", {}, headers.map(h=>el("th", {scope:"col",text:h})))]), el("tbody", {}, rows.map(row=>el("tr", {}, row.map(v=>el("td", {}, [v == null ? "—" : typeof v === "object" ? v : String(v)])))))])]);
-  target.append(el("h2", {text:"Students served · observed changes"}), el("p", {class:"hint",text:`${source.options[source.selectedIndex].text} · ${this.local(report.filter.start)} to ${this.local(report.filter.end)} (exclusive) · as of ${this.local(report.filter.as_of)} · ${report.students} distinct students`}), el("p", {class:"hint",text:report.note}));
-  target.append(table(["Measure", "Paired N", "Increased", "Unchanged", "Decreased", "Excluded / reasons"], [["Borrowing events",report.borrowing], ["English grade direction",report.english], ["Reading check (compatible form)",report.reading]].map(([name,c])=>[name,c.eligible,c.increased,c.unchanged,c.decreased,`${c.excluded}: ${Object.entries(c.reasons || {}).map(([reason,n])=>`${n} ${reason}`).join("; ") || "none"}`])));
-  const evidence = p => p.exclusion ? `Excluded: ${p.exclusion}` : `${p.before} → ${p.after} (${p.direction}) · ${p.before_id}: ${p.before_start ? p.before_start+" – " : ""}${p.before_date}; ${p.after_id}: ${p.after_start ? p.after_start+" – " : ""}${p.after_date}`;
-  target.append(el("h3", {text:"Student evidence behind every count"}), table(["Student", "Index contact / facilitator", "Borrowing", "English", "Reading", "Later shared contacts"], report.rows.map(row=>[
-    this.button(this.name(row.student_id), async()=>{await selectStudent(row.student_id);switchTab("progress",true);}),
-    `${row.contact_id} · ${this.local(row.contact_at)} · ${row.facilitator}`,
-    evidence(row.borrowing), evidence(row.english), evidence(row.reading),
-    row.later_contacts.map(c=>`${c.id} · ${this.local(c.at)} · ${c.staff_id}`).join("; ") || "None in period",
-  ])));
-  if (!report.rows.length) target.append(el("p", {text:"No completed contacts in this source and period. Scheduling alone does not count as service."}));
-  target.append(el("p", {class:"hint",text:"Borrowing windows must be fully covered, 84 days long, strictly before/after contact and within one year. Academic pairs use ±180 days and compatible course/grade form. Date-only observations are available after that school day ends. Historical fixtures never change live inventory, recommendations or reservations."}));
+  const period = el("select", {}, (source.value === "historical" ? [["2025", "School year 2025–26"], ["2024", "School year 2024–25"], ["2023", "School year 2023–24"], ["custom", "Custom dates"]] : [["session", "This session"], ["custom", "Custom dates"]]).map(([value,text]) => el("option", {value,text})));
+  period.value = this.pairedPeriod || (source.value === "historical" ? "2025" : "session");
+  const start = el("input", {type:"date",value:this.pairedStart || ""});
+  const end = el("input", {type:"date",value:this.pairedEnd || ""});
+  const asof = el("input", {type:"date",value:this.pairedAsOf || ""});
+  const apply = () => { this.pairedStaff = staff.value; this.pairedPeriod = period.value; this.pairedStart = start.value; this.pairedEnd = end.value; this.pairedAsOf = asof.value; return this.loadOutcomes(); };
+  const more = charts.disclosure("More filters", el("div", {class:"agenda-controls"}, [el("label", {}, ["From",start]),el("label", {}, ["Through",end]),el("label", {}, ["Evidence as of (UTC day start)",asof]),this.button("Apply filters", () => { if (start.value || end.value) period.value="custom"; return apply(); })]));
+  more.open = period.value === "custom";
+  source.addEventListener("change", () => { this.pairedSource=source.value; this.pairedPeriod=null; this.pairedStart=""; this.pairedEnd=""; this.pairedAsOf=""; this.loadOutcomes().catch(e=>this.error(e)); });
+  for (const select of [staff,period]) select.addEventListener("change", () => apply().catch(e=>this.error(e)));
+  const controls = el("div", {class:"outcome-filters"}, [el("label", {}, ["Period",period]),el("label", {}, ["Source",source]),el("label", {}, ["Librarian",staff]),more]);
+  const query = new URLSearchParams({source:source.value,staff_id:staff.value});
+  if (/^\d{4}$/.test(period.value)) { query.set("start",`${period.value}-07-01`);query.set("end",`${Number(period.value)+1}-07-01`); }
+  else if (period.value === "custom") { if(start.value)query.set("start",start.value);if(end.value)query.set("end",charts.shiftDate(end.value,1)); }
+  if(asof.value)query.set("as_of",`${asof.value}T00:00:00Z`);
+  return charts.report(target, `/api/metrics/paired?${query}`, report => {
+    const evidence = p => p.exclusion ? `Not enough evidence: ${p.exclusion}` : `${p.before} → ${p.after} · ${p.before_start || p.before_date} to ${p.before_date}; ${p.after_start || p.after_date} to ${p.after_date}`;
+    const records = charts.disclosure("View student records");
+    const recordBody = el("div");records.append(recordBody);
+    const showRecords = (measure, direction) => {
+      const rows = report.rows.filter(r => !measure || r[measure].direction === direction);
+      recordBody.replaceChildren(el("h3",{text:measure ? `${measure}: ${direction}` : "All students in this cohort"}), charts.table(["Student","First contact / librarian","Borrowing","English","Reading check","Later contacts"], rows.map(r => [
+        this.button(this.name(r.student_id),async()=>{await selectStudent(r.student_id);switchTab("progress",true);}),
+        `${r.contact_id} · ${this.local(r.contact_at)} · ${charts.staff(r.facilitator)}`, evidence(r.borrowing),evidence(r.english),evidence(r.reading),
+        r.later_contacts.map(c=>`${this.local(c.at)} · ${charts.staff(c.staff_id)}`).join("; ") || "None",
+      ])));
+      if(measure){ records.open=true;records.scrollIntoView({block:"nearest"}); }
+    };
+    const measures = [["borrowing","Borrowing"],["english","English grades"],["reading","Reading checks"]];
+    target.replaceChildren(navigation, controls, el("div", {class:"outcome-intro"}, [el("span",{class:"source-badge",text:source.value==="historical"?"Illustrative history · fictional contacts":"Live session"}),el("h2",{text:"What changed after we met?"}),el("p",{text:`${report.students} students with completed contacts · ${this.day(report.filter.start)} through ${charts.shiftDate(this.day(report.filter.end),-1)} · ${staff.options[staff.selectedIndex].text}`}),el("p",{class:"hint",text:`Evidence as of ${this.local(report.filter.as_of)}. These observations do not show that a conversation caused a change.`})]),
+      el("div",{class:"chart-grid"},measures.map(([key,title])=>charts.distribution(title,report[key],direction=>showRecords(key,direction)))));
+    const c=report.borrowing;
+    target.append(el("p",{class:"takeaway",text:c.eligible?`${c.increased} of ${c.eligible} comparable students borrowed more. ${c.unchanged} were unchanged and ${c.decreased} borrowed less. ${c.excluded} need more evidence.`:"We don't have enough comparable borrowing records yet. Missing evidence is not a poor outcome."}));
+    if(!report.available) target.append(el("p",{role:"status",text:report.note}));
+    showRecords();target.append(records,charts.disclosure("How this is counted",el("p",{text:report.note}),el("p",{text:"The first completed contact sets attribution before the librarian filter. Borrowing pairs need fully covered 84-day windows within one year of contact. English and reading observations use ±180 days and compatible course/grade forms. Date-only evidence is available after its school day ends. Session records never inherit illustrative historical evidence."})));
+  });
 };

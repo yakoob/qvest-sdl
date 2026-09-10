@@ -35,13 +35,17 @@ window.createSlotPicker = function (options) {
       if (disposed || seq !== sequence) return;
       if (!response.ok) throw new Error(data.error || "Could not load available times");
       message.textContent = data.slots.length ? `${data.slots.length} suggested times · ${data.timezone}` : "No available slots on this date. Try another day or librarian.";
+      let groupLabel = "";
       for (const slot of data.slots) {
-        const button = el("button", { type: "button", class: "secondary", "aria-pressed": "false", text: `${owner.local(slot.start)} – ${new Intl.DateTimeFormat("en-US", {timeZone: data.timezone, hour: "numeric", minute: "2-digit"}).format(new Date(slot.end))}` });
+        const hour = Number(new Intl.DateTimeFormat("en-GB", { timeZone: data.timezone, hour: "2-digit", hourCycle: "h23" }).format(new Date(slot.start)));
+        const label = hour < 12 ? "Morning" : "Afternoon";
+        if (label !== groupLabel) { slots.append(el("h3", { class: "slot-group-heading", text: label })); groupLabel = label; }
+        const button = el("button", { type: "button", class: "secondary", "aria-pressed": "false", text: `${owner.time(slot.start)} – ${owner.time(slot.end)}` });
         button.addEventListener("click", () => {
           if (disposed || seq !== sequence) return;
           chosen = slot; confirmation.checked = false; confirmation.disabled = false;
           slots.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b === button)));
-          selection.textContent = `Selected: ${button.textContent}`; notify();
+          selection.textContent = `${owner.day(slot.start)} · ${button.textContent} · ${duration.value} minutes with ${charts.staff(staff.value)}`; notify();
         });
         slots.append(button);
       }
@@ -59,6 +63,6 @@ window.createSlotPicker = function (options) {
   // Invalidate immediately while editing; change performs the next lookup.
   for (const input of [date, duration]) input.addEventListener("input", () => { ++sequence; controller?.abort(); clear(); });
   confirmation.addEventListener("change", notify);
-  root.append(el("p", { class: "hint", text: `${owner.name(options.student)} · ${owner.timezone}. Slots exclude declared conflicts. Confirm student availability and any duties not in the structured calendar.` }), el("div", {class: "agenda-controls"}, [el("label", {}, ["Assigned librarian", staff]), el("label", {}, ["Date", date]), el("label", {}, ["Minutes", duration])]), el("div", {class: "engagement-actions"}, [owner.button("Previous day", () => moveDay(-1)), owner.button("Next day", () => moveDay(1)), owner.button("Refresh available times", reload)]), message, slots, selection, el("label", {class: "check"}, [confirmation, "I confirmed staff and student availability"]));
+  root.append(el("p", { class: "hint", text: `${owner.name(options.student)} · ${owner.timezone}. Slots exclude declared conflicts. Confirm student availability and any duties not in the structured calendar.` }), el("div", {class: "agenda-controls"}, [el("label", {}, ["Assigned librarian", staff]), el("label", {}, ["Date", date])]), charts.disclosure("Duration", el("label", {}, ["Minutes", duration])), el("div", {class: "engagement-actions"}, [owner.button("Previous day", () => moveDay(-1)), owner.button("Next day", () => moveDay(1)), owner.button("Refresh available times", reload)]), message, slots, selection, el("label", {class: "check"}, [confirmation, "I confirmed staff and student availability"]));
   return { element: root, value, reload, dispose() { disposed = true; ++sequence; controller?.abort(); } };
 };

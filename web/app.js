@@ -160,6 +160,10 @@ function renderHeader(detail) {
 function renderLoans(detail) {
   const loans = detail.loans || [];
   const hist = detail.history || [];
+  if (window.engagement) {
+    window.engagement.bookTitles ||= {};
+    [...loans, ...hist].forEach(l => { window.engagement.bookTitles[l.book_id] = l.title || l.book_id; });
+  }
   const openNodes = loans.length
     ? loans.map((l) => loanCard(l, true))
     : [el("p", { class: "muted", text: "Nothing out right now." })];
@@ -199,6 +203,7 @@ function renderRecs(rec, firstName) {
     nodes.push(el("div", { class: "muted", text: "No in-stock titles passed policy for this lookup." }));
   }
   items.forEach((it) => {
+    if (window.engagement) { window.engagement.bookTitles ||= {}; window.engagement.bookTitles[it.book_id] = it.title || it.book_id; }
     const checkout = el("button", {
       type: "button",
       text: `Check out to ${firstName}`,
@@ -806,7 +811,7 @@ document.getElementById("student-directory").addEventListener("keydown", ev => {
 document.getElementById("support-filter").addEventListener("change", renderStudentList);
 
 Promise.all([loadSupportQueue(), loadStudents()])
-  .then(() => selectStudent(state.selectedId))
+  .then(async () => { await refreshStudent(); await window.engagement.showView("day"); })
   .catch((err) => {
     recsEl.replaceChildren(el("div", { class: "muted", text: "API not running. go run ./cmd/shelfmate serve" }));
     setStatus(String(err.message || err), "err");

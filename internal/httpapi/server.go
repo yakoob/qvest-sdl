@@ -124,6 +124,22 @@ type studentListRow struct {
 	DemoRole    string `json:"demo_role,omitempty"`
 	Shortcut    bool   `json:"shortcut"`
 	OpenLoans   int    `json:"open_loans"`
+	// Trend is the operational grade trajectory, oldest to newest. Missing
+	// semesters are nil; the UI renders them as gaps, never zeros.
+	Trend []float64 `json:"trend"`
+}
+
+// gradePoint maps a letter grade to an ordinal for the sparkline. Ungraded
+// or non-letter semesters return nil so absence stays visible absence.
+func gradePoint(g *string) *float64 {
+	if g == nil {
+		return nil
+	}
+	rank := map[string]float64{"F": 0, "D-": 1, "D": 2, "D+": 3, "C-": 4, "C": 5, "C+": 6, "B-": 7, "B": 8, "B+": 9, "A-": 10, "A": 11, "A+": 12}
+	if v, ok := rank[*g]; ok {
+		return &v
+	}
+	return nil
 }
 
 func (s Server) students(w http.ResponseWriter, r *http.Request) {
@@ -133,12 +149,28 @@ func (s Server) students(w http.ResponseWriter, r *http.Request) {
 	}
 	snap := s.snap()
 	st := snap.Engine.Store
+	acad := s.Academics
 	out := make([]studentListRow, 0, len(st.Students))
 	for _, stu := range st.Students {
 		open := 0
 		for _, ev := range st.History[stu.StudentID] {
 			if strings.TrimSpace(ev.ReturnDate) == "" {
 				open++
+			}
+		}
+		var trend []float64
+		if acad != nil && !acad.Missing {
+			if rec, ok := acad.ByStudent[stu.StudentID]; ok {
+				sem := append([]academics.SemesterIn(nil), rec.Semesters...)
+				sort.Slice(sem, func(i, j int) bool { return sem[i].End < sem[j].End })
+				trend = make([]float64, 0, len(sem))
+				for i := range sem {
+					if p := gradePoint(sem[i].Grade); p != nil {
+						trend = append(trend, *p)
+					} else {
+						trend = append(trend, -1) // missing: rendered as a gap, not zero
+					}
+				}
 			}
 		}
 		out = append(out, studentListRow{
@@ -151,6 +183,7 @@ func (s Server) students(w http.ResponseWriter, r *http.Request) {
 			DemoRole:    stu.DemoRole,
 			Shortcut:    isShortcut(stu.StudentID),
 			OpenLoans:   open,
+			Trend:       trend,
 		})
 	}
 	sort.Slice(out, func(i, j int) bool {

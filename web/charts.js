@@ -1,6 +1,53 @@
 /* Shared presentation helpers; metrics and cohorts remain server-owned. */
 window.charts = {
   colors: ["#2a78d6", "#eb6834", "#1baf7a"],
+  // 12-point trend sparkline: single series, de-emphasis hue, latest point in the accent.
+  // Unknown points (-1) render as gaps, never as zero; a lone point renders as a dot.
+  sparkline(values, options = {}) {
+    const W = options.width || 96, H = options.height || 28;
+    const pad = 3, dotR = 2;
+    const points = (values || []).map(v => (v == null || v < 0 ? null : v));
+    const known = points.filter(v => v != null);
+    if (known.length === 0) return null;
+    const lo = Math.min(...known), hi = Math.max(...known);
+    const span = hi - lo || 1;
+    const x = i => pad + (points.length === 1 ? W / 2 - pad : (W - 2 * pad) * (i / (points.length - 1)));
+    const y = v => H - pad - ((v - lo) / span) * (H - 2 * pad);
+    const seg = [];
+    let open = false;
+    const circles = [];
+    points.forEach((v, i) => {
+      if (v == null) { open = false; return; }
+      const cx = x(i), cy = y(v);
+      seg.push(`${open ? "L" : "M"}${cx.toFixed(1)},${cy.toFixed(1)}`);
+      open = true;
+      circles.push({ cx, cy, last: i === points.length - 1 });
+    });
+    const last = circles[circles.length - 1];
+    const node = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    node.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    node.setAttribute("width", W); node.setAttribute("height", H);
+    node.setAttribute("aria-hidden", "true"); node.classList.add("sparkline");
+    if (seg.length > 1) {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", seg.join(" "));
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", options.line || "#596b7d");
+      path.setAttribute("stroke-width", "2");
+      path.setAttribute("stroke-linecap", "round");
+      path.setAttribute("stroke-linejoin", "round");
+      node.append(path);
+    }
+    circles.forEach(c => {
+      const r = c.last ? dotR + 1 : dotR;
+      const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      dot.setAttribute("cx", c.cx); dot.setAttribute("cy", c.cy); dot.setAttribute("r", r);
+      dot.setAttribute("fill", c.last ? (options.accent || "#087f80") : (options.line || "#596b7d"));
+      if (c.last) dot.setAttribute("stroke", "#fff"); dot.setAttribute("stroke-width", "1.5");
+      node.append(dot);
+    });
+    return node;
+  },
   disclosure(label, ...children) { return el("details", { class: "evidence-disclosure" }, [el("summary", { text: label }), ...children]); },
   table(headers, rows) {
     return el("div", { class: "table-scroll", tabindex: "0" }, [el("table", { class: "engagement-table" }, [

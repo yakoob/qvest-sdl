@@ -29,17 +29,18 @@ func (s Server) supportQueue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	type row struct {
-		StudentID        string   `json:"student_id"`
-		Grade            int      `json:"grade"`
-		Band             string   `json:"band"`
-		Label            string   `json:"label"`
-		GradeStatus      string   `json:"grade_status"`
-		GradeStatusLabel string   `json:"grade_status_label"`
-		English          string   `json:"english,omitempty"`
-		Reading          string   `json:"reading,omitempty"`
-		Waiting          bool     `json:"waiting"`
-		Coverage         string   `json:"coverage"`
-		Reasons          []string `json:"reason_codes"`
+		StudentID        string    `json:"student_id"`
+		Grade            int       `json:"grade"`
+		Band             string    `json:"band"`
+		Label            string    `json:"label"`
+		GradeStatus      string    `json:"grade_status"`
+		GradeStatusLabel string    `json:"grade_status_label"`
+		English          string    `json:"english,omitempty"`
+		Reading          string    `json:"reading,omitempty"`
+		Waiting          bool      `json:"waiting"`
+		Coverage         string    `json:"coverage"`
+		Reasons          []string  `json:"reason_codes"`
+		Trend            []float64 `json:"trend"`
 	}
 	busy := map[string]bool{}
 	if s.Session != nil {
@@ -78,8 +79,23 @@ func (s Server) supportQueue(w http.ResponseWriter, r *http.Request) {
 				codes = append(codes, e.Rule)
 			}
 		}
+		var trend []float64
+		if s.Academics != nil && !s.Academics.Missing {
+			if rec, ok := s.Academics.ByStudent[st.StudentID]; ok {
+				sem := append([]academics.SemesterIn(nil), rec.Semesters...)
+				sort.Slice(sem, func(i, j int) bool { return sem[i].End < sem[j].End })
+				trend = make([]float64, 0, len(sem))
+				for i := range sem {
+					if p := gradePoint(sem[i].Grade); p != nil {
+						trend = append(trend, *p)
+					} else {
+						trend = append(trend, -1) // missing: rendered as a gap, not zero
+					}
+				}
+			}
+		}
 		waiting := !busy[st.StudentID] && (result.GradeStatus == support.BelowGrade || result.GradeStatus == support.UnknownGrade)
-		rows = append(rows, row{st.StudentID, st.Grade, result.Band, result.Label, result.GradeStatus, result.GradeStatusLabel, result.English, result.Reading, waiting, result.Coverage, codes})
+		rows = append(rows, row{st.StudentID, st.Grade, result.Band, result.Label, result.GradeStatus, result.GradeStatusLabel, result.English, result.Reading, waiting, result.Coverage, codes, trend})
 	}
 	order := map[string]int{support.BelowGrade: 0, support.UnknownGrade: 1, support.OnGrade: 2, support.AboveGrade: 3}
 	sort.Slice(rows, func(i, j int) bool {

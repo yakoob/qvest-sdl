@@ -96,6 +96,10 @@ function renderStudentList() {
   }
   rows.forEach((s) => {
     const selected = s.student_id === state.selectedId;
+    const spark = window.charts?.sparkline(s.trend || []);
+    const sparkText = spark
+      ? `English trend: ${s.trend.filter(v => v >= 0).length} graded semester${s.trend.filter(v => v >= 0).length === 1 ? "" : "s"}`
+      : "No graded semesters on file";
     const btn = el("button", {
       class: "student",
       type: "button",
@@ -107,6 +111,9 @@ function renderStudentList() {
         el("span", { class: "student-name", text: labelFor(s) }),
         el("span", { class: "student-meta", text: `Grade ${s.grade} · ${s.student_id}${s.open_loans ? ` · ${s.open_loans} out` : ""}` }),
         el("span", { class: `support-band band-${state.supportQueue.get(s.student_id)?.grade_status || state.supportQueue.get(s.student_id)?.band || "insufficient"}`, text: state.supportQueue.get(s.student_id)?.grade_status_label || state.supportQueue.get(s.student_id)?.label || "Loading context" }),
+        spark
+          ? el("span", { class: "student-trend", role: "img", "aria-label": sparkText }, [spark])
+          : null,
       ]),
     ]);
     btn.addEventListener("click", () => selectStudent(s.student_id));

@@ -142,7 +142,9 @@ window.engagement = {
       if(!row.waiting) continue;
       const status = row.grade_status_label || row.label;
       const detail = [`Grade ${row.grade}`, row.english ? `English ${row.english}` : null, row.reading ? `Reading ${row.reading}` : null].filter(Boolean).join(" · ");
-      attention.append(el("div",{class:"visit-summary agenda-row"},[el("div",{},[el("strong",{text:this.name(row.student_id)}),el("p",{class:`hint support-band band-${row.grade_status || row.band}`,text:status}),el("p",{class:"hint",text:detail})]),this.button("Open student",()=>selectStudent(row.student_id))]));
+      const spark = window.charts?.sparkline(row.trend || []);
+      const sparkWrap = spark ? el("span", { class: "student-trend", role: "img", "aria-label": `English trend: ${(row.trend || []).filter(v => v >= 0).length} graded semester${((row.trend || []).filter(v => v >= 0).length) === 1 ? "" : "s"}` }, [spark]) : null;
+      attention.append(el("div",{class:"visit-summary agenda-row"},[el("div",{},[el("strong",{text:this.name(row.student_id)}),el("p",{class:`hint support-band band-${row.grade_status || row.band}`,text:status}),el("p",{class:"hint",text:detail}),sparkWrap]),this.button("Open student",()=>selectStudent(row.student_id))]));
     }
     if(!(data.students || []).some(row => row.waiting)) attention.append(el("p",{class:"hint",text:"No one is waiting for a first check-in right now."}));
     target.replaceChildren(agenda,attention);

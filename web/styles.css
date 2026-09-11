@@ -153,6 +153,9 @@ button.primary { background: var(--accent); color: white; border-color: transpar
 .student-name { font-size: .9375rem; font-weight: 650; overflow-wrap: anywhere; }
 .student-meta { font-size: .75rem; color: var(--muted); }
 .student .support-band { max-width: 100%; font-size: .6875rem; padding: 3px 8px; white-space: normal; line-height: 1.4; }
+.student-trend { display: inline-flex; align-items: center; height: 28px; margin-top: 2px; }
+.student-trend .sparkline { display: block; }
+@media (forced-colors: active) { .student-trend .sparkline path { stroke: CanvasText; } .student-trend .sparkline circle { fill: CanvasText; stroke: Canvas; } }
 .directory-footer { font-size: .75rem; color: var(--muted); margin: 0; text-align: center; }
 main { min-width: 0; padding: 28px 40px 40px; max-width: 1600px; width: 100%; margin: 0 auto; }
 .workspace-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }

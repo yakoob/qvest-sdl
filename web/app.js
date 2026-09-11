@@ -213,7 +213,7 @@ function renderRecs(rec, firstName) {
   if (items.length === 0) {
     nodes.push(el("div", { class: "muted", text: "No in-stock titles passed policy for this lookup." }));
   }
-  items.forEach((it) => {
+  items.forEach((it, idx) => {
     if (window.engagement) { window.engagement.bookTitles ||= {}; window.engagement.bookTitles[it.book_id] = it.title || it.book_id; }
     const checkout = el("button", {
       type: "button",
@@ -227,12 +227,32 @@ function renderRecs(rec, firstName) {
     }
     const copy = el("button", { class: "secondary", type: "button", text: "Copy talking point" });
     copy.addEventListener("click", () => copyTalkingItem(it));
-    const titleKids = [it.title || it.book_id];
+    const rank = it.rank || idx + 1;
+    const maxScore = Math.max(...items.map(x => x.score || 0), 0.001);
+    const matchPct = Math.max(4, Math.round((it.score || 0) / maxScore * 100));
+    const titleKids = [
+      el("span", { class: "rank-chip", "aria-label": `Match rank ${rank}`, text: `#${rank}` }),
+      it.title || it.book_id,
+    ];
     if (it.enjoy) titleKids.push(el("span", { class: "badge enjoy", text: "might enjoy" }));
+    const whyKids = [];
+    if (it.blurb) whyKids.push(el("p", { class: "blurb", text: it.blurb }));
+    whyKids.push(el("p", { class: "why" }, [
+      el("strong", { text: "Why this story: " }),
+      (it.reasons || []).join("; ") || "catalog match",
+    ]));
     nodes.push(el("div", { class: it.enjoy ? "card enjoy-pick" : "card" }, [
-      el("strong", null, titleKids),
+      el("div", { class: "match-row" }, [
+        el("strong", null, titleKids),
+        el("span", { class: "match-meter", role: "img", "aria-label": `Match strength ${matchPct}% of top pick` }, [
+          el("span", { class: "match-track", "aria-hidden": "true" }, [
+            el("span", { class: "match-fill", style: `width:${matchPct}%` }),
+          ]),
+          el("span", { class: "match-pct", text: `${matchPct}%` }),
+        ]),
+      ]),
       el("span", { class: "meta", text: `${it.author || ""} · ${it.pages}p · ${it.copies_available} on shelf` }),
-      el("div", { class: "evidence" }, [`Why this: ${(it.reasons || []).join("; ") || "none"}`]),
+      el("div", { class: "evidence" }, whyKids),
       el("details", { class: "talk-more" }, [
         el("summary", { text: "Talking point (draft)" }),
         el("div", { class: "talk" }, [it.talking_point || "—"]),

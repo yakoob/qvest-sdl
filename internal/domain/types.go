@@ -121,8 +121,12 @@ type RecItem struct {
 	Cluster         string   `json:"cluster"`
 	Series          string   `json:"series"`
 	Pages           int      `json:"pages"`
+	Blurb           string   `json:"blurb,omitempty"`
 	CopiesAvailable int      `json:"copies_available"`
 	Score           float64  `json:"score"`
+	Rank            int      `json:"rank"`
+	CF              float64  `json:"cf"`
+	Content         float64  `json:"content"`
 	Reasons         []string `json:"reasons"`
 	TalkingPoint    string   `json:"talking_point"`
 	Enjoy           bool     `json:"enjoy,omitempty"`

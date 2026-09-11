@@ -66,17 +66,56 @@ func (TemplateExplainer) Explain(_ context.Context, in Input) (Output, error) {
 	}, nil
 }
 
-func templateLine(r domain.ScoredBook) string {
-	reason := "catalog match"
-	if len(r.Reasons) > 0 {
-		reason = strings.Join(r.Reasons, "; ")
+// whyText translates retrieval evidence into a plain why-this-story line.
+// It restates only what retrieve already claimed for this book.
+func whyText(r domain.ScoredBook) string {
+	var parts []string
+	for _, reason := range r.Reasons {
+		switch reason {
+		case "matches librarian query":
+			parts = append(parts, "matches what you asked for")
+		case "similar to recent checkouts":
+			parts = append(parts, "reads like the books they already pick")
+		case "borrowers with overlapping checkouts also took this":
+			parts = append(parts, "students with similar checkouts took this one too")
+		case "same cluster as a previous checkout":
+			parts = append(parts, "same kind of story as ones they finished")
+		case "same series as a previous checkout":
+			parts = append(parts, "same series as one they already know")
+		case "catalog text similar to checkout history":
+			parts = append(parts, "catalog text echoes their history")
+		case "grade-band popularity fallback (no checkout history or query match)":
+			parts = append(parts, "popular at their grade level (no history to match yet)")
+		default:
+			parts = append(parts, reason)
+		}
 	}
+	if len(parts) == 0 {
+		return "catalog match"
+	}
+	seen := map[string]bool{}
+	out := parts[:0]
+	for _, p := range parts {
+		if !seen[p] {
+			seen[p] = true
+			out = append(out, p)
+		}
+	}
+	return strings.Join(out, "; ")
+}
+
+func templateLine(r domain.ScoredBook) string {
 	series := ""
 	if r.Book.Series != "" {
 		series = " Series: " + r.Book.Series + " (same series is not a numbered next volume)."
 	}
+	blurb := strings.TrimSpace(r.Book.Blurb)
+	if blurb != "" {
+		return fmt.Sprintf("%s — %s. Why this story: %s. %d pages, %d copies on the shelf.%s",
+			r.Book.Title, blurb, whyText(r), r.Book.Pages, r.Book.CopiesAvailable, series)
+	}
 	return fmt.Sprintf("%s — %s. %d pages, %d copies on the shelf.%s",
-		r.Book.Title, reason, r.Book.Pages, r.Book.CopiesAvailable, series)
+		r.Book.Title, whyText(r), r.Book.Pages, r.Book.CopiesAvailable, series)
 }
 
 func fillMissing(in Input, points map[string]string) map[string]string {

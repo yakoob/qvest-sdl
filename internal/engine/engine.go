@@ -109,7 +109,7 @@ func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (doma
 		Enjoy:       append([]string(nil), out.Enjoy...),
 	}
 	points := make([]string, 0, len(keep))
-	for _, row := range keep {
+	for i, row := range keep {
 		tp := out.Points[row.Book.BookID]
 		_, enjoy := enjoySet[row.Book.BookID]
 		item := domain.RecItem{
@@ -119,8 +119,12 @@ func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (doma
 			Cluster:         row.Book.Cluster,
 			Series:          row.Book.Series,
 			Pages:           row.Book.Pages,
+			Blurb:           row.Book.Blurb,
 			CopiesAvailable: row.Book.CopiesAvailable,
 			Score:           row.Score,
+			Rank:            i + 1,
+			CF:              row.CF,
+			Content:         row.Content,
 			Reasons:         append([]string(nil), row.Reasons...),
 			TalkingPoint:    tp,
 			Enjoy:           enjoy,

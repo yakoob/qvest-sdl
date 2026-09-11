@@ -18,7 +18,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
     socket.listen(0, '127.0.0.1', () => { const p = socket.address().port; socket.close(() => resolve(p)); });
   });
   const base = `http://127.0.0.1:${port}`;
-  const server = spawn(binary, ['serve', '-addr', `127.0.0.1:${port}`], { cwd: root, env: { ...process.env, SHELFMATE_LLM: 'off', SHELFMATE_TEST_DRIVER: '1' }, stdio: 'ignore' });
+  const server = spawn(binary, ['serve', '-addr', `127.0.0.1:${port}`], { cwd: root, env: { ...process.env, SHELFMATE_LLM: 'off', SHELFMATE_TEST_DRIVER: '1', SHELFMATE_EMPTY_SESSION: '1' }, stdio: 'ignore' });
   let browser;
   const get = url => fetch(base + url).then(r => { assert.equal(r.status, 200); return r.json(); });
   try {

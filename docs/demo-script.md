@@ -40,9 +40,9 @@ If Tom cannot finish step 1 without a walkthrough, the UX is not done.
 
 ## Connected support-loop demo (Friday-critical slice)
 
-Start a fresh server with `SHELFMATE_LLM=off` before this path so Mateo's Cat Kid copy has not already been checked out in a preceding demo.
+Start a fresh server with `SHELFMATE_LLM=off`. The default boot already has a working morning on Tom’s desk (completed visits in Our work, Tyler in progress, Jordan upcoming). Mateo is unused so the live walkthrough can still start a conversation. Use `SHELFMATE_EMPTY_SESSION=1` only if you need a blank desk.
 
-1. Open My day, review Needs attention, and explain the dated support evidence—not a diagnosis. Schedule a student with confirmed availability in a suggested future slot; reschedule/cancel visibly if demonstrating calendar behavior. Future bookings cannot be started early.
+1. Open My day. Show Tyler as in progress and Jordan as upcoming, then review Needs attention. Schedule or reschedule only if demonstrating calendar behavior. Future bookings cannot be started early.
 2. Open Mateo and Start conversation for an immediate demo. Find books together → Choose together on Cat Kid → Check out chosen book. Choice alone leaves inventory unchanged; checkout records the exact loan link.
 3. Choose Finish conversation, then Finish now or Book a follow-up. The picker shows short available time ranges grouped by Morning/Afternoon. Changing date, duration or staff clears selection. Past conversations → Add book feedback opens the focused reading/enjoyment form.
 4. Open Outcomes → Our work. The three independent count cards summarize completed contacts, conversations and linked loans; ratio bars show reported completion, enjoyment and follow-ups. Students helped is a completed-contact count, not demonstrated benefit. View records retains the evidence, and More activity measures explains pending 14-day choices.

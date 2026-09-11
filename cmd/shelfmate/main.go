@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -122,6 +123,9 @@ func serve(args []string) {
 		log.Fatal(err)
 	}
 	svc.SetCalendar(calendar)
+	if err := svc.SeedLiveDesk(context.Background()); err != nil {
+		log.Printf("live desk seed skipped: %v", err)
+	}
 	demo, err := engagement.LoadDemo(*data, st, cat)
 	if err != nil {
 		log.Printf("historical engagement unavailable: %v", err)

@@ -49,7 +49,7 @@ python3 scripts/csv_to_json.py
 - Explicit conversation completion and structured book feedback drive session-only activity tables, with exact denominators and supporting records.
 - Outcomes → Student trends rolls up individual borrowing, English grades and compatible reading checks, with separate extract/scenario sources and student drill-downs.
 - Outcomes → Reading changes compares eligible historical borrowing/academic pairs, with sample sizes, exclusions and first-contact attribution. Historical contacts are explicitly fictional and isolated from live actions.
-- Restart clears session engagement and loans; read-only historical fixtures reload unchanged. Session contacts never inherit historical academic outcomes.
+- `serve` preloads a small live morning for My day and Outcomes → Our work. Restart still clears it. `SHELFMATE_EMPTY_SESSION=1` boots a blank desk. Historical Reading changes stay on the separate fixture.
 
 See [the walkthrough](docs/runbook.md#complete-librarian-support-loop-session-only), [metric definitions](docs/metric-definitions.md), and [pilot proposal](docs/pilot-proposal.md). Staff selection is attribution, not authentication.
 

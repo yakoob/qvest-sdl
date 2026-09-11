@@ -123,6 +123,22 @@ func TestFallbackGivesWayToQuery(t *testing.T) {
 	}
 }
 
+func TestCatalogSearchRanksQueryNeighbors(t *testing.T) {
+	h := loadHybrid(t)
+	hits := h.Search("drawing art comics", 5)
+	if len(hits) == 0 {
+		t.Fatal("empty catalog search")
+	}
+	for _, row := range hits {
+		if row.Score <= 0 {
+			t.Fatalf("%s score %v", row.Book.BookID, row.Score)
+		}
+		if _, ok := h.Store.Book(row.Book.BookID); !ok {
+			t.Fatalf("unknown %s", row.Book.BookID)
+		}
+	}
+}
+
 func loadHybrid(t *testing.T) *Hybrid {
 	t.Helper()
 	s, err := store.Load(filepath.Join(repoRoot(t), "data", "json"))

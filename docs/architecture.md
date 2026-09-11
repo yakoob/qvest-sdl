@@ -7,9 +7,9 @@ librarian console (web/, localhost)
    HTTP API  (cmd/shelfmate serve)
         │
         ├─ store.Store          load data/json once
-        ├─ retrieve.Hybrid      item-item CF + catalog TF-IDF
+        ├─ retrieve.Hybrid      item-item CF + catalog TF-IDF (`Search` is the in-process index)
         ├─ policy.Filter        catalog-closed, copies>0, grade, already-read, page cap
-        ├─ explain.Explainer    TemplateExplainer default; optional Axon
+        ├─ explain.Explainer    TemplateExplainer default; optional Axon (Messages or chat/completions)
         └─ audit.Log            JSONL, opaque IDs, no raw query
 ```
 
@@ -44,7 +44,7 @@ Synthetic academics (`data/json/academic_demo.json`) load beside the store. Isol
 
 Recommendation generation runs on an immutable engine snapshot outside the writer lock. Commit rechecks both engagement and inventory revisions; the offer saves candidate IDs, constraint flags, evidence version and time. Offer responses carry inventory revision for UI stale-result checks. Raw query text is not in the offer record. Engagement receipts are memory-only; unlike the optional CLI audit they are not persisted.
 
-Calendar validation uses district IANA timezone, school-year bounds, structured shifts/blocks/closures and manually confirmed availability. Whole-minute local inputs reject DST gaps/folds unless an explicit matching offset disambiguates. Prose-only duties are not silently parsed. The shared `web/slots.js` picker and server saves enforce the same five-minute-start candidates. Changing picker inputs invalidates the selection. Completing a conversation with a follow-up validates then atomically creates a linked appointment; completing the follow-up conversation fulfills contact. Dated reservation changes preserve as-of due cohorts without counting cancellations as contact.
+Calendar validation uses district IANA timezone, school-year bounds, structured shifts/blocks/closures and manually confirmed availability. Whole-minute local inputs reject DST gaps/folds unless an explicit matching offset disambiguates. Prose-only duties are not silently parsed. The shared `web/slots.js` picker and server saves enforce the same five-minute-start candidates. Changing picker inputs invalidates the selection. Completing a conversation with a follow-up validates then atomically creates a linked appointment; completing the follow-up conversation fulfills contact. A librarian may start a booked conversation before the slot; only that student stays locked to one open conversation. Dated reservation changes preserve as-of due cohorts without counting cancellations as contact.
 
 Student portfolio rollups reuse `academics.Catalog.View`, not a second JavaScript calculator. `metrics.Progress` returns exact period aggregates and student rows with full/partial/missing coverage, grade distributions and compatible reading-form deltas. Extract and scenario sources stay distinct, and portfolio progress has no librarian attribution.
 
@@ -63,10 +63,8 @@ GET agenda/availability/metrics and POST engagement reuse existing bounded-body 
 
 ## LLM boundary
 
-Retrieval does not import the HTTP client as a required path. When enabled:
+Retrieval does not import the HTTP client as a required path. When enabled, the client chooses Anthropic Messages (`ANTHROPIC_BASE_URL` / `control-plane/proxy`) or OpenAI-compatible `POST $LLM_BASE/v1/chat/completions`. Default model is `auto:medium`.
 
-`POST $LLM_BASE/v1/chat/completions` (client appends that path if `LLM_BASE` is an origin or `/v1`).
+Payload allowlist: `student_id`, stretch/page flags, allowlisted themes, candidate `book_id` + catalog fields + retrieve reasons. No first names, anecdotes, blurbs, raw notes, or raw query. Unknown IDs from the model are dropped; talking points and enjoy badges are drafts, not a factuality proof. Classification may only emit `ThemeNames()` values.
 
-Payload allowlist: `student_id`, stretch/page flags, candidate `book_id` + catalog fields + retrieve reasons. No first names, anecdotes, blurbs, or raw query. Unknown IDs from the model are dropped; talking points are drafts, not a factuality proof.
-
-Kill LLM: recs and scores stay the same. Proven in `internal/engine` against a mock that fails and a mock that succeeds.
+Kill LLM: recs and scores stay the same. Proven in `internal/engine` against a mock that fails and a mock that succeeds. Catalog neighbors live in `retrieve.Hybrid.Search` (in-process TF-IDF), not a separate vector database.

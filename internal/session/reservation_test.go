@@ -4,7 +4,6 @@ import (
 	"context"
 	"reflect"
 	"testing"
-	"time"
 
 	"school_district_reading/internal/engagement"
 )
@@ -49,7 +48,6 @@ func TestFollowupReservationLifecycle(t *testing.T) {
 	}
 	command(t, s, engagement.Command{Action: "book_followup", ID: f.ID, Start: "2026-09-11T09:10", Duration: 10, StaffID: "L-002", Confirmed: true})
 	f = s.EngagementSnapshot().Followups[0]
-	s.SetClock(func() time.Time { return time.Date(2026, 9, 11, 16, 10, 0, 0, time.UTC) })
 	contact := command(t, s, engagement.Command{Action: "start", AppointmentID: f.AppointmentID, StaffID: "L-002"})
 	command(t, s, engagement.Command{Action: "complete", InteractionID: contact.ID})
 	f = s.EngagementSnapshot().Followups[0]

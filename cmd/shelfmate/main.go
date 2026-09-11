@@ -55,8 +55,9 @@ func usage() {
   shelfmate eval
 
 LLM is off unless SHELFMATE_LLM=on. Recs still work.
-Optional Axon: LLM_BASE (origin, client appends /v1/chat/completions),
-LLM_MODEL, LLM_API_KEY (never logged).
+Optional Axon: ANTHROPIC_BASE_URL (Claude Code proxy, /v1/messages)
+or LLM_BASE (OpenAI-compatible origin, client appends /v1/chat/completions).
+Default model auto:medium (MEDIUM / Qwen 3.8). Keys never logged.
 Demo checkouts live in process memory; restart reloads the frozen extract.
 `, version.Version)
 }

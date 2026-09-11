@@ -26,6 +26,7 @@ type Input struct {
 	StudentID   string
 	Stretch     bool
 	Constraints policy.Constraints
+	Themes      []string
 	Items       []domain.ScoredBook
 }
 
@@ -33,6 +34,7 @@ type Output struct {
 	Mode   string
 	Note   string
 	Points map[string]string
+	Enjoy  []string
 }
 
 func LLMEnabled() bool {

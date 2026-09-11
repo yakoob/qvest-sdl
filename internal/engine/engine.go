@@ -68,6 +68,7 @@ func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (doma
 		StudentID:   st.StudentID,
 		Stretch:     req.Stretch,
 		Constraints: constraints,
+		Themes:      append([]string(nil), req.Themes...),
 		Items:       keep,
 	})
 	if err != nil {
@@ -75,6 +76,7 @@ func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (doma
 			StudentID:   st.StudentID,
 			Stretch:     req.Stretch,
 			Constraints: constraints,
+			Themes:      append([]string(nil), req.Themes...),
 			Items:       keep,
 		})
 		out = fb
@@ -83,6 +85,10 @@ func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (doma
 	}
 	if out.Points == nil {
 		out.Points = map[string]string{}
+	}
+	enjoySet := map[string]struct{}{}
+	for _, id := range out.Enjoy {
+		enjoySet[id] = struct{}{}
 	}
 
 	rec := domain.Recommendation{
@@ -100,10 +106,12 @@ func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (doma
 		ExplainNote: out.Note,
 		Version:     e.Version,
 		Dropped:     firstDropped(dropped, 8),
+		Enjoy:       append([]string(nil), out.Enjoy...),
 	}
 	points := make([]string, 0, len(keep))
 	for _, row := range keep {
 		tp := out.Points[row.Book.BookID]
+		_, enjoy := enjoySet[row.Book.BookID]
 		item := domain.RecItem{
 			BookID:          row.Book.BookID,
 			Title:           row.Book.Title,
@@ -115,6 +123,7 @@ func (e *Engine) RecommendContext(ctx context.Context, req domain.Request) (doma
 			Score:           row.Score,
 			Reasons:         append([]string(nil), row.Reasons...),
 			TalkingPoint:    tp,
+			Enjoy:           enjoy,
 		}
 		rec.Items = append(rec.Items, item)
 		if tp != "" {

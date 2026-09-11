@@ -61,6 +61,10 @@ func ThemeTerms(theme string) (string, bool) {
 	return v, ok
 }
 
+func ThemeNames() []string {
+	return []string{"perseverance", "belonging", "sports", "underdogs", "creativity", "animals"}
+}
+
 func Load(dir string, st *store.Store) (*Catalog, error) {
 	c := &Catalog{ByStudent: map[string]Record{}}
 	raw, err := os.ReadFile(filepath.Join(dir, "support_demo.json"))

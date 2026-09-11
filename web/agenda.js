@@ -117,26 +117,27 @@ window.engagement = {
       if (rebook) action = this.primary("Book a time",()=>this.schedule(ap.student_id,null,null,follow));
       else if (ap.status==="in_progress") action=this.primary("Continue",()=>selectStudent(ap.student_id));
       else if (ap.status==="scheduled") {
-        action=this.primary("Start",async()=>{await this.command({action:"start",appointment_id:ap.id,staff_id:staffId()});await selectStudent(ap.student_id);});
-        action.disabled=!ready;action.title=ready?"Start this conversation":"Available at the scheduled start time";
+        action=this.primary("Start now",async()=>{await this.command({action:"start",appointment_id:ap.id,staff_id:staffId()});await selectStudent(ap.student_id);});
+        action.title=ready?"Start this conversation":"Start this booked conversation now";
       }
       let more;
       if(ap.status==="scheduled") {
         const noShow=this.button("Mark no-show",()=>{if(window.confirm("Mark this meeting as not attended?"))return this.command({action:"no_show",id:ap.id});});noShow.disabled=!ready;
         more=charts.disclosure("More actions",this.button("Reschedule",()=>this.schedule(ap.student_id,ap)),this.button("Cancel meeting",()=>{if(window.confirm("Cancel this meeting?"))return this.command({action:"cancel",id:ap.id});}),noShow);
       }
-      const label = rebook?"Needs rebooking":ap.status==="in_progress"?"In progress":ap.status==="scheduled"?(past?"Overdue":ready?"Ready to start":"Upcoming"):ap.status==="completed"?"Finished":ap.status==="no_show"?"Not attended":"Cancelled";
+      const label = rebook?"Needs rebooking":ap.status==="in_progress"?"In progress":ap.status==="scheduled"?(past?"Overdue":ready?"Ready to start":"Upcoming · start anytime"):ap.status==="completed"?"Finished":ap.status==="no_show"?"Not attended":"Cancelled";
       add(this.time(ap.start),this.name(ap.student_id),(follow?"Follow-up · ":"")+label+" · "+charts.staff(ap.staff_id)+(ap.staff_id!==staffId()?" (assigned)":""),action,more);
     }
     if(mode.value!=="completed") {
       for(const i of interactions) if(!i.completed_at && !i.appointment_id && i.facilitator===staffId()) add("Now",this.name(i.student_id),"Walk-in · In progress",this.primary("Continue",()=>selectStudent(i.student_id)));
       for(const f of follows) {
         const i=interactions.find(i=>i.id===f.interaction_id);
-        if(!f.appointment_id && !f.completed_at && i?.facilitator===staffId()) add("To book",this.name(i.student_id),"Follow-up · Choose an available time",this.primary("Book a time",()=>this.schedule(i.student_id,null,null,f)));
+        if(f.completed_at || i?.facilitator!==staffId()) continue;
+        if(!f.appointment_id) add("To book",this.name(i.student_id),"Follow-up · Choose an available time",this.primary("Book a time",()=>this.schedule(i.student_id,null,null,f)));
       }
     }
     if(!count) agenda.append(el("div",{class:"empty-state"},[el("h3",{text:mode.value==="overdue"?"Nothing waiting for attention.":"No meetings in this view."}),el("p",{text:"Find a reader to start a conversation or book time together."})]));
-    const attention=el("section",{class:"task"},[el("h2",{text:"Students to check in with"}),el("p",{class:"hint",text:"Below-grade readers first, from English grades and reading checks—not a diagnosis. Students already in a conversation, booked, or due for a follow-up stay on My day instead."})]);
+    const attention=el("section",{class:"task"},[el("h2",{text:"Students to check in with"}),el("p",{class:"hint",text:"Below-grade readers first, from English grades and reading checks—not a diagnosis. Students already in a conversation, booked, or due for a follow-up stay on My day instead, where you can start now."})]);
     for(const row of data.students || []) {
       if(!row.waiting) continue;
       const status = row.grade_status_label || row.label;
@@ -231,7 +232,22 @@ window.engagement = {
     const id=state.selectedId, active=this.active();
     const nodes=[];
     this.pendingNotice({ append(...items) { nodes.push(...items); } });
-    if(!active)nodes.push(el("div",{class:"visit-summary"},[el("div",{},[el("h3",{text:"A little conversation. A better next book."}),el("p",{class:"hint",text:"Start a visit, or browse books below for a quick lookup."})]),el("div",{class:"engagement-actions"},[this.primary("Start conversation",()=>this.command({action:"start",student_id:id,staff_id:staffId()})),this.button("Book a time",()=>this.schedule(id))])]));
+    const scheduled=(this.snapshot.appointments||[]).find(a=>a.student_id===id && a.status==="scheduled");
+    const follow=(this.snapshot.followups||[]).find(f=>{
+      if(f.completed_at) return false;
+      const origin=(this.snapshot.interactions||[]).find(i=>i.id===f.interaction_id);
+      return origin?.student_id===id;
+    });
+    if(!active){
+      const actions=el("div",{class:"engagement-actions"});
+      if(scheduled){
+        nodes.push(el("div",{class:"visit-summary"},[el("div",{},[el("h3",{text:"Booked conversation"}),el("p",{class:"hint",text:(follow?"Follow-up · ":"")+this.local(scheduled.start)+" · "+charts.staff(scheduled.staff_id)+". Start now, or keep the booked time."})]),el("div",{class:"engagement-actions"},[this.primary("Start now",()=>this.command({action:"start",appointment_id:scheduled.id,staff_id:staffId()})),this.button("Reschedule",()=>this.schedule(id,scheduled))])]));
+      } else {
+        actions.append(this.primary("Start conversation",()=>this.command({action:"start",student_id:id,staff_id:staffId()})),this.button("Book a time",()=>this.schedule(id)));
+        if(follow && !follow.appointment_id) actions.append(this.button("Book follow-up",()=>this.schedule(id,null,null,follow)));
+        nodes.push(el("div",{class:"visit-summary"},[el("div",{},[el("h3",{text:"A little conversation. A better next book."}),el("p",{class:"hint",text:follow && !follow.appointment_id?"This reader has an unbooked follow-up. Start now, or choose a time.":"Start a visit, or browse books below for a quick lookup."})]),actions]));
+      }
+    }
     else {
       const choice=(this.snapshot.choices||[]).find(c=>c.interaction_id===active.id);
       const heading=!choice?"What would they like to read?":choice.book_id&&!choice.loan_id?"Ready to take this book home?":"Ready to wrap up?";

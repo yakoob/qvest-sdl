@@ -67,9 +67,9 @@ See `docs/architecture.md`. Kill-switch: `SHELFMATE_LLM=off` (default).
 
 ### LLM contract (when enabled)
 
-Input: `student_id`, stretch/page flags, retrieved candidate records (no blurbs, no raw query).  
-Output: talking points keyed by `book_id`.  
-If the model emits an id not in the retrieved set: drop it, keep retrieve ranking.
+Input: `student_id`, stretch/page flags, allowlisted themes, retrieved candidate records (no blurbs, no raw query, no notes).  
+Output: talking points keyed by `book_id`, plus optional enjoy IDs from that same set.  
+If the model emits an id not in the retrieved set: drop it, keep retrieve ranking. Classification may only emit `ThemeNames()`.
 
 ---
 

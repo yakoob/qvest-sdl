@@ -230,3 +230,82 @@ func TestChatCompletionsURL(t *testing.T) {
 		t.Fatal(u)
 	}
 }
+
+func TestAxonMessagesPathAndEnjoyGrounding(t *testing.T) {
+	var gotPath string
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotPath = r.URL.Path
+		if r.Header.Get("anthropic-version") == "" {
+			t.Error("missing anthropic-version")
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"content": []map[string]string{
+				{"type": "text", "text": `{"talking_points":{"B-007":"Graphic next step.","B-006":"On the shelf."},"enjoy":["B-007","B-999","B-006"]}`},
+			},
+		})
+	}))
+	defer srv.Close()
+	ex := NewAxon(TemplateExplainer{}, Config{
+		BaseURL:    srv.URL + "/control-plane/proxy",
+		Model:      "auto:medium",
+		Timeout:    time.Second,
+		HTTPClient: srv.Client(),
+	})
+	out, err := ex.Explain(context.Background(), sampleInput())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if gotPath != "/control-plane/proxy/v1/messages" {
+		t.Fatalf("path %s", gotPath)
+	}
+	if out.Mode != domain.ExplainLive {
+		t.Fatalf("mode %s note %s", out.Mode, out.Note)
+	}
+	if len(out.Enjoy) != 2 || out.Enjoy[0] != "B-007" || out.Enjoy[1] != "B-006" {
+		t.Fatalf("enjoy %v", out.Enjoy)
+	}
+}
+
+func TestClassifyAllowlistDropsUnknownThemes(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/v1/chat/completions" {
+			t.Errorf("path %s", r.URL.Path)
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"choices": []map[string]any{
+				{"message": map[string]string{"content": `{"themes":["sports","secret-note","underdogs"]}`}},
+			},
+		})
+	}))
+	defer srv.Close()
+	ex := NewAxon(TemplateExplainer{}, Config{BaseURL: srv.URL, Timeout: time.Second, HTTPClient: srv.Client()})
+	got, err := ex.Classify(context.Background(), ClassifyInput{
+		StudentID: "S-504",
+		Allowed:   []string{"sports", "underdogs", "creativity"},
+		Themes:    []string{"sports"},
+		Strengths: []string{"Enjoys sports stories"},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 2 || got[0] != "sports" || got[1] != "underdogs" {
+		t.Fatalf("themes %v", got)
+	}
+}
+
+func TestClassifyPayloadOmitsProse(t *testing.T) {
+	in := sanitizeClassify(ClassifyInput{
+		StudentID: "S-504",
+		Allowed:   []string{"sports"},
+		Themes:    []string{"sports", "secret"},
+		Strengths: []string{"secret classroom note", "teamwork"},
+	})
+	raw, _ := json.Marshal(in)
+	s := string(raw)
+	if strings.Contains(s, "secret") {
+		t.Fatalf("prose leaked: %s", s)
+	}
+	if !strings.Contains(s, `"student_id":"S-504"`) {
+		t.Fatalf("missing student_id: %s", s)
+	}
+}

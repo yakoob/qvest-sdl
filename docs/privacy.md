@@ -11,7 +11,7 @@ Excluded: last names, DOB, address, parent contact, state ID, free/reduced lunch
 
 - Librarian console may show first name and the desk anecdote. That stays on localhost.
 - HTTP student DTO is allowlisted (no lexile, no last name, no DOB).
-- Anything toward a model: `student_id` + candidate book metadata/evidence + stretch/page flags. No raw query, no blurbs (a fixture blurb contains a student name), no anecdotes, no first names. Test: `TestPayloadPrivacy`.
+- Anything toward a model: `student_id` + candidate book metadata/evidence + stretch/page flags + allowlisted themes. No raw query, no blurbs (a fixture blurb contains a student name), no anecdotes, no first names, no teacher/counselor prose. Test: `TestPayloadPrivacy`.
 - Audit JSONL: `student_id`, `staff_id`, ranked `book_ids`, dropped reasons, explain mode, version, query *flags* (present / under_150 / short). No raw query, names, talking-point prose, or model bodies.
 - Talking points are labeled librarian-reviewed drafts. ID validation is not a claim that the prose is true.
 - No student-facing UI.
@@ -27,7 +27,7 @@ Excluded: last names, DOB, address, parent contact, state ID, free/reduced lunch
 
 ## Kill switch
 
-`SHELFMATE_LLM=off` (default). Retrieval still runs. Optional Axon uses `LLM_BASE`, `LLM_MODEL`, `LLM_API_KEY` (or `OPENAI_API_KEY`). Keys are never written to source or audit.
+`SHELFMATE_LLM=off` (default). Retrieval still runs. Optional Axon uses `ANTHROPIC_BASE_URL` or `LLM_BASE`, `LLM_MODEL` (`auto:medium` default), and `ANTHROPIC_AUTH_TOKEN` / `LLM_API_KEY`. Keys are never written to source or audit.
 
 ## Not implemented (production work)
 

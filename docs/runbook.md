@@ -25,7 +25,18 @@ Default listen address is `127.0.0.1:8088`. A bare `-addr :8088` is rewritten to
 
 ## Axon (optional)
 
-Default off. Recs do not change when the model is missing.
+Default off. Recs do not change when the model is missing. Classification and enjoy-picks use `auto:medium` (MEDIUM / Qwen 3.8 on the Axon router). Ranking stays local TF-IDF; invented `book_id`s are dropped.
+
+Claude Code proxy (Anthropic Messages):
+
+```bash
+export SHELFMATE_LLM=on
+export ANTHROPIC_BASE_URL=https://axon.compeller.ai/control-plane/proxy
+export LLM_MODEL=auto:medium
+export ANTHROPIC_AUTH_TOKEN=local           # never commit
+```
+
+OpenAI-compatible router:
 
 ```bash
 export SHELFMATE_LLM=on
@@ -34,7 +45,7 @@ export LLM_MODEL=your-model
 export LLM_API_KEY=                           # optional; never commit
 ```
 
-Kill switch: unset `SHELFMATE_LLM` or set `SHELFMATE_LLM=off`.
+Kill switch: unset `SHELFMATE_LLM` or set `SHELFMATE_LLM=off`. Live Axon is not called from tests.
 
 Audit (optional path):
 
@@ -73,7 +84,7 @@ Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 
 ## Code walkthrough (10 minutes)
 
-1. `internal/retrieve/hybrid.go` — CF + TF-IDF, evidence labels, fallback.
+1. `internal/retrieve/hybrid.go` — CF + TF-IDF, evidence labels, fallback, in-process `Search` catalog index.
 2. `internal/policy/filter.go` — catalog, copies, grade/stretch, already-read, page caps.
 3. `internal/explain/` — TemplateExplainer; `axon.go` mock-tested.
 4. `internal/audit/log.go` — mutex JSONL, no raw query.
@@ -101,7 +112,7 @@ Use **My day · Students · Outcomes**. The existing Books/Support/Progress tabs
 
 1. In My day, review Needs attention; open a student or choose Schedule. All students remain discoverable in Students, even without academics.
 2. Scheduling uses `America/Los_Angeles`, whole-minute times, declared shifts minus structured circulation/class/club blocks, closures, early closing, and existing appointments. Suggestions are not guaranteed free time: confirm staff/student availability and prose-only duties before saving. Internal bookings send no notifications.
-3. On a future open school day, choose Elena and a suggested slot (Friday 2026-09-11 at 09:00 is a fixture example). Reschedule/cancel keep the appointment ID and append trace events. Future appointments cannot be started early; use a walk-in for an immediate demo.
+3. On a future open school day, choose Elena and a suggested slot (Friday 2026-09-11 at 09:00 is a fixture example). Reschedule/cancel keep the appointment ID and append trace events. Booked conversations can be started now from My day or the student card.
 4. Select Mateo, start a walk-in, then Find available books. Choose together records the offered book; it does not reserve a copy. Check out chosen book revalidates live inventory and atomically records its loan link.
 5. Choose Finish conversation, then Finish now or Book a follow-up. Booking uses the same available-slot picker and reserves staff/student time atomically. There is no editable time field. Past conversations contains Add book feedback; the focused form records reading/enjoyment and source.
 6. My day displays each meeting once, with Start/Continue as the main action. More actions contains rescheduling, cancellation and no-show. An unfulfilled cancelled follow-up remains available for rebooking under Needs attention.

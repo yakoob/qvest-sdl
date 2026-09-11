@@ -2,7 +2,7 @@
   "provenance": {
     "synthetic": true,
     "label": "synthetic_demo",
-    "note": "Clearly labeled synthetic desk fixture for the PoC. Not a SIS extract, not a real state assessment, and not used for model payloads. English letter grades use scale letter_A_F. Reading checks use willow_bend_reading_1_4 (1 emerging – 4 exceeding). Current semester rows stay ungraded. Checkout does not change grades. Operational English and reading checks now cover the grade 3–5 roster so Below/On/Above status can be shown; Priya, Olivia, and Luis keep explicit missing records. Isolated multi-year scenarios (scenario_calendar + per-student scenario) never enter circulation, retrieve, ranking, or support. Six matched 84-day windows span three completed years (2023-24 through 2025-26). Sofia, Mateo, and Tyler are distinct improving cases; Priya and Olivia stay empty local-history newcomers. Incomplete extract coverage stays distinct.",
+    "note": "Clearly labeled synthetic desk fixture for the PoC. Not a SIS extract, not a real state assessment, and not used for model payloads. English letter grades use scale letter_A_F. Reading checks use willow_bend_reading_1_4 (1 emerging \u2013 4 exceeding). Current semester rows stay ungraded. Checkout does not change grades. Operational English and reading checks now cover the grade 3\u20135 roster so Below/On/Above status can be shown; Priya, Olivia, and Luis keep explicit missing records. Isolated multi-year scenarios (scenario_calendar + per-student scenario) never enter circulation, retrieve, ranking, or support. Six matched 84-day windows span three completed years (2023-24 through 2025-26). Sofia, Mateo, and Tyler are distinct improving cases; Mateo\u2019s operational latest English is A- with a 4/4 reading check (Above grade). Jayden, Caleb, and Maya remain clearly below-grade on posted English and reading checks. Priya and Olivia stay empty local-history newcomers. Incomplete extract coverage stays distinct.",
     "circulation_coverage": "Circulation export covers 2026-01-13 through 2026-09-03 plus this server session. Earlier borrowing is not in the extract and is not evidence of no borrowing."
   },
   "students": [
@@ -11,28 +11,28 @@
       "semesters": [
         {
           "id": "SY25-S1",
-          "label": "2025–26 Semester 1",
+          "label": "2025\u201326 Semester 1",
           "start": "2025-08-18",
           "end": "2026-01-16",
           "course": "English Language Arts",
-          "grade": "C+",
+          "grade": "B",
           "scale": "letter_A_F",
           "status": "final",
           "missing_note": "Most of this term is outside the circulation export."
         },
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
-          "grade": "C",
+          "grade": "A-",
           "scale": "letter_A_F",
           "status": "final"
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -58,9 +58,9 @@
           "date": "2026-05-12",
           "grade": 3,
           "scale": "willow_bend_reading_1_4",
-          "result": 2,
-          "band": "developing",
-          "note": "Same grade-year instrument as January. Flat, not a gain."
+          "result": 3,
+          "band": "meeting",
+          "note": "Same grade-year instrument as January. Meeting, not subtracted from the grade 4 form."
         },
         {
           "id": "A-406-3",
@@ -68,15 +68,15 @@
           "date": "2026-09-02",
           "grade": 4,
           "scale": "willow_bend_reading_1_4",
-          "result": 2,
-          "band": "developing",
+          "result": 4,
+          "band": "exceeding",
           "note": "Grade 4 form. Do not subtract from the grade 3 checks."
         }
       ],
       "scenario": {
         "id": "improving_engagement_illustrative",
         "label": "Synthetic: rising English, more checkouts",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -375,14 +375,14 @@
         ]
       },
       "demo_case": "improving_engagement_illustrative",
-      "demo_note": "Synthetic: rising English, more checkouts. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: rising English, more checkouts. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-402",
       "semesters": [
         {
           "id": "SY25-S1",
-          "label": "2025–26 Semester 1",
+          "label": "2025\u201326 Semester 1",
           "start": "2025-08-18",
           "end": "2026-01-16",
           "course": "English Language Arts",
@@ -393,7 +393,7 @@
         },
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -403,7 +403,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -446,7 +446,7 @@
       "scenario": {
         "id": "strong_stable_illustrative",
         "label": "Synthetic: already strong, stays A / A-",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -680,14 +680,14 @@
         ]
       },
       "demo_case": "strong_stable_illustrative",
-      "demo_note": "Synthetic: already strong, stays A / A-. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: already strong, stays A / A-. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-405",
       "semesters": [
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -711,19 +711,19 @@
       "scenario": {
         "id": "newcomer_missing_illustrative",
         "label": "Synthetic: new this year, no prior Maple Street years",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": []
       },
       "demo_case": "newcomer_missing_illustrative",
-      "demo_note": "Synthetic: new this year, no prior Maple Street years. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: new this year, no prior Maple Street years. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-509",
       "semesters": [
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -737,29 +737,29 @@
       "scenario": {
         "id": "zero_history_illustrative",
         "label": "Synthetic: new this year, empty local history",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": []
       },
       "demo_case": "zero_history_illustrative",
-      "demo_note": "Synthetic: new this year, empty local history. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: new this year, empty local history. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-301",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
-          "grade": "B",
+          "grade": "D",
           "scale": "letter_A_F",
           "status": "final"
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -786,8 +786,8 @@
           "date": "2026-05-12",
           "grade": 2,
           "scale": "willow_bend_reading_1_4",
-          "result": 2,
-          "band": "developing",
+          "result": 1,
+          "band": "emerging",
           "note": "Same grade-year instrument; lower than January. Not caused by a title."
         },
         {
@@ -796,14 +796,15 @@
           "date": "2026-09-02",
           "grade": 3,
           "scale": "willow_bend_reading_1_4",
-          "result": 2,
-          "band": "developing"
+          "result": 1,
+          "band": "emerging",
+          "note": "Current grade form. Emerging, not a diagnosis."
         }
       ],
       "scenario": {
         "id": "reluctant_graphic_illustrative",
         "label": "Synthetic: graphic cluster, mixed English",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -987,14 +988,14 @@
         ]
       },
       "demo_case": "reluctant_graphic_illustrative",
-      "demo_note": "Synthetic: graphic cluster, mixed English. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: graphic cluster, mixed English. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-302",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1005,7 +1006,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1028,7 +1029,7 @@
       "scenario": {
         "id": "missing_records_illustrative",
         "label": "Synthetic: missing English and reading stay missing",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -1050,16 +1051,16 @@
         ]
       },
       "demo_case": "missing_records_illustrative",
-      "demo_note": "Synthetic: missing English and reading stay missing. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: missing English and reading stay missing. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-305",
       "demo_case": "improving_engagement_illustrative",
-      "demo_note": "Synthetic: more borrowing, better English. Illustrative only — co-timing is not causal proof.",
+      "demo_note": "Synthetic: more borrowing, better English. Illustrative only \u2014 co-timing is not causal proof.",
       "semesters": [
         {
           "id": "SY25-S1",
-          "label": "2025–26 Semester 1",
+          "label": "2025\u201326 Semester 1",
           "start": "2025-08-18",
           "end": "2026-01-16",
           "course": "English Language Arts",
@@ -1070,7 +1071,7 @@
         },
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1080,7 +1081,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1114,7 +1115,7 @@
       "scenario": {
         "id": "improving_engagement_illustrative",
         "label": "Synthetic: more borrowing, better English",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -1403,7 +1404,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1413,7 +1414,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1446,7 +1447,7 @@
       "scenario": {
         "id": "improving_engagement_illustrative",
         "label": "Synthetic: C/D start, A finish",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -1710,14 +1711,14 @@
         ]
       },
       "demo_case": "improving_engagement_illustrative",
-      "demo_note": "Synthetic: C/D start, A finish. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: C/D start, A finish. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-510",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1727,7 +1728,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1750,7 +1751,7 @@
       "scenario": {
         "id": "strong_stable_illustrative",
         "label": "Synthetic: already strong, stays A",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -1954,14 +1955,14 @@
         ]
       },
       "demo_case": "strong_stable_illustrative",
-      "demo_note": "Synthetic: already strong, stays A. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: already strong, stays A. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-401",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -1971,7 +1972,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -1994,7 +1995,7 @@
       "scenario": {
         "id": "mid_stable_illustrative",
         "label": "Synthetic: mid band, B- then B-",
-        "caveat": "Illustrative only — co-timing is not causal proof.",
+        "caveat": "Illustrative only \u2014 co-timing is not causal proof.",
         "isolated_from_operations": true,
         "windows": [
           {
@@ -2168,14 +2169,14 @@
         ]
       },
       "demo_case": "mid_stable_illustrative",
-      "demo_note": "Synthetic: mid band, B- then B-. Illustrative only — co-timing is not causal proof."
+      "demo_note": "Synthetic: mid band, B- then B-. Illustrative only \u2014 co-timing is not causal proof."
     },
     {
       "student_id": "S-303",
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2185,7 +2186,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2225,7 +2226,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2235,7 +2236,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2275,7 +2276,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2285,7 +2286,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2325,7 +2326,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2335,7 +2336,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2375,7 +2376,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2385,7 +2386,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2425,7 +2426,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2435,7 +2436,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2475,7 +2476,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2485,7 +2486,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2525,7 +2526,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2535,7 +2536,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2575,7 +2576,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2585,7 +2586,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2625,7 +2626,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2635,7 +2636,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2675,7 +2676,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2685,7 +2686,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2725,7 +2726,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2735,7 +2736,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2775,7 +2776,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2785,7 +2786,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2825,7 +2826,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2835,7 +2836,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2875,7 +2876,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2885,7 +2886,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2925,7 +2926,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2935,7 +2936,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -2975,7 +2976,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -2985,7 +2986,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -3025,7 +3026,7 @@
       "semesters": [
         {
           "id": "SY25-S2",
-          "label": "2025–26 Semester 2",
+          "label": "2025\u201326 Semester 2",
           "start": "2026-01-20",
           "end": "2026-06-05",
           "course": "English Language Arts",
@@ -3035,7 +3036,7 @@
         },
         {
           "id": "SY26-S1",
-          "label": "2026–27 Semester 1",
+          "label": "2026\u201327 Semester 1",
           "start": "2026-08-18",
           "end": "2027-01-15",
           "course": "English Language Arts",
@@ -3080,7 +3081,7 @@
         "id": "SY23-S1",
         "academic_year": "2023-24",
         "semester": "S1",
-        "label": "2023–24 Semester 1",
+        "label": "2023\u201324 Semester 1",
         "start": "2023-08-18",
         "end": "2024-01-16"
       },
@@ -3088,7 +3089,7 @@
         "id": "SY23-S2",
         "academic_year": "2023-24",
         "semester": "S2",
-        "label": "2023–24 Semester 2",
+        "label": "2023\u201324 Semester 2",
         "start": "2024-01-20",
         "end": "2024-06-05"
       },
@@ -3096,7 +3097,7 @@
         "id": "SY24-S1",
         "academic_year": "2024-25",
         "semester": "S1",
-        "label": "2024–25 Semester 1",
+        "label": "2024\u201325 Semester 1",
         "start": "2024-08-18",
         "end": "2025-01-16"
       },
@@ -3104,7 +3105,7 @@
         "id": "SY24-S2",
         "academic_year": "2024-25",
         "semester": "S2",
-        "label": "2024–25 Semester 2",
+        "label": "2024\u201325 Semester 2",
         "start": "2025-01-20",
         "end": "2025-06-05"
       },
@@ -3112,7 +3113,7 @@
         "id": "SY25-S1",
         "academic_year": "2025-26",
         "semester": "S1",
-        "label": "2025–26 Semester 1",
+        "label": "2025\u201326 Semester 1",
         "start": "2025-08-18",
         "end": "2026-01-16"
       },
@@ -3120,7 +3121,7 @@
         "id": "SY25-S2",
         "academic_year": "2025-26",
         "semester": "S2",
-        "label": "2025–26 Semester 2",
+        "label": "2025\u201326 Semester 2",
         "start": "2026-01-20",
         "end": "2026-06-05"
       }

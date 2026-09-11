@@ -144,3 +144,29 @@ func TestEngagementInvalidChoiceDoesNotConsumeInventory(t *testing.T) {
 		t.Fatal("failed choice mutated state")
 	}
 }
+func TestStartNowJumpsIntoBookedConversation(t *testing.T) {
+	s := engagementService(t)
+	open := command(t, s, engagement.Command{Action: "start", StudentID: "S-504", StaffID: "L-002"})
+	if open.ID == "" {
+		t.Fatal("tyler start")
+	}
+	booked := command(t, s, engagement.Command{Action: "schedule", StudentID: "S-401", StaffID: "L-002", Start: "2026-09-11T09:00", Duration: 10, Confirmed: true})
+	jump := command(t, s, engagement.Command{Action: "start", AppointmentID: booked.ID, StaffID: "L-002"})
+	if jump.ID == "" {
+		t.Fatal("jordan early start")
+	}
+	snap := s.EngagementSnapshot()
+	openCount := 0
+	for _, in := range snap.Interactions {
+		if in.CompletedAt == nil {
+			openCount++
+		}
+	}
+	if openCount != 2 {
+		t.Fatalf("open conversations %d", openCount)
+	}
+	_, err := s.EngagementCommand(context.Background(), engagement.Command{Action: "start", StudentID: "S-401", StaffID: "L-001", RequestID: "dup", ExpectedRevision: snap.Revision})
+	if err == nil || !strings.Contains(err.Error(), "already has an open conversation") {
+		t.Fatalf("same student should stay locked, got %v", err)
+	}
+}

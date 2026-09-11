@@ -28,15 +28,28 @@ func ClassifiedInterests(st domain.Student, rec academics.Record, guidance Recor
 		seen[clusterTheme] = true
 		themes = append(themes, clusterTheme)
 	}
+	return QueryFromThemes(st, themes), themes, true
+}
+
+func QueryFromThemes(st domain.Student, themes []string) string {
 	parts := make([]string, 0, len(themes)+1)
+	seen := map[string]bool{}
 	for _, theme := range themes {
-		terms, _ := ThemeTerms(theme)
+		theme = strings.TrimSpace(theme)
+		if seen[theme] {
+			continue
+		}
+		terms, ok := ThemeTerms(theme)
+		if !ok {
+			continue
+		}
+		seen[theme] = true
 		parts = append(parts, terms)
 	}
 	if st.PageComfort == "short" {
 		parts = append(parts, "short")
 	}
-	return strings.TrimSpace(strings.Join(parts, " ")), themes, true
+	return strings.TrimSpace(strings.Join(parts, " "))
 }
 
 func clusterTheme(cluster string) (string, bool) {

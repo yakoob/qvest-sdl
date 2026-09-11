@@ -12,6 +12,7 @@ import (
 	"school_district_reading/internal/domain"
 	"school_district_reading/internal/engagement"
 	"school_district_reading/internal/engine"
+	"school_district_reading/internal/explain"
 	"school_district_reading/internal/store"
 	"school_district_reading/internal/support"
 )
@@ -192,9 +193,9 @@ func (s *Service) SetDeskContext(acad *academics.Catalog, guidance *support.Cata
 	s.mu.Unlock()
 }
 
-func (s *Service) classifiedQuery(studentID, query string) string {
+func (s *Service) classifiedIntent(ctx context.Context, studentID, query string) (string, []string) {
 	if s == nil {
-		return query
+		return query, nil
 	}
 	s.mu.Lock()
 	st, ok := s.snap.Engine.Store.Student(studentID)
@@ -209,22 +210,49 @@ func (s *Service) classifiedQuery(studentID, query string) string {
 	if s.support != nil {
 		guidance = s.support.ByStudent[studentID]
 	}
+	var axon *explain.AxonExplainer
+	if s.snap.Engine != nil {
+		if ax, isAxon := s.snap.Engine.Explain.(explain.AxonExplainer); isAxon {
+			axon = &ax
+		}
+	}
 	s.mu.Unlock()
 	if !ok {
-		return query
+		return query, nil
+	}
+	extra, themes, below := support.ClassifiedInterests(st, rec, guidance)
+	if !below {
+		return query, nil
 	}
 	if strings.TrimSpace(query) != "" {
-		return query
+		return query, themes
 	}
-	extra, _, below := support.ClassifiedInterests(st, rec, guidance)
-	if !below || extra == "" {
-		return query
+	if axon != nil && explain.LLMEnabled() {
+		classified, err := axon.Classify(ctx, explain.ClassifyInput{
+			StudentID:   studentID,
+			Cluster:     st.Cluster,
+			PageComfort: st.PageComfort,
+			Themes:      themes,
+			Strengths:   append([]string(nil), guidance.Strengths...),
+			Allowed:     support.ThemeNames(),
+		})
+		if err == nil && len(classified) > 0 {
+			themes = classified
+			if q := support.QueryFromThemes(st, themes); q != "" {
+				extra = q
+			}
+		}
 	}
-	return extra
+	if extra == "" {
+		return query, themes
+	}
+	return extra, themes
 }
 
 func (s *Service) Recommend(ctx context.Context, req domain.Request) (domain.Recommendation, int64, error) {
-	req.Query = s.classifiedQuery(req.StudentID, req.Query)
+	q, themes := s.classifiedIntent(ctx, req.StudentID, req.Query)
+	req.Query = q
+	req.Themes = themes
 	snap := s.Snapshot()
 	rec, err := snap.Engine.RecommendContext(ctx, req)
 	return rec, snap.Revision, err

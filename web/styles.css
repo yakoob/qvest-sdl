@@ -195,6 +195,8 @@ summary { cursor: pointer; color: var(--ink-soft); padding: 6px 0; }
 .loan-item strong { display: block; margin-bottom: 8px; }
 .loan-item .ghost { margin-top: 10px; }
 .badge { font-size: .625rem; text-transform: uppercase; letter-spacing: .05em; border: 1px solid var(--line); padding: 3px 6px; border-radius: 4px; color: var(--muted); margin-left: 8px; display: inline-block; }
+.badge.enjoy { color: var(--accent); border-color: #9fd3d0; background: var(--accent-soft); }
+.card.enjoy-pick { border-color: #9fd3d0; box-shadow: 0 0 0 1px #9fd3d033; }
 .confirm, .conflict { padding: 20px 24px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #aadace; background: #e9f7f1; }
 .confirm strong, .conflict strong { display: block; margin-bottom: 4px; }
 .confirm .next { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }

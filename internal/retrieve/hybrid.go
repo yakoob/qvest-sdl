@@ -269,6 +269,50 @@ func (h *Hybrid) Recommend(student domain.Student, req domain.Request) []domain.
 	return out
 }
 
+// Search ranks catalog TF-IDF neighbors for a query. This is the in-process
+// catalog index used for demo ranking/classification — not a separate database.
+func (h *Hybrid) Search(query string, limit int) []domain.ScoredBook {
+	if h == nil || h.Store == nil {
+		return nil
+	}
+	if limit <= 0 {
+		limit = 8
+	}
+	vec := h.tfidf(query)
+	type hit struct {
+		id    string
+		score float64
+	}
+	hits := make([]hit, 0, len(h.Store.Books))
+	for _, b := range h.Store.Books {
+		s := cosine(vec, h.docs[b.BookID])
+		if s <= 0 {
+			continue
+		}
+		hits = append(hits, hit{b.BookID, s})
+	}
+	sort.SliceStable(hits, func(i, j int) bool {
+		if hits[i].score == hits[j].score {
+			return hits[i].id < hits[j].id
+		}
+		return hits[i].score > hits[j].score
+	})
+	if len(hits) > limit {
+		hits = hits[:limit]
+	}
+	out := make([]domain.ScoredBook, 0, len(hits))
+	for _, hit := range hits {
+		b := h.Store.BookByID[hit.id]
+		out = append(out, domain.ScoredBook{
+			Book:    b,
+			Score:   hit.score,
+			Content: hit.score,
+			Reasons: []string{reasonQuery},
+		})
+	}
+	return out
+}
+
 func uniqueHistoryIDs(history []domain.CirculationEvent) []string {
 	seen := map[string]struct{}{}
 	var ids []string

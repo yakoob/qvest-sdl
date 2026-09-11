@@ -166,8 +166,8 @@ func (s *Service) EngagementCommand(ctx context.Context, c engagement.Command) (
 		studentID, staffID, q, stretch := in.StudentID, in.Facilitator, c.Query, c.Stretch
 		snap := s.snap
 		s.mu.Unlock()
-		q = s.classifiedQuery(studentID, q)
-		req := domain.Request{StudentID: studentID, StaffID: staffID, Query: q, Stretch: stretch, Limit: 5}
+		q, themes := s.classifiedIntent(ctx, studentID, q)
+		req := domain.Request{StudentID: studentID, StaffID: staffID, Query: q, Stretch: stretch, Limit: 5, Themes: themes}
 		r, e := snap.Engine.RecommendContext(ctx, req)
 		if e != nil {
 			return EngagementResult{}, e
@@ -255,16 +255,22 @@ func (s *Service) EngagementCommand(ctx context.Context, c engagement.Command) (
 				return fail("scheduled appointment required")
 			}
 			student = a.StudentID
-			if now.Before(a.Start) {
-				return fail("appointment has not started; reschedule or record a walk-in")
+		} else {
+			for i := range s.engagement.Appointments {
+				row := &s.engagement.Appointments[i]
+				if row.StudentID == student && row.Status == "scheduled" {
+					a = row
+					c.AppointmentID = row.ID
+					break
+				}
 			}
 		}
 		if _, ok := st.Student(student); !ok {
 			return EngagementResult{}, ErrUnknownStudent
 		}
 		for _, v := range s.engagement.Interactions {
-			if v.CompletedAt == nil && (v.StudentID == student || v.Facilitator == c.StaffID) {
-				return fail("student or facilitator already has an open conversation")
+			if v.CompletedAt == nil && v.StudentID == student {
+				return fail("student already has an open conversation")
 			}
 		}
 		if a != nil {

@@ -46,6 +46,10 @@ function el(tag, attrs, children) {
   return node;
 }
 
+function setChildren(node, ...children) {
+  node.replaceChildren(...children.filter((c) => c != null));
+}
+
 function setStatus(msg, kind) {
   statusEl.textContent = msg || "";
   statusEl.className = kind === "err" ? "status err" : kind === "ok" ? "status ok" : "status";
@@ -216,8 +220,10 @@ function renderRecs(rec, firstName) {
     }
     const copy = el("button", { class: "secondary", type: "button", text: "Copy talking point" });
     copy.addEventListener("click", () => copyTalkingItem(it));
-    nodes.push(el("div", { class: "card" }, [
-      el("strong", { text: it.title || it.book_id }),
+    const titleKids = [it.title || it.book_id];
+    if (it.enjoy) titleKids.push(el("span", { class: "badge enjoy", text: "might enjoy" }));
+    nodes.push(el("div", { class: it.enjoy ? "card enjoy-pick" : "card" }, [
+      el("strong", null, titleKids),
       el("span", { class: "meta", text: `${it.author || ""} · ${it.pages}p · ${it.copies_available} on shelf` }),
       el("div", { class: "evidence" }, [`Why this: ${(it.reasons || []).join("; ") || "none"}`]),
       el("details", { class: "talk-more" }, [
@@ -732,7 +738,7 @@ function renderSupport(data) {
     return b;
   });
   const labels = { check_in: "Check-in recorded", enjoyed: "Student reported enjoyment", try_another: "Student requested another option" };
-  document.getElementById("support-body").replaceChildren(
+  setChildren(document.getElementById("support-body"),
     el("div", { class: "support-summary" }, [
       el("strong", { class: `support-band band-${result.grade_status || result.band}`, text: result.grade_status_label || result.label }),
       el("span", { text: result.coverage }),

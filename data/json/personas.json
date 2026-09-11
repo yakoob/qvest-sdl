@@ -33,7 +33,7 @@
       "why": "the thing librarians already do",
       "grade": 4,
       "homeroom_id": "H-4B",
-      "reading_band": "below",
+      "reading_band": "above",
       "cluster": "graphic",
       "history_titles": [
         "Dog Man",
@@ -46,7 +46,7 @@
       "when": "Tuesday 10:05 class visit, or Friday 14:20 weekend rush",
       "show": [
         "item-item CF lands on Cat Kid / Investigators / Bad Guys",
-        "Bad Guys has copies_available=0 — it must not be the spoken rec",
+        "Bad Guys has copies_available=0 \u2014 it must not be the spoken rec",
         "talking points Elena can say in 20 seconds"
       ]
     },
@@ -67,7 +67,7 @@
       ],
       "show": [
         "default recs stay in-series / adjacent fantasy",
-        "stretch toggle → Gregor, Amari, Endling — still catalog-closed",
+        "stretch toggle \u2192 Gregor, Amari, Endling \u2014 still catalog-closed",
         "do not jump her to Westing Game just because lexile is high"
       ]
     },

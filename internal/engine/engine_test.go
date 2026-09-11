@@ -71,6 +71,58 @@ func TestLLMDoesNotChangeRanking(t *testing.T) {
 	assertSameRank(t, offRec, liveRec)
 }
 
+func TestEnjoyPicksDoNotReorder(t *testing.T) {
+	st := loadStore(t)
+	off := New(st)
+	off.LLMOn = false
+	off.Explain = explain.TemplateExplainer{}
+	offRec, err := off.Recommend(domain.Request{StudentID: "S-406", Limit: 5})
+	if err != nil {
+		t.Fatal(err)
+	}
+	ok := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ids := make([]string, 0, len(offRec.Items))
+		points := map[string]string{}
+		for _, it := range offRec.Items {
+			ids = append(ids, it.BookID)
+			points[it.BookID] = "draft " + it.BookID
+		}
+		enjoy := []string{}
+		if len(ids) > 0 {
+			enjoy = append(enjoy, ids[len(ids)-1], "B-999")
+		}
+		body, _ := json.Marshal(map[string]any{"talking_points": points, "enjoy": enjoy})
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"choices": []map[string]any{
+				{"message": map[string]string{"content": string(body)}},
+			},
+		})
+	}))
+	t.Cleanup(ok.Close)
+	live := New(st)
+	live.LLMOn = true
+	live.Explain = explain.NewAxon(explain.TemplateExplainer{}, explain.Config{
+		BaseURL:    ok.URL,
+		Model:      "x",
+		Timeout:    time.Second,
+		HTTPClient: ok.Client(),
+	})
+	liveRec, err := live.RecommendContext(context.Background(), domain.Request{StudentID: "S-406", Limit: 5})
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertSameRank(t, offRec, liveRec)
+	if len(liveRec.Enjoy) != 1 || liveRec.Enjoy[0] != offRec.Items[len(offRec.Items)-1].BookID {
+		t.Fatalf("enjoy %v", liveRec.Enjoy)
+	}
+	if !liveRec.Items[len(liveRec.Items)-1].Enjoy {
+		t.Fatal("expected last ranked item to carry enjoy badge")
+	}
+	if liveRec.Items[0].Enjoy {
+		t.Fatal("first item should not be reordered as an enjoy pick")
+	}
+}
+
 func TestUnknownStudent(t *testing.T) {
 	eng := New(loadStore(t))
 	_, err := eng.Recommend(domain.Request{StudentID: "S-NOPE"})

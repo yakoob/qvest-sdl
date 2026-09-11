@@ -71,6 +71,7 @@ type Request struct {
 	Query     string
 	Stretch   bool
 	Limit     int
+	Themes    []string
 }
 
 type ScoredBook struct {
@@ -109,6 +110,7 @@ type Recommendation struct {
 	Items         []RecItem           `json:"items"`
 	Dropped       []Dropped           `json:"dropped,omitempty"`
 	TalkingPoints []string            `json:"talking_points"`
+	Enjoy         []string            `json:"enjoy,omitempty"`
 	AuditError    string              `json:"audit_error,omitempty"`
 }
 
@@ -123,6 +125,7 @@ type RecItem struct {
 	Score           float64  `json:"score"`
 	Reasons         []string `json:"reasons"`
 	TalkingPoint    string   `json:"talking_point"`
+	Enjoy           bool     `json:"enjoy,omitempty"`
 }
 
 type Dropped struct {

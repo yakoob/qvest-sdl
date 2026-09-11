@@ -58,17 +58,13 @@ func TestInjectedClockAgendaAndFutureStart(t *testing.T) {
 	if id == "" {
 		t.Fatalf("missing appointment id: %v", booked)
 	}
-	early := post("/api/engagement", `{"action":"start","appointment_id":"`+id+`","staff_id":"L-002","request_id":"early","expected_revision":1}`, 400)
-	if !strings.Contains(early["error"].(string), "has not started") {
-		t.Fatalf("future start: %v", early)
+	early := post("/api/engagement", `{"action":"start","appointment_id":"`+id+`","staff_id":"L-002","request_id":"early","expected_revision":1}`, 200)
+	if early["id"] == nil {
+		t.Fatalf("early start: %v", early)
 	}
 	post("/api/test/clock", `{"now":"2026-09-11T16:05:00Z"}`, 200)
 	agenda := get("/api/agenda")
 	if agenda["now"] != "2026-09-11T16:05:00Z" {
 		t.Fatalf("agenda now %v", agenda["now"])
-	}
-	started := post("/api/engagement", `{"action":"start","appointment_id":"`+id+`","staff_id":"L-002","request_id":"start","expected_revision":1}`, 200)
-	if started["id"] == nil {
-		t.Fatalf("start after clock: %v", started)
 	}
 }

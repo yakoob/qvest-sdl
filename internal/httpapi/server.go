@@ -285,6 +285,7 @@ type recResponse struct {
 	Items         []domain.RecItem           `json:"items"`
 	Dropped       []domain.Dropped           `json:"dropped,omitempty"`
 	TalkingPoints []string                   `json:"talking_points"`
+	Enjoy         []string                   `json:"enjoy,omitempty"`
 	DraftLabel    string                     `json:"draft_label"`
 	Revision      int64                      `json:"revision"`
 }
@@ -346,6 +347,7 @@ func (s Server) recommend(w http.ResponseWriter, r *http.Request) {
 		Items:         rec.Items,
 		Dropped:       rec.Dropped,
 		TalkingPoints: rec.TalkingPoints,
+		Enjoy:         rec.Enjoy,
 		DraftLabel:    "Librarian-reviewed draft",
 		Revision:      rev,
 	})

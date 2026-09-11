@@ -1,5 +1,7 @@
 # Pilot proposal and delivery gates
 
+Presentations: [`deck-partners.html`](deck-partners.html) (non-tech partners) · [`deck.html`](deck.html) (architecture). Live graph: [Graft](http://127.0.0.1:4400/).
+
 ## Thesis
 
 Help librarians scale trusted conversations and connect students with books they want to keep reading. Borrowing history and an electronic catalog are the guaranteed inputs. Teacher guidance, academic records and counselor context are optional extensions requiring separate approvals; they are not prerequisites for the reading workflow.

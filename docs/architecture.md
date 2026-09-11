@@ -1,5 +1,7 @@
 # Architecture
 
+Companion materials: technical deck [`deck.html`](deck.html) · partner deck [`deck-partners.html`](deck-partners.html) · live map [Graft](http://127.0.0.1:4400/) (`graft/`).
+
 ```
 librarian console (web/, localhost)
         │

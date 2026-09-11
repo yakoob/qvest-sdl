@@ -1,11 +1,12 @@
 # ShelfMate — plan (Go PoC)
 
-**Assignment:** Sony EIP hiring presentation  
+**Assignment:** Internal partner pro-bono proposal (see README). Fictional school-district reading support — not a real client.  
 **Product:** librarian-in-the-loop next-book assistant for a fictional K-5 district  
 **Language:** Go, single binary  
-**Status:** retrieve + policy + eval + librarian console + optional Axon explainer + audit + HTML deck. My day supports available-slot bookings and reserved follow-up conversations with atomic choice/loan linkage. Outcomes separates **Our work** (live session activity), **Reading changes** (descriptive historical served-cohort pairs) and **Student trends** (whole-roster rollups) with coverage/comparability exclusions. Historical offer/feedback funnels and production integrations remain deferred; see docs/runbook.md and docs/metric-definitions.md.
+**Decks:** `docs/deck-partners.html` (non-tech) · `docs/deck.html` (tech) · Graft map `http://127.0.0.1:4400/`  
+**Status:** retrieve + policy + eval + librarian console + optional Axon explainer + audit + partner/tech decks + Graft. My day supports available-slot bookings and reserved follow-up conversations with atomic choice/loan linkage. Outcomes separates **Our work** (live session activity), **Reading changes** (descriptive historical served-cohort pairs) and **Student trends** (whole-roster rollups) with coverage/comparability exclusions. Historical offer/feedback funnels and production integrations remain deferred; see docs/runbook.md and docs/metric-definitions.md.
 
-This is not Netflix-for-kids. Students already take librarian recs. ShelfMate makes Elena's sticky-note notebook queryable in the 20-second desk window.
+This is not Netflix-for-kids. Students already take librarian recs. ShelfMate makes Elena's sticky-note notebook queryable in the 20-second desk window. Goal: scale librarian impact without scaling headcount, while reducing workload.
 
 ---
 
@@ -54,7 +55,7 @@ Fictional district: Willow Bend / Maple Street Elementary, grades 3-5 pilot, 28 
 
 ## 4. Architecture
 
-See `docs/architecture.md`. Kill-switch: `SHELFMATE_LLM=off` (default).
+See `docs/architecture.md` and Graft (`http://127.0.0.1:4400/`). Kill-switch: `SHELFMATE_LLM=off` (default).
 
 ### Policy (hard)
 
@@ -73,15 +74,15 @@ If the model emits an id not in the retrieved set: drop it, keep retrieve rankin
 
 ---
 
-## 5. Implementation order
+## 5. Implementation status
 
-Goldens, console, grounded explainer, audit, then `docs/deck.html`. Do not claim reading gains.
+Core path is in place: goldens, console, grounded explainer, audit, engagement loop, outcomes, partner + tech decks, Graft map. Keep `go test ./...` green. Do not claim reading gains.
 
 ---
 
 ## 6. Eval (must stay honest)
 
-`go test ./internal/eval ./internal/retrieve ./internal/policy`
+`go test ./internal/eval ./internal/retrieve ./internal/policy ./internal/explain`
 
 Goldens live in `testdata/golden/cases.json` (`notes`, not `show`).
 
@@ -97,11 +98,11 @@ Do not claim "reading gains" from 12 weeks of lighthouse data.
 
 ---
 
-## 7. Engagement (pro-bono lighthouse, not this binary)
+## 7. Engagement & lighthouse
 
-See `data/json/engagement_schedule.json`. Week 0 is privacy + data contract. LLM off until Marcus Ellison (fictional privacy officer) writes yes.
+Desk engagement (My day / conversations / linked checkout / outcomes) is implemented in this binary as process-local demo state. A district lighthouse is still a separate engagement: see `data/json/engagement_schedule.json` and `docs/pilot-proposal.md`. Week 0 is privacy + data contract. LLM off until written privacy-officer yes.
 
-Estimates (lab, not a bid): retrieve 3–5 days, console 2–3, LLM+audit 2–3, Destiny export ~1 week with Priya, 12-week lighthouse constrained by Elena hours.
+Estimates (lab, not a bid): retrieve 3–5 eng-days, console 2–3, LLM+audit 2–3, Destiny export ~1 week with a media specialist; district lighthouse ~11–16 elapsed weeks, constrained by librarian hours.
 
 ---
 
@@ -118,9 +119,11 @@ Estimates (lab, not a bid): retrieve 3–5 days, console 2–3, LLM+audit 2–3,
 
 ## 9. Artifact list
 
-1. This repo, runnable: `go run ./cmd/shelfmate recommend -student S-406`
-2. Eval: `go test ./internal/eval`
-3. Librarian UI on localhost
-4. HTML deck: `docs/deck.html`
-5. Kill LLM, recs remain
-6. FERPA: what leaves the desk toward a model
+1. This repo, runnable: `go run ./cmd/shelfmate recommend -student S-406` / `./run.sh`
+2. Eval: `go test ./internal/eval` (and `go test ./...`)
+3. Librarian UI on localhost (`http://127.0.0.1:8088`)
+4. Non-tech partner deck: `docs/deck-partners.html`
+5. Technical architecture deck: `docs/deck.html` (links Graft)
+6. Graft system/code map: `graft/` → `http://127.0.0.1:4400/`
+7. Kill LLM, recs remain
+8. FERPA notes: `docs/privacy.md` — what leaves the desk toward a model

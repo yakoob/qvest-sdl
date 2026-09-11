@@ -1,5 +1,7 @@
 # Privacy (FERPA / minors)
 
+See also the privacy boundary slides in [`deck.html`](deck.html) and Graft node `privacy-minimized-payloads`.
+
 Fictional extract. Treat it as if it were real. Implemented controls are not a legal opinion and do not prove compliance.
 
 ## In the JSON

@@ -2,6 +2,8 @@
 
 Local desk laptop. Not a production deploy.
 
+Decks: [`deck-partners.html`](deck-partners.html) (non-tech) · [`deck.html`](deck.html) (tech). System map: [Graft](http://127.0.0.1:4400/).
+
 ## One command
 
 ```bash

@@ -1,5 +1,7 @@
 # Desk demo (about 3 minutes)
 
+For slides: partners use [`deck-partners.html`](deck-partners.html); architects use [`deck.html`](deck.html). This script is the live console path.
+
 Staff: Elena (L-001) or Tom (L-002). Do this live from the console, not as slides.
 
 Start:

@@ -54,7 +54,7 @@ func TestRosterBelowGradeStudentsHaveRichSupport(t *testing.T) {
 	if len(cat.ByStudent) != 28 || len(sup.ByStudent) != 28 {
 		t.Fatalf("coverage academics=%d support=%d", len(cat.ByStudent), len(sup.ByStudent))
 	}
-	for _, id := range []string{"S-301", "S-308", "S-406", "S-410", "S-504"} {
+	for _, id := range []string{"S-301", "S-308", "S-410", "S-504"} {
 		r := cat.ByStudent[id]
 		r.StudentID = id
 		got := Evaluate(r, sup.ByStudent[id], DefaultConfig())

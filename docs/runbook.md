@@ -73,7 +73,7 @@ curl -s -X POST http://127.0.0.1:8088/api/checkouts \
 
 | ID | Who | Point |
 |----|-----|--------|
-| S-406 | Mateo | Cat Kid recs; isolated improving scenario C-→A- (2→11 checkouts); operational spring C |
+| S-406 | Mateo | Cat Kid recs; isolated improving scenario C-→A- (2→11 checkouts); operational spring A- / Above grade |
 | S-402 | Aisha | Fantasy cluster; stretch is grade policy; strong-stable scenario |
 | S-405 | Priya | Sparse history + under-150 query; empty local-history windows |
 | S-509 | Olivia | Zero history fallback; empty local-history windows |
@@ -101,7 +101,7 @@ Staff: Elena L-001, Tom L-002, Priya Shah L-003.
 4. Record a check-in only if it happened. The dated follow-up is process-local and separate from academic evidence.
 5. Open **Reading & learning**: exact letter grades (plus/minus labeled), separate assessment grade forms, and observed borrowing. Hover/focus marks or expand the data tables. Incomplete extract coverage is under details, not the primary story.
 6. Shortcut **Sofia · illustrative (S-305)** is the primary labeled story: six 84-day matched windows over three completed years, checkouts 2→3→5→6→8→10, English D → D+ → C- → C → B- → B+. Isolated from operational loans, ranking, and support. Latest support band stays No current flags. Mateo and Tyler have distinct improving isolated scenarios; Aisha remains a strong-stable comparator; Priya/Olivia stay insufficient-evidence with empty local-history windows.
-7. Compare Aisha (`S-402`, no current flags), Mateo (`S-406`, check in soon), and Priya/Olivia (insufficient evidence). Missing records never become zeros or an inactivity penalty.
+7. Compare Aisha (`S-402`, no current flags), Mateo (`S-406`, Above grade), and Priya/Olivia (insufficient evidence). Missing records never become zeros or an inactivity penalty.
 8. Restart with `./run.sh`: loans, copy counts, activity and follow-ups reset. Base JSON is unchanged.
 
 Support rules in `internal/support/evaluate.go` are **unvalidated synthetic demo rules**, reviewed as of 2026-09-04—not a clinical screen or failure prediction. The UI has no real authentication/RBAC; staff choice is attribution only. Counselor data is deliberately shared reading guidance, not clinical records. Live Axon remains unverified; mock failure/privacy tests cover the integration.

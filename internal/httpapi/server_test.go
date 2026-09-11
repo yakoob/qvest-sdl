@@ -214,7 +214,7 @@ func TestSofiaImprovingAcademicsHTTP(t *testing.T) {
 	}
 	cases := []want{
 		{id: "S-305", opGrade: "B+", counts: []float64{2, 3, 5, 6, 8, 10}, grades: []string{"D", "D+", "C-", "C", "B-", "B+"}, shortcut: true},
-		{id: "S-406", opGrade: "C", counts: []float64{2, 4, 5, 7, 8, 11}, grades: []string{"C-", "C", "C+", "B-", "B", "A-"}, shortcut: true},
+		{id: "S-406", opGrade: "A-", counts: []float64{2, 4, 5, 7, 8, 11}, grades: []string{"C-", "C", "C+", "B-", "B", "A-"}, shortcut: true},
 		{id: "S-504", opGrade: "C", counts: []float64{1, 3, 4, 6, 7, 9}, grades: []string{"D+", "C", "C+", "B-", "B", "A"}},
 	}
 	if len(cases) < 3 {

@@ -84,7 +84,7 @@ func TestFrozenExtractHashesUnchanged(t *testing.T) {
 	want := map[string]string{
 		"catalog.json":     "fbba212fef781673b776223c943558617663d942c81328b81a5e12e10ca693a9",
 		"circulation.json": "6af4abf7b59c2aea2bb11fb72f2a975d5ce870c70756775ffb5a2c82f9d0bcc1",
-		"students.json":    "603d86509f7c7397c27a5c2b680ed1d42464b23773c8629c1bd650f618254dcd",
+		"students.json":    "e898a2e78f4feba41503309cb48fd53afb882f24933d26e37b0864fa9f6f4a98",
 	}
 	for name, sum := range want {
 		raw, err := os.ReadFile(filepath.Join(root, "data", "json", name))

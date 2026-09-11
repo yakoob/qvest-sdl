@@ -26,7 +26,7 @@ func TestSupportWorkflow(t *testing.T) {
 		h.ServeHTTP(w, httptest.NewRequest(method, path, strings.NewReader(body)))
 		return w
 	}
-	for id, band := range map[string]string{"S-504": "first", "S-406": "soon", "S-405": "insufficient", "S-402": "none", "S-305": "none", "S-509": "insufficient"} {
+	for id, band := range map[string]string{"S-504": "first", "S-406": "none", "S-405": "insufficient", "S-402": "none", "S-305": "none", "S-509": "insufficient"} {
 		w := request("GET", "/api/students/"+id+"/support", "")
 		if w.Code != 200 {
 			t.Fatal(w.Body.String())
@@ -134,8 +134,8 @@ func TestCheckInQueueHidesBusyStudents(t *testing.T) {
 			t.Fatalf("%s still waiting after conversation/appointment/follow-up", id)
 		}
 	}
-	if !waiting["S-406"] {
-		t.Fatal("Mateo should still wait; no live conversation was seeded")
+	if waiting["S-406"] {
+		t.Fatal("Mateo is above grade and should not wait for a first check-in")
 	}
 	if payload.Students[0].GradeStatus != "below" && payload.Students[0].Waiting {
 		t.Fatalf("waiting list should lead with below grade, got %+v", payload.Students[0])

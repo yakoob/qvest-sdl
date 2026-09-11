@@ -16,15 +16,18 @@ Side note: This is entirely fictional — this is not a real client or scenario.
 
 ## What this repo is
 
-Librarian-in-the-loop next-book assistant on a **fictional** Willow Bend School District extract (lighthouse: Maple Street Elementary, grades 3–5 pilot).
+Librarian-in-the-loop next-book assistant on a **fictional** Willow Bend School District extract (lighthouse school: **Maple Street Elementary**, grades **3–5** pilot).
 
 **Goal:** give librarians tools to scale their impact without scaling headcount — while reducing desk workload — so more students leave with a book they’ll actually read.
 
-**Pipeline:** retrieve → policy → optional explain → audit → human approve.
+**Pipeline:** `retrieve → policy → optional explain → audit → human approve`
 
-- Go module: `school_district_reading` (Go 1.22+)
-- Single binary: `cmd/shelfmate` (`recommend` | `serve` | `eval`) · PoC tag `0.1.0-poc`
-- Not a student app. Not a Destiny/Alexandria replacement.
+| | |
+|--|--|
+| Module | `school_district_reading` (Go 1.22+) |
+| Binary | `cmd/shelfmate` — `recommend` \| `serve` \| `eval` |
+| Version | `0.1.0-poc` (provenance tag, not a production release) |
+| Not | a student app · not a Destiny/Alexandria replacement |
 
 | Audience | Open |
 |----------|------|
@@ -42,10 +45,8 @@ go test ./...
 go run ./cmd/shelfmate recommend -student S-406
 go run ./cmd/shelfmate recommend -student S-402 -stretch
 go run ./cmd/shelfmate recommend -student S-405 -query "funny, reluctant 4th, under 150 pages, we have copies"
-./run.sh
-# console: http://127.0.0.1:8088
-
-graft viz          # architecture map: http://127.0.0.1:4400/
+./run.sh                 # http://127.0.0.1:8088
+graft viz                # http://127.0.0.1:4400/
 ```
 
 | Make target | What |
@@ -53,23 +54,45 @@ graft viz          # architecture map: http://127.0.0.1:4400/
 | `make test` | `go test ./...` |
 | `make eval` | `go test -v ./internal/eval` |
 | `make recommend` | Mateo CLI recommendation |
-| `make serve` | librarian console (`serve`) |
-| `make json` | regenerate `data/json` from `data/csv` via `scripts/csv_to_json.py` |
+| `make serve` | librarian console |
+| `make json` | rebuild JSON from CSV (`python3 scripts/csv_to_json.py`) |
 
-Default listen address is `127.0.0.1:8088`. LLM stays off unless `SHELFMATE_LLM=on` (see [runbook](docs/runbook.md)).
+Default bind: `127.0.0.1:8088`. UI smoke: `node scripts/ui-smoke.cjs` (see runbook).
+
+### Useful env flags
+
+| Variable | Default / notes |
+|----------|-----------------|
+| `SHELFMATE_LLM` | off unless `on` — ranking still works when off or when the model fails |
+| `SHELFMATE_AUDIT` | optional JSONL path for CLI `recommend` audit |
+| `SHELFMATE_EMPTY_SESSION` | `1` = blank desk (skip live morning seed) |
+| `SHELFMATE_DATA` | override data dir (default `data/json`) |
+| `SHELFMATE_TEST_DRIVER` | test-only clock/driver hooks — not for normal serve |
+| `SHELFMATE_LLM_TIMEOUT` | optional LLM timeout override |
+
+Axon / OpenAI-compatible settings when LLM is on: see [`docs/runbook.md`](docs/runbook.md).
 
 ---
 
-## Extract (what’s actually in `data/json`)
+## Extract (reality check)
 
-Index: [`data/json/sources.json`](data/json/sources.json) · extract date `2026-09-04` · school year `2026-27` · ILS assumed Follett Destiny (nightly CSV).
+Indexed by [`data/json/sources.json`](data/json/sources.json) · extract **2026-09-04** · school year **2026-27** · ILS assumed **Follett Destiny** (nightly CSV) · timezone `America/Los_Angeles`.
 
-| Source | Records | Role |
-|--------|--------:|------|
-| `catalog.json` | 45 | Closed-world card catalog (only legal recommendation titles) |
-| `students.json` | 28 | Borrowers grades 3–5 (8 / 10 / 10) · opaque `student_id` |
-| `circulation.json` | 176 | Checkout history (CF signal) |
-| `librarians.json` | 3 | Elena `L-001`, Tom `L-002`, Priya Shah `L-003` |
+### Core closed-world inputs
+
+| File | n | Role |
+|------|--:|------|
+| `catalog.json` | **45** | Card catalog — only legal recommendation titles |
+| `students.json` | **28** | Grades 3 / 4 / 5 = 8 / 10 / 10 · opaque `student_id` |
+| `circulation.json` | **176** | Checkout history (item-item CF signal) |
+| `librarians.json` | **3** | Elena `L-001`, Tom `L-002`, Priya Shah `L-003` |
+
+Only title currently with `copies_available == 0`: **B-008 The Bad Guys** (must never be a spoken rec).
+
+### Desk / calendar context
+
+| File | n | Role |
+|------|--:|------|
 | `homerooms.json` | 6 | Grade 3–5 classes |
 | `desk_shifts.json` | 11 | Who is on the desk |
 | `open_circulation.json` | 14 | High-volume walk-up windows |
@@ -77,26 +100,31 @@ Index: [`data/json/sources.json`](data/json/sources.json) · extract date `2026-
 | `class_visits.json` | 6 | Specials / whole-class visits |
 | `calendar_exceptions.json` | 10 | Closures |
 | `book_clubs.json` | 3 | Optional programs |
+| `district.json` | 1 | Site, ILS, data owner, privacy officer |
 | `engagement_schedule.json` | 13 | Proposed 12-week lighthouse plan |
-| `district.json` | 1 | Site, year, ILS, data owner, privacy officer |
 | `personas.json` | 4 | Demo walkthrough personas |
-| `as_is_notes.json` | 1 | Sticky-note “as-is” notebook we’re replacing |
-| `academic_demo.json` | (fixture) | Synthetic English + reading-check scenarios (isolated from retrieve) |
-| `engagement_demo.json` | (fixture) | Read-only historical contacts for Reading changes (not live desk) |
-| `support_demo.json` | (fixture) | Support-triage demo context |
+| `as_is_notes.json` | 1 | Sticky-note notebook we’re replacing |
 
-Original CSVs live under `data/csv/`. Notes/personas prose under `data/notes/`. Do **not** edit frozen extracts just to make goldens pass.
+### Demo fixtures (not production exports)
+
+| File | Role |
+|------|------|
+| `academic_demo.json` | Synthetic English + reading-check scenarios — **isolated from retrieve** |
+| `engagement_demo.json` | Read-only historical contacts for Outcomes → Reading changes |
+| `support_demo.json` | Support-triage demo context (present on disk; not listed in `sources.json`) |
+
+CSVs: `data/csv/`. Prose notes: `data/notes/`. Do **not** edit frozen extracts just to make goldens pass.
 
 ---
 
-## What’s in the tree
+## Code layout
 
 | Path | What |
 |------|------|
-| `cmd/shelfmate` | CLI/binary entrypoint |
+| `cmd/shelfmate` | CLI entrypoint |
 | `internal/domain` | Book / Student / Recommendation contracts |
 | `internal/store` | Load `data/json` once |
-| `internal/retrieve` | Hybrid item-item CF (0.55) + TF-IDF (0.45 / 1.0 if sparse) |
+| `internal/retrieve` | Hybrid CF **0.55** + TF-IDF **0.45** (or **1.0** if sparse history) |
 | `internal/policy` | Catalog-closed, copies &gt; 0, grade/stretch, already-read, page cap |
 | `internal/engine` | Snapshot orchestration; LLM cannot reorder scores |
 | `internal/explain` | TemplateExplainer default; optional Axon |
@@ -107,21 +135,27 @@ Original CSVs live under `data/csv/`. Notes/personas prose under `data/notes/`. 
 | `internal/metrics` | Pure projections: session / portfolio / paired |
 | `internal/academics` | Synthetic fixtures; isolated from retrieve |
 | `internal/support` | Desk support triage (not model input) |
-| `internal/eval` | Golden invariants |
+| `internal/eval` | Golden invariants (`testdata/golden/cases.json`) |
 | `internal/version` | `0.1.0-poc` |
-| `web/` | Desk SPA: My day, Books, Support, Progress, Outcomes |
-| `graft/` | Context + code graph (`graft viz` on `:4400`) |
-| `testdata/golden/` | Mateo, Aisha (×2), Priya, Olivia |
-| `docs/deck-partners.html` | Non-tech partner proposal |
-| `docs/deck.html` | Technical architecture (links Graft) |
-| `docs/architecture.md` | Request path + package detail |
-| `docs/privacy.md` | FERPA-minded controls vs production gaps |
-| `docs/runbook.md` | Operate the PoC |
-| `docs/demo-script.md` | Live desk walkthrough |
-| `docs/metric-definitions.md` | Outcomes / engagement contracts |
-| `docs/pilot-proposal.md` | Rollout, ownership, ~11–16 week lighthouse |
-| `plan.md` | Thesis, scope, artifacts |
-| `CLAUDE.md` | Agent working notes |
+| `web/` | Desk SPA — My day, Books, Support, Progress, Outcomes |
+| `graft/` | Context + code graph (`graft viz`, also `.mcp.json` → `graft mcp`) |
+| `scripts/` | `csv_to_json.py`, `ui-smoke.cjs` |
+| `harness/` | Local Claude Code / Brain harness helpers (not the product path) |
+
+### Docs
+
+| Doc | Audience |
+|-----|----------|
+| [`docs/deck-partners.html`](docs/deck-partners.html) | Non-tech partner proposal |
+| [`docs/deck.html`](docs/deck.html) | Technical architecture (links Graft) |
+| [`docs/architecture.md`](docs/architecture.md) | Request path + packages |
+| [`docs/privacy.md`](docs/privacy.md) | FERPA-minded controls vs production gaps |
+| [`docs/runbook.md`](docs/runbook.md) | Operate the PoC |
+| [`docs/demo-script.md`](docs/demo-script.md) | Live desk walkthrough |
+| [`docs/metric-definitions.md`](docs/metric-definitions.md) | Outcomes / engagement contracts |
+| [`docs/pilot-proposal.md`](docs/pilot-proposal.md) | Rollout, ownership, ~11–16 week lighthouse |
+| [`plan.md`](plan.md) | Thesis, scope, artifacts |
+| [`CLAUDE.md`](CLAUDE.md) | Agent working notes |
 
 ---
 
@@ -135,7 +169,7 @@ Original CSVs live under `data/csv/`. Notes/personas prose under `data/notes/`. 
 - **Outcomes → Our work** — live session activity (cleared on restart).
 - **Outcomes → Student trends** — roster borrowing / English / reading checks (extract vs scenario sources labeled).
 - **Outcomes → Reading changes** — descriptive historical pairs from `engagement_demo.json` (isolated from live desk).
-- `serve` preloads a small live morning via `session.SeedLiveDesk`. `SHELFMATE_EMPTY_SESSION=1` boots a blank desk.
+- `serve` preloads a small live morning (`session.SeedLiveDesk`). `SHELFMATE_EMPTY_SESSION=1` boots blank.
 
 Walkthrough: [runbook](docs/runbook.md) · [demo script](docs/demo-script.md) · [metrics](docs/metric-definitions.md). Staff selection is **attribution**, not authentication.
 
@@ -144,8 +178,8 @@ Walkthrough: [runbook](docs/runbook.md) · [demo script](docs/demo-script.md) ·
 ## Rules that do not move
 
 - Closed-world catalog — every recommended `book_id` ∈ `catalog.json`.
-- `copies_available == 0` is never a spoken recommendation (fixture: B-008 The Bad Guys).
-- LLM off by default (`SHELFMATE_LLM`). Recommendations still work; ranking unchanged if the model is on and fails.
+- `copies_available == 0` is never spoken (B-008 The Bad Guys).
+- LLM off by default (`SHELFMATE_LLM`). Recs still work; ranking unchanged if the model is on and fails.
 - Model payloads (when enabled): `student_id` + candidate metadata only — no first names, raw query, or blurbs.
 - Librarian speaks. The binary does not talk to kids.
 - Demo checkout is process memory. Restart restores the frozen extract.
@@ -157,8 +191,8 @@ Walkthrough: [runbook](docs/runbook.md) · [demo script](docs/demo-script.md) ·
 
 | ID | Role |
 |----|------|
-| Mateo `S-406` | Graphic cluster / Friday rush; Cat Kid path; B-008 out of copies |
-| Aisha `S-402` | Stretch toggle (grade-band relaxation) |
+| Mateo `S-406` | Graphic cluster / Friday rush; Cat Kid path; B-008 never spoken |
+| Aisha `S-402` | Stretch toggle (two golden cases: default + stretch) |
 | Priya `S-405` | Sparse history + NL query (`under 150`) |
 | Olivia `S-509` | Zero history → labeled popularity fallback |
 | Sofia `S-305` | Primary isolated multi-year progress story (`academic_demo`) |
@@ -166,5 +200,7 @@ Walkthrough: [runbook](docs/runbook.md) · [demo script](docs/demo-script.md) ·
 | Elena `L-001` | Library Media Specialist (primary user) |
 | Tom `L-002` | Library Aide |
 | Priya Shah `L-003` | District Library Coordinator / data owner |
+
+Goldens in `testdata/golden/cases.json`: S-406, S-402, S-402 (stretch), S-405, S-509.
 
 Fictional children and staff. Not real student data.

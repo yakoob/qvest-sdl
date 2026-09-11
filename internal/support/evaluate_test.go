@@ -30,6 +30,29 @@ func TestBands(t *testing.T) {
 	}
 }
 
+func TestGradeStatusFromEnglishAndReading(t *testing.T) {
+	for _, tc := range []struct {
+		name, grade, want string
+		reading           int
+	}{
+		{"below english", "C", BelowGrade, 3},
+		{"below reading", "B", BelowGrade, 2},
+		{"on", "B+", OnGrade, 3},
+		{"above", "A-", AboveGrade, 4},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			r := academics.Record{Semesters: []academics.SemesterIn{{Course: "English Language Arts", End: "2026-06-05", Status: "final", Scale: academics.ScaleLetter, Grade: &tc.grade}}, Assessments: []academics.Assessment{{Name: "Willow Bend Reading Check", Scale: academics.ScaleWillow, Grade: 4, Date: "2026-09-02", Result: &tc.reading}}}
+			got := Evaluate(r, Record{}, DefaultConfig())
+			if got.GradeStatus != tc.want {
+				t.Fatalf("got %s want %s (%s / %s)", got.GradeStatus, tc.want, got.English, got.Reading)
+			}
+		})
+	}
+	if got := Evaluate(academics.Record{}, Record{}, DefaultConfig()); got.GradeStatus != UnknownGrade {
+		t.Fatalf("missing evidence %s", got.GradeStatus)
+	}
+}
+
 func TestMissingAndInvalidEvidence(t *testing.T) {
 	grade := "F"
 	value := 1

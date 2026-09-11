@@ -136,12 +136,14 @@ window.engagement = {
       }
     }
     if(!count) agenda.append(el("div",{class:"empty-state"},[el("h3",{text:mode.value==="overdue"?"Nothing waiting for attention.":"No meetings in this view."}),el("p",{text:"Find a reader to start a conversation or book time together."})]));
-    const attention=el("section",{class:"task"},[el("h2",{text:"Students to check in with"}),el("p",{class:"hint",text:"Suggestions from the existing support rules—not a diagnosis. Open a student to see why."})]);
-    const reasons={first:"A prompt check-in is suggested",soon:"A conversation soon may help",insufficient:"Get to know this reader—context is missing"};
+    const attention=el("section",{class:"task"},[el("h2",{text:"Students to check in with"}),el("p",{class:"hint",text:"Below-grade readers first, from English grades and reading checks—not a diagnosis. Students already in a conversation, booked, or due for a follow-up stay on My day instead."})]);
     for(const row of data.students || []) {
-      if(row.band==="none")continue;
-      attention.append(el("div",{class:"visit-summary agenda-row"},[el("div",{},[el("strong",{text:this.name(row.student_id)}),el("p",{class:"hint",text:reasons[row.band]||row.label})]),this.button("Open student",()=>selectStudent(row.student_id))]));
+      if(!row.waiting) continue;
+      const status = row.grade_status_label || row.label;
+      const detail = [`Grade ${row.grade}`, row.english ? `English ${row.english}` : null, row.reading ? `Reading ${row.reading}` : null].filter(Boolean).join(" · ");
+      attention.append(el("div",{class:"visit-summary agenda-row"},[el("div",{},[el("strong",{text:this.name(row.student_id)}),el("p",{class:`hint support-band band-${row.grade_status || row.band}`,text:status}),el("p",{class:"hint",text:detail})]),this.button("Open student",()=>selectStudent(row.student_id))]));
     }
+    if(!(data.students || []).some(row => row.waiting)) attention.append(el("p",{class:"hint",text:"No one is waiting for a first check-in right now."}));
     target.replaceChildren(agenda,attention);
   },
   async schedule(student, existing, completion, followup) {

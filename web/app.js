@@ -75,7 +75,7 @@ function filteredStudents() {
   const q = (searchEl.value || "").trim().toLowerCase();
   return state.students.filter((s) => {
     const band = document.getElementById("support-filter").value;
-    if (band && state.supportQueue.get(s.student_id)?.band !== band) return false;
+    if (band && state.supportQueue.get(s.student_id)?.grade_status !== band) return false;
     if (!q) return true;
     const blob = `${s.first_name} ${s.last_initial} ${s.student_id} ${s.demo_role || ""} ${s.cluster || ""}`.toLowerCase();
     return blob.includes(q);
@@ -102,7 +102,7 @@ function renderStudentList() {
       el("span", { class: "student-info" }, [
         el("span", { class: "student-name", text: labelFor(s) }),
         el("span", { class: "student-meta", text: `Grade ${s.grade} · ${s.student_id}${s.open_loans ? ` · ${s.open_loans} out` : ""}` }),
-        el("span", { class: `support-band band-${state.supportQueue.get(s.student_id)?.band || "insufficient"}`, text: state.supportQueue.get(s.student_id)?.label || "Loading context" }),
+        el("span", { class: `support-band band-${state.supportQueue.get(s.student_id)?.grade_status || state.supportQueue.get(s.student_id)?.band || "insufficient"}`, text: state.supportQueue.get(s.student_id)?.grade_status_label || state.supportQueue.get(s.student_id)?.label || "Loading context" }),
       ]),
     ]);
     btn.addEventListener("click", () => selectStudent(s.student_id));
@@ -150,7 +150,7 @@ function renderHeader(detail) {
       ]),
     ]),
     el("div", { class: "header-badges" }, [
-      el("span", { class: `support-band band-${band?.band || "insufficient"}`, text: band?.label || "Not enough information" }),
+      el("span", { class: `support-band band-${band?.grade_status || band?.band || "insufficient"}`, text: band?.grade_status_label || band?.label || "Not enough information" }),
       el("span", { class: "loan-count", text: `${loans.length} current loan${loans.length === 1 ? "" : "s"}` }),
     ]),
   );

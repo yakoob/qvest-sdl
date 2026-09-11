@@ -206,6 +206,10 @@ summary { cursor: pointer; color: var(--ink-soft); padding: 6px 0; }
 .band-first { background: #fbe9e5; color: #8b3629; }
 .band-soon { background: #fff0d0; color: #75501a; }
 .band-none { background: #e2f4ec; color: #23664c; }
+.band-below { background: #fbe9e5; color: #8b3629; }
+.band-on { background: #e2f4ec; color: #23664c; }
+.band-above { background: #e5eefb; color: #1f4f86; }
+.band-unknown { background: #edf1f6; color: #4c5c70; }
 .support-evidence { padding: 16px 20px; margin: 20px 0; background: #f6f8fb; border-radius: 10px; }
 .support-evidence p { margin: 12px 0; }
 .guidance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; margin: 20px 0 28px; }

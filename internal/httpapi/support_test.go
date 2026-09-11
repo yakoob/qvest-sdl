@@ -1,12 +1,14 @@
 package httpapi
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
+	"school_district_reading/internal/engagement"
 	"school_district_reading/internal/support"
 )
 
@@ -45,6 +47,29 @@ func TestSupportWorkflow(t *testing.T) {
 			t.Fatal("queue leaked detail")
 		}
 	}
+	var payload struct {
+		Students []struct {
+			StudentID        string `json:"student_id"`
+			GradeStatus      string `json:"grade_status"`
+			GradeStatusLabel string `json:"grade_status_label"`
+			Waiting          bool   `json:"waiting"`
+		} `json:"students"`
+	}
+	if err := json.Unmarshal([]byte(queue), &payload); err != nil {
+		t.Fatal(err)
+	}
+	foundTyler := false
+	for _, row := range payload.Students {
+		if row.StudentID == "S-504" {
+			foundTyler = true
+			if row.GradeStatus != "below" || row.GradeStatusLabel != "Below grade" {
+				t.Fatalf("tyler status %+v", row)
+			}
+		}
+	}
+	if !foundTyler {
+		t.Fatal("directory queue dropped tyler")
+	}
 	before := s.supportResult("S-504")
 	body := `{"student_id":"S-504","staff_id":"L-001","action":"check_in","retry_id":"test-1"}`
 	a := request("POST", "/api/support/followups", body)
@@ -73,5 +98,46 @@ func TestSupportWorkflow(t *testing.T) {
 	fresh.ServeHTTP(w, httptest.NewRequest("GET", "/api/students/S-504/support", nil))
 	if !strings.Contains(w.Body.String(), `"followups":[]`) {
 		t.Fatal("followups persisted to new handler")
+	}
+}
+func TestCheckInQueueHidesBusyStudents(t *testing.T) {
+	s := newTestServer(t)
+	cal, err := engagement.LoadCalendar("../../data/json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.Session.SetCalendar(cal)
+	if err := s.Session.SeedLiveDesk(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	s.Handler().ServeHTTP(rr, httptest.NewRequest("GET", "/api/support/queue", nil))
+	if rr.Code != 200 {
+		t.Fatal(rr.Body.String())
+	}
+	var payload struct {
+		Students []struct {
+			StudentID   string `json:"student_id"`
+			Waiting     bool   `json:"waiting"`
+			GradeStatus string `json:"grade_status"`
+		} `json:"students"`
+	}
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatal(err)
+	}
+	waiting := map[string]bool{}
+	for _, row := range payload.Students {
+		waiting[row.StudentID] = row.Waiting
+	}
+	for _, id := range []string{"S-504", "S-401", "S-402"} {
+		if waiting[id] {
+			t.Fatalf("%s still waiting after conversation/appointment/follow-up", id)
+		}
+	}
+	if !waiting["S-406"] {
+		t.Fatal("Mateo should still wait; no live conversation was seeded")
+	}
+	if payload.Students[0].GradeStatus != "below" && payload.Students[0].Waiting {
+		t.Fatalf("waiting list should lead with below grade, got %+v", payload.Students[0])
 	}
 }

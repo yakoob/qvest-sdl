@@ -6,6 +6,7 @@ import (
 	"sort"
 
 	"school_district_reading/internal/academics"
+	"school_district_reading/internal/engagement"
 	"school_district_reading/internal/support"
 )
 
@@ -28,11 +29,45 @@ func (s Server) supportQueue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	type row struct {
-		StudentID string   `json:"student_id"`
-		Band      string   `json:"band"`
-		Label     string   `json:"label"`
-		Coverage  string   `json:"coverage"`
-		Reasons   []string `json:"reason_codes"`
+		StudentID        string   `json:"student_id"`
+		Grade            int      `json:"grade"`
+		Band             string   `json:"band"`
+		Label            string   `json:"label"`
+		GradeStatus      string   `json:"grade_status"`
+		GradeStatusLabel string   `json:"grade_status_label"`
+		English          string   `json:"english,omitempty"`
+		Reading          string   `json:"reading,omitempty"`
+		Waiting          bool     `json:"waiting"`
+		Coverage         string   `json:"coverage"`
+		Reasons          []string `json:"reason_codes"`
+	}
+	busy := map[string]bool{}
+	if s.Session != nil {
+		state := s.Session.EngagementSnapshot()
+		for _, in := range state.Interactions {
+			if in.CompletedAt == nil {
+				busy[in.StudentID] = true
+			}
+		}
+		for _, a := range state.Appointments {
+			if a.Status == "scheduled" || a.Status == "in_progress" {
+				busy[a.StudentID] = true
+			}
+		}
+		checkout := map[string]bool{}
+		for _, c := range state.Choices {
+			if c.BookID != "" && c.LoanID != "" {
+				checkout[c.InteractionID] = true
+			}
+		}
+		for _, f := range state.Followups {
+			if f.CompletedAt != nil {
+				continue
+			}
+			if checkout[f.InteractionID] {
+				busy[interactionStudent(state.Interactions, f.InteractionID)] = true
+			}
+		}
 	}
 	rows := []row{}
 	for _, st := range s.snap().Engine.Store.Students {
@@ -43,16 +78,32 @@ func (s Server) supportQueue(w http.ResponseWriter, r *http.Request) {
 				codes = append(codes, e.Rule)
 			}
 		}
-		rows = append(rows, row{st.StudentID, result.Band, result.Label, result.Coverage, codes})
+		waiting := !busy[st.StudentID] && (result.GradeStatus == support.BelowGrade || result.GradeStatus == support.UnknownGrade)
+		rows = append(rows, row{st.StudentID, st.Grade, result.Band, result.Label, result.GradeStatus, result.GradeStatusLabel, result.English, result.Reading, waiting, result.Coverage, codes})
 	}
-	order := map[string]int{support.First: 0, support.Soon: 1, support.Insufficient: 2, support.None: 3}
+	order := map[string]int{support.BelowGrade: 0, support.UnknownGrade: 1, support.OnGrade: 2, support.AboveGrade: 3}
 	sort.Slice(rows, func(i, j int) bool {
-		if rows[i].Band != rows[j].Band {
-			return order[rows[i].Band] < order[rows[j].Band]
+		if rows[i].Waiting != rows[j].Waiting {
+			return rows[i].Waiting
+		}
+		if rows[i].GradeStatus != rows[j].GradeStatus {
+			return order[rows[i].GradeStatus] < order[rows[j].GradeStatus]
+		}
+		if rows[i].Grade != rows[j].Grade {
+			return rows[i].Grade < rows[j].Grade
 		}
 		return rows[i].StudentID < rows[j].StudentID
 	})
 	writeJSON(w, 200, map[string]any{"students": rows, "config": support.DefaultConfig(), "synthetic": true})
+}
+
+func interactionStudent(rows []engagement.Interaction, id string) string {
+	for _, in := range rows {
+		if in.ID == id {
+			return in.StudentID
+		}
+	}
+	return ""
 }
 
 func (s Server) supportDetail(w http.ResponseWriter, r *http.Request, id string) {

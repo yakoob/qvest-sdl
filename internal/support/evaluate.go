@@ -13,6 +13,11 @@ const (
 	Soon         = "soon"
 	None         = "none"
 	Insufficient = "insufficient"
+
+	BelowGrade   = "below"
+	OnGrade      = "on"
+	AboveGrade   = "above"
+	UnknownGrade = "unknown"
 )
 
 type Config struct {
@@ -37,13 +42,17 @@ type Evidence struct {
 }
 
 type Result struct {
-	StudentID  string     `json:"student_id"`
-	Band       string     `json:"band"`
-	Label      string     `json:"label"`
-	Coverage   string     `json:"coverage"`
-	Evidence   []Evidence `json:"evidence"`
-	Config     Config     `json:"config"`
-	Disclaimer string     `json:"disclaimer"`
+	StudentID        string     `json:"student_id"`
+	Band             string     `json:"band"`
+	Label            string     `json:"label"`
+	GradeStatus      string     `json:"grade_status"`
+	GradeStatusLabel string     `json:"grade_status_label"`
+	English          string     `json:"english,omitempty"`
+	Reading          string     `json:"reading,omitempty"`
+	Coverage         string     `json:"coverage"`
+	Evidence         []Evidence `json:"evidence"`
+	Config           Config     `json:"config"`
+	Disclaimer       string     `json:"disclaimer"`
 }
 
 // Evaluate is independent of circulation mutations, counseling themes and note text.
@@ -183,7 +192,50 @@ func Evaluate(rec academics.Record, guidance Record, cfg Config) Result {
 	default:
 		out.Label = "Not enough information"
 	}
+	out.GradeStatus, out.GradeStatusLabel, out.English, out.Reading = gradeStatus(english, assessment)
 	return out
+}
+
+func gradeStatus(english, assessment Evidence) (status, label, letter, reading string) {
+	if english.Included {
+		letter = english.Value
+	}
+	if assessment.Included {
+		reading = assessment.Value
+	}
+	below, on, above := false, false, false
+	if english.Included && letter != "" {
+		switch letter[0] {
+		case 'C', 'D', 'F':
+			below = true
+		case 'B':
+			on = true
+		case 'A':
+			above = true
+		}
+	}
+	if assessment.Included && assessment.Value != "" {
+		switch assessment.Value[0] {
+		case '1', '2':
+			below = true
+		case '3':
+			on = true
+		case '4':
+			above = true
+		}
+	}
+	switch {
+	case below:
+		return BelowGrade, "Below grade", letter, reading
+	case !english.Included && !assessment.Included:
+		return UnknownGrade, "Not enough information", letter, reading
+	case above && !on:
+		return AboveGrade, "Above grade", letter, reading
+	case on:
+		return OnGrade, "On grade", letter, reading
+	default:
+		return UnknownGrade, "Not enough information", letter, reading
+	}
 }
 
 func fresh(date, asOf string, days int) bool {

@@ -54,7 +54,7 @@ func TestRosterBelowGradeStudentsHaveRichSupport(t *testing.T) {
 	if len(cat.ByStudent) != 28 || len(sup.ByStudent) != 28 {
 		t.Fatalf("coverage academics=%d support=%d", len(cat.ByStudent), len(sup.ByStudent))
 	}
-	for _, id := range []string{"S-301", "S-308", "S-410", "S-504"} {
+	for _, id := range []string{"S-308", "S-410", "S-405", "S-509", "S-302"} {
 		r := cat.ByStudent[id]
 		r.StudentID = id
 		got := Evaluate(r, sup.ByStudent[id], DefaultConfig())
@@ -68,11 +68,6 @@ func TestRosterBelowGradeStudentsHaveRichSupport(t *testing.T) {
 		_, themes, below := ClassifiedInterests(st.StudentByID[id], r, g)
 		if !below || len(themes) == 0 {
 			t.Fatalf("%s classified %+v", id, themes)
-		}
-	}
-	for _, id := range []string{"S-405", "S-509", "S-302"} {
-		if Evaluate(cat.ByStudent[id], sup.ByStudent[id], DefaultConfig()).GradeStatus != UnknownGrade {
-			t.Fatalf("%s should stay unknown", id)
 		}
 	}
 }

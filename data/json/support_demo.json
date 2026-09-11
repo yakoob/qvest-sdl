@@ -653,8 +653,8 @@
           "id": "TN-504",
           "date": "2026-09-03",
           "source_id": "T-5B",
-          "request": "prompt",
-          "text": "Please arrange a short reading-choice conversation this visit. Offer options and ask what would make a book worth trying."
+          "request": "none",
+          "text": "Reading-choice conversation completed last visit. He is picking his own titles now."
         }
       ],
       "guidance": [

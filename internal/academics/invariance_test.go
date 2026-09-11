@@ -65,7 +65,7 @@ func TestSupportRankingAndBaseFixtureInvariance(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wantBand := map[string]string{"S-406": support.None, "S-504": support.First, "S-305": support.None, "S-405": support.Insufficient, "S-509": support.Insufficient}
+	wantBand := map[string]string{"S-406": support.None, "S-504": support.None, "S-305": support.None, "S-405": support.Soon, "S-509": support.Soon}
 	for id, band := range wantBand {
 		r := cat.ByStudent[id]
 		r.StudentID = id

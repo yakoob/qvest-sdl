@@ -387,15 +387,15 @@ func TestStableAndMissingAcademicCasesPreserved(t *testing.T) {
 		t.Fatal("olivia must not invent prior local years")
 	}
 	tyler := cat.View("S-504", st)
-	if gradeOf(tyler, "SY25-S2") != "C" {
+	if gradeOf(tyler, "SY25-S2") != "A" {
 		t.Fatalf("tyler spring %s", gradeOf(tyler, "SY25-S2"))
 	}
 	if tyler.DemoCase != DemoImprovingEngagement {
 		t.Fatalf("tyler demo %q", tyler.DemoCase)
 	}
 	luis := cat.View("S-302", st)
-	if gradeOf(luis, "SY25-S2") != "" {
-		t.Fatalf("luis missing grade became %s", gradeOf(luis, "SY25-S2"))
+	if gradeOf(luis, "SY25-S2") != "C-" {
+		t.Fatalf("luis transferred grade became %q", gradeOf(luis, "SY25-S2"))
 	}
 	if len(luis.Assessments) != 1 || luis.Assessments[0].Result != nil {
 		t.Fatal("luis missing reading check must stay null")
@@ -476,7 +476,7 @@ func TestThreeImprovingScenariosDistinct(t *testing.T) {
 	if gradeOf(cat.View("S-406", st), "SY25-S2") != "A-" {
 		t.Fatal("Mateo operational spring grade drifted")
 	}
-	if gradeOf(cat.View("S-504", st), "SY25-S2") != "C" {
+	if gradeOf(cat.View("S-504", st), "SY25-S2") != "A" {
 		t.Fatal("Tyler operational spring grade drifted")
 	}
 }

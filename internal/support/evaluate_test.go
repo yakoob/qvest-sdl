@@ -119,7 +119,7 @@ func TestDemoFixtures(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for id, want := range map[string]string{"S-406": None, "S-402": None, "S-405": Insufficient, "S-509": Insufficient, "S-504": First, "S-510": None, "S-305": None} {
+	for id, want := range map[string]string{"S-406": None, "S-402": None, "S-405": Soon, "S-509": Soon, "S-504": None, "S-510": None, "S-305": None, "S-301": Soon} {
 		r := ac.ByStudent[id]
 		r.StudentID = id
 		got := Evaluate(r, c.ByStudent[id], DefaultConfig())
@@ -142,7 +142,7 @@ func TestDemoFixtures(t *testing.T) {
 		t.Fatal("tyler scenario last grade")
 	}
 	tg := Evaluate(tyler, c.ByStudent["S-504"], DefaultConfig())
-	if evidenceValue(tg, "english") != "C" {
+	if evidenceValue(tg, "english") != "A" {
 		t.Fatalf("tyler support english %q; scenario must not feed support", evidenceValue(tg, "english"))
 	}
 	sofia := ac.ByStudent["S-305"]

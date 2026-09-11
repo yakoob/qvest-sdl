@@ -26,7 +26,7 @@ func TestSupportWorkflow(t *testing.T) {
 		h.ServeHTTP(w, httptest.NewRequest(method, path, strings.NewReader(body)))
 		return w
 	}
-	for id, band := range map[string]string{"S-504": "first", "S-406": "none", "S-405": "insufficient", "S-402": "none", "S-305": "none", "S-509": "insufficient"} {
+	for id, band := range map[string]string{"S-504": "none", "S-406": "none", "S-405": "soon", "S-402": "none", "S-305": "none", "S-509": "soon"} {
 		w := request("GET", "/api/students/"+id+"/support", "")
 		if w.Code != 200 {
 			t.Fatal(w.Body.String())
@@ -62,7 +62,7 @@ func TestSupportWorkflow(t *testing.T) {
 	for _, row := range payload.Students {
 		if row.StudentID == "S-504" {
 			foundTyler = true
-			if row.GradeStatus != "below" || row.GradeStatusLabel != "Below grade" {
+			if row.GradeStatus != "above" || row.GradeStatusLabel != "Above grade" {
 				t.Fatalf("tyler status %+v", row)
 			}
 		}

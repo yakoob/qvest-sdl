@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PORT=8088
 BINARY="${TMPDIR:-/tmp}/shelfmate-demo"
+SHELFMATE_LLM=on
 
 command -v go >/dev/null || { printf 'Go is required.\n' >&2; exit 1; }
 command -v lsof >/dev/null || { printf 'lsof is required.\n' >&2; exit 1; }

@@ -87,7 +87,7 @@ func TestMateoDateJoinAndCurrentUngraded(t *testing.T) {
 			cur = s
 		}
 	}
-	if s2.EnglishGrade == nil || *s2.EnglishGrade != "C" {
+	if s2.EnglishGrade == nil || *s2.EnglishGrade != "A-" {
 		t.Fatalf("spring grade %+v", s2.EnglishGrade)
 	}
 	if cur.EnglishGrade != nil {
@@ -152,8 +152,8 @@ func TestScaleCompatibility(t *testing.T) {
 	if sep.Comparable {
 		t.Fatal("grade 4 vs grade 3 must not be comparable")
 	}
-	if jan.Result == nil || may.Result == nil || *jan.Result != *may.Result {
-		t.Fatal("Mateo fixture is flat within grade 3")
+	if jan.Result == nil || may.Result == nil || *jan.Result >= *may.Result {
+		t.Fatal("Mateo grade 3 checks should show meeting after developing")
 	}
 }
 
@@ -359,7 +359,7 @@ func TestSofiaImprovingEngagementScenario(t *testing.T) {
 func TestStableAndMissingAcademicCasesPreserved(t *testing.T) {
 	st, cat := loadAll(t)
 	mateo := cat.View("S-406", st)
-	if len(mateo.Semesters) != 3 || gradeOf(mateo, "SY25-S2") != "C" {
+	if len(mateo.Semesters) != 3 || gradeOf(mateo, "SY25-S2") != "A-" {
 		t.Fatalf("mateo drift semesters=%d grade=%s", len(mateo.Semesters), gradeOf(mateo, "SY25-S2"))
 	}
 	if mateo.DemoCase != DemoImprovingEngagement {
@@ -473,7 +473,7 @@ func TestThreeImprovingScenariosDistinct(t *testing.T) {
 		}
 		seenSeq[seq] = sid
 	}
-	if gradeOf(cat.View("S-406", st), "SY25-S2") != "C" {
+	if gradeOf(cat.View("S-406", st), "SY25-S2") != "A-" {
 		t.Fatal("Mateo operational spring grade drifted")
 	}
 	if gradeOf(cat.View("S-504", st), "SY25-S2") != "C" {

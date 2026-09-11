@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Helping more kids find their next book</title>
+  <style>
+    :root { --ink:#1b1b18; --muted:#5c564c; --line:#d4cbb8; --paper:#f7f2e8; --card:#fffdf8; --accent:#2f5d50; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 21px/1.45 "Iowan Old Style", Palatino, "Palatino Linotype", serif; color: var(--ink); background: var(--paper); }
+    .deck { max-width: 980px; margin: 0 auto; padding: 1.5rem; }
+    section { background: var(--card); border: 1px solid var(--line); padding: 2.2rem 2.4rem; margin: 0 0 1.2rem; min-height: 70vh; page-break-after: always; display: flex; flex-direction: column; justify-content: center; }
+    h1, h2 { margin: 0 0 0.7rem; letter-spacing: 0.01em; }
+    h1 { font-size: 2.15rem; line-height: 1.18; }
+    h2 { font-size: 1.6rem; }
+    p, li { color: var(--ink); }
+    ul { margin: 0.55rem 0 0; padding-left: 1.2rem; }
+    li { margin: 0.35rem 0; }
+    .lede { font-size: 1.12rem; max-width: 40rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.9rem; margin-top: 1rem; }
+    .card { border: 1px solid var(--line); background: #fff; padding: 1rem 1.1rem; }
+    .card h3 { margin: 0 0 0.4rem; font-size: 1.05rem; color: var(--accent); }
+    .card p, .card li { margin: 0; font-size: 0.95rem; }
+    .note { color: var(--muted); font-size: 0.9rem; margin-top: 1.1rem; }
+    .ask { font-size: 1.22rem; margin: 0.5rem 0 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.98rem; margin-top: 0.75rem; }
+    th, td { border-top: 1px solid var(--line); text-align: left; padding: 0.45rem 0.4rem; vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    svg { width: 100%; height: auto; background: #fff; border: 1px solid var(--line); margin-top: 0.75rem; }
+    .pull { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 0.8rem 0 0; max-width: 40rem; font-size: 1.1rem; }
+    @media print { section { min-height: auto; border: 0; justify-content: flex-start; } body { background: #fff; } }
+    @media (max-width: 720px) {
+      .grid, .grid3 { grid-template-columns: 1fr; }
+      .deck { padding: .75rem; }
+      section { padding: 1.1rem; min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+
+    <section>
+      <h1>We want more kids walking out with a book they’ll finish</h1>
+      <p class="lede">When we sat with librarians, they said it plainly: if they recommend a book, kids usually read it. The hard part is remembering, in a crowded few minutes at the desk, what that child liked last time — and what’s still on the shelf today.</p>
+      <p class="lede">This is a simple tool so librarians can help more kids — without asking children to log into an app, and without asking librarians to work harder.</p>
+    </section>
+
+    <section>
+      <h2>What the librarians told us</h2>
+      <div class="pull">
+        Kids trust a librarian’s recommendation. Librarians mostly work from memory and stories about other kids: “If they liked this, they often like that.”
+      </div>
+      <p class="lede" style="margin-top:1.1rem;">They offered us two things they already have: the history of what students borrowed, and the electronic card catalog. That’s enough to start helping.</p>
+      <p class="lede">We’re not trying to replace librarians. We’re trying to give them a better notebook for the rush before school, the last minutes of specials, and Friday afternoon checkout.</p>
+      <p class="lede">Our goal is to give librarians the tools to scale their impact without scaling — while reducing their workload.</p>
+    </section>
+
+    <section>
+      <h2>What we’re proposing</h2>
+      <p class="lede">A screen at the librarian’s desk — not in a child’s hands.</p>
+      <ul>
+        <li>Look up a student.</li>
+        <li>See a short list of next books that fit what they’ve borrowed before.</li>
+        <li>Only show titles we actually have copies of.</li>
+        <li>Let the librarian choose what to say, in their own voice.</li>
+      </ul>
+      <p class="lede" style="margin-top:1rem;">If it helps, it can draft a couple of talking points. If those aren’t there, the book list still works. The child still hears a person.</p>
+    </section>
+
+    <section>
+      <h2>How it works</h2>
+      <p class="lede">Borrow history and the card catalog go in. A short list comes out for the librarian. The student never sees the system.</p>
+      <svg viewBox="0 0 920 300" role="img" aria-label="Borrow history and card catalog help the librarian recommend a book to a student">
+        <rect x="20" y="35" width="175" height="75" fill="#eef6f2" stroke="#2f5d50"/>
+        <text x="107" y="68" text-anchor="middle" font-size="15" fill="#1b1b18">What kids borrowed</text>
+        <text x="107" y="90" text-anchor="middle" font-size="13" fill="#5c564c">from the library</text>
+
+        <rect x="20" y="150" width="175" height="75" fill="#eef6f2" stroke="#2f5d50"/>
+        <text x="107" y="183" text-anchor="middle" font-size="15" fill="#1b1b18">Card catalog</text>
+        <text x="107" y="205" text-anchor="middle" font-size="13" fill="#5c564c">titles and copies</text>
+
+        <rect x="255" y="85" width="195" height="90" fill="#fff" stroke="#2f5d50"/>
+        <text x="352" y="125" text-anchor="middle" font-size="16" fill="#1b1b18">Helpful shortlist</text>
+        <text x="352" y="150" text-anchor="middle" font-size="13" fill="#5c564c">books we have today</text>
+
+        <rect x="510" y="85" width="175" height="90" fill="#eef6f2" stroke="#2f5d50"/>
+        <text x="597" y="125" text-anchor="middle" font-size="16" fill="#1b1b18">Librarian</text>
+        <text x="597" y="150" text-anchor="middle" font-size="13" fill="#5c564c">picks and recommends</text>
+
+        <rect x="745" y="85" width="155" height="90" fill="#fffdf8" stroke="#5c564c"/>
+        <text x="822" y="125" text-anchor="middle" font-size="16" fill="#1b1b18">Student</text>
+        <text x="822" y="145" text-anchor="middle" font-size="12" fill="#5c564c">personalized</text>
+        <text x="822" y="162" text-anchor="middle" font-size="12" fill="#5c564c">mentorship</text>
+
+        <line x1="195" y1="70" x2="255" y2="110" stroke="#1b1b18" stroke-width="2"/>
+        <line x1="195" y1="190" x2="255" y2="150" stroke="#1b1b18" stroke-width="2"/>
+        <line x1="450" y1="130" x2="510" y2="130" stroke="#1b1b18" stroke-width="2"/>
+        <line x1="685" y1="130" x2="745" y2="130" stroke="#1b1b18" stroke-width="2"/>
+
+        <text x="460" y="275" text-anchor="middle" font-size="14" fill="#5c564c">Kids’ names stay at the desk. We don’t build a login for children.</text>
+      </svg>
+    </section>
+
+    <section>
+      <h2>A normal day with it</h2>
+      <div class="grid3">
+        <div class="card">
+          <h3>Before school</h3>
+          <p>A quick lookup. Three good options that are on the shelf. No long training. Just enough to help the next child in line.</p>
+        </div>
+        <div class="card">
+          <h3>Between classes</h3>
+          <p>A few minutes, a few kids. The librarian still has the conversation. The tool just means they aren’t guessing from sticky notes alone.</p>
+        </div>
+        <div class="card">
+          <h3>Friday rush</h3>
+          <p>If a popular book is checked out, it isn’t offered as something to recommend out loud. We don’t send a child hunting for an empty shelf.</p>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:1.1rem;">A fourth grader who loves graphic stories walks up. The desk shows a few next titles that are in. The librarian says, “Try this one,” and the child leaves with a book in hand.</p>
+    </section>
+
+    <section>
+      <h2>How we’d bring it in</h2>
+      <p class="lede">Carefully, with librarians at the table from day one.</p>
+      <table>
+        <tr><th>When</th><th>What we’d do</th></tr>
+        <tr><td>First 1–2 weeks</td><td>Sit with librarians and privacy/IT. Look at the real catalog and borrow files. Agree what stays private. Watch the desk for a morning.</td></tr>
+        <tr><td>Next 3–4 weeks</td><td>Connect those files to a simple desk screen. Practice the before-school and Friday paths. Keep any auto-written talking points off until privacy says yes.</td></tr>
+        <tr><td>1–2 weeks after that</td><td>Train with the people who will actually use it. Rehearse what happens if a helper feature is down — book lists still work.</td></tr>
+        <tr><td>About 6–8 weeks</td><td>Try it in one school or grade band. Watch whether staff use it, whether it slows them down, and whether kids leave with books they want to read.</td></tr>
+      </table>
+      <p class="note">All told, plan on about <strong>11 to 16 weeks</strong> for a first school pilot. School calendars and approvals can stretch that. This is a planning range, not a hard bid.</p>
+    </section>
+
+    <section>
+      <h2>Who keeps it going</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>In the district</h3>
+          <ul>
+            <li>Library lead decides what “a good recommendation” means</li>
+            <li>IT handles access, file loads, and where it runs</li>
+            <li>Privacy lead decides what can leave the building</li>
+            <li>Principals protect a little librarian time to use it well</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>On our side</h3>
+          <ul>
+            <li>Fix problems quickly</li>
+            <li>Leave a clear how-to guide</li>
+            <li>Make sure the desk still works if optional extras are turned off</li>
+            <li>Report honestly — including when something isn’t working</li>
+          </ul>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:1rem;">After the pilot, the district decides: keep it, change it, or stop. If it doesn’t help at the desk, we shouldn’t keep it.</p>
+    </section>
+
+    <section>
+      <h2>Time and cost of attention</h2>
+      <table>
+        <tr><th>Piece</th><th>About how long</th></tr>
+        <tr><td>Listening, privacy, and co-design with librarians</td><td>1–2 weeks</td></tr>
+        <tr><td>Building and connecting to catalog + borrow history</td><td>3–4 weeks</td></tr>
+        <tr><td>Practice and onboarding at the desk</td><td>1–2 weeks</td></tr>
+        <tr><td>Measured pilot in one school / grade band</td><td>6–8 weeks</td></tr>
+        <tr><td><strong>First lighthouse, end to end</strong></td><td><strong>~11–16 weeks</strong></td></tr>
+      </table>
+      <p class="lede" style="margin-top:1rem;">We already have a working desk demo for anyone who wants to see how it hangs together. That demo doesn’t prove reading will jump overnight. Checking a book out isn’t the same as finishing it — we’ll be honest about what we measure.</p>
+      <p class="note">Hosting and any paid helper services need real volume numbers later. Grades and counselor systems are a separate conversation, with separate approvals.</p>
+    </section>
+
+    <section>
+      <h2>What I’m asking</h2>
+      <p class="ask">Please choose this as our pro-bono project this year.</p>
+      <p class="lede">If you do, the next step is a week with the librarians: walk their mornings, agree on privacy, and look at their real files before we promise anything tighter.</p>
+      <ul>
+        <li>We will not put this in a child’s hands as an app.</li>
+        <li>We will not try to replace the library system they already use.</li>
+        <li>We will not claim miracle reading gains from a short demo.</li>
+      </ul>
+      <p class="lede" style="margin-top:1rem;">We want more kids to hear “I think you’ll like this one” — and walk out with a book that’s actually on the shelf.</p>
+    </section>
+
+  </div>
+</body>
+</html>

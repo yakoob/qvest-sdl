@@ -3,247 +3,251 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ShelfMate — librarian-in-the-loop PoC</title>
+  <title>ShelfMate — technical architecture</title>
   <style>
-    :root { --ink:#1b1b18; --muted:#5c564c; --line:#d4cbb8; --paper:#f7f2e8; --card:#fffdf8; --accent:#2f5d50; }
+    :root { --ink:#1b1b18; --muted:#5c564c; --line:#d4cbb8; --paper:#f7f2e8; --card:#fffdf8; --accent:#2f5d50; --warm:#8a3b2d; }
     * { box-sizing: border-box; }
-    body { margin: 0; font: 20px/1.4 "Iowan Old Style", Palatino, serif; color: var(--ink); background: var(--paper); }
+    body { margin: 0; font: 19px/1.45 "Iowan Old Style", Palatino, "Palatino Linotype", serif; color: var(--ink); background: var(--paper); }
     .deck { max-width: 980px; margin: 0 auto; padding: 1.5rem; }
     section { background: var(--card); border: 1px solid var(--line); padding: 2rem 2.2rem; margin: 0 0 1.2rem; min-height: 70vh; page-break-after: always; }
     h1, h2 { margin: 0 0 0.6rem; letter-spacing: 0.01em; }
-    h1 { font-size: 2.1rem; }
-    h2 { font-size: 1.6rem; }
+    h1 { font-size: 2rem; line-height: 1.15; }
+    h2 { font-size: 1.55rem; }
+    h3 { margin: 0.8rem 0 0.35rem; font-size: 1.05rem; color: var(--accent); }
     p, li { color: var(--ink); }
-    .kicker { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.8rem; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+    li { margin: 0.28rem 0; }
+    .kicker { color: var(--muted); font-size: 0.92rem; margin: 0 0 0.8rem; }
+    .lede { font-size: 1.05rem; max-width: 42rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.9rem; }
+    .card { border: 1px solid var(--line); background: #fff; padding: 0.9rem 1rem; }
+    .card p, .card li { margin: 0; font-size: 0.92rem; }
+    .note { color: var(--muted); font-size: 0.88rem; margin-top: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin-top: 0.6rem; }
     th, td { border-top: 1px solid var(--line); text-align: left; padding: 0.35rem 0.4rem; vertical-align: top; }
     th { color: var(--muted); font-weight: 600; }
-    .note { color: var(--muted); font-size: 0.9rem; }
-    svg { width: 100%; height: auto; background: #fff; border: 1px solid var(--line); }
-    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
-    .small { font-size: 0.92rem; }
-    @media print { section { min-height: auto; border: 0; } body { background: #fff; } }
-    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } .deck { padding: .75rem; } section { padding: 1rem; } table { table-layout: fixed; overflow-wrap: anywhere; } code { overflow-wrap: anywhere; } }
+    svg { width: 100%; height: auto; background: #fff; border: 1px solid var(--line); margin-top: 0.7rem; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.88em; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 0.88rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #fff; border: 1px solid var(--line); padding: 0.85rem 1rem; margin: 0.7rem 0 0; }
+    a { color: var(--accent); }
+    .pill { display: inline-block; border: 1px solid var(--accent); color: var(--accent); padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.85rem; text-decoration: none; margin: 0.15rem 0.25rem 0.15rem 0; }
+    .pill:hover { background: #eef6f2; }
+    @media print { section { min-height: auto; border: 0; } body { background: #fff; } a { color: inherit; text-decoration: underline; } }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+      .deck { padding: .75rem; }
+      section { padding: 1rem; min-height: auto; }
+    }
   </style>
 </head>
 <body>
   <div class="deck">
+
     <section>
-      <p class="kicker">Sony EIP-style hiring PoC · fictional Willow Bend / Maple Street · not a district bid</p>
-      <h1>ShelfMate is a desk tool, not a kid app</h1>
-      <p>Elena already recommends the next book in 20 seconds. This binary makes her sticky-note notebook queryable: closed catalog, copies on the shelf, human still speaks.</p>
-      <ul>
-        <li>Librarian-in-the-loop. No student login, no public feed.</li>
-        <li>Retrieve first. Optional talking points last. Kill the model: recs unchanged.</li>
-        <li>This deck is the PoC. A lighthouse rollout would be a later engagement, with privacy-officer yes in week 0.</li>
-      </ul>
-      <p class="note">Fictional children. Metrics below are from this extract’s CLI runs, not production telemetry.</p>
+      <p class="kicker">Technical architecture · partner review · companion to <a href="deck-partners.html">deck-partners.html</a> (non-tech)</p>
+      <h1>ShelfMate: retrieve → policy → optional explain → human approve</h1>
+      <p class="lede">Librarian-in-the-loop next-book assistant. Single Go binary. Closed-world catalog. LLM off by default and downstream of ranking. Not a student app.</p>
+      <p style="margin-top:1rem;">
+        <a class="pill" href="http://127.0.0.1:4400/">Open Graft map → http://127.0.0.1:4400/</a>
+        <a class="pill" href="architecture.md">architecture.md</a>
+        <a class="pill" href="privacy.md">privacy.md</a>
+        <a class="pill" href="pilot-proposal.md">pilot-proposal.md</a>
+      </p>
+      <p class="note">Graft is the live system/code graph for this repo (Context + Code views). Use it while reviewing this deck: hybrid-retrieval, closed-world-catalog-grounding, llm-never-changes-ranking, privacy-minimized-payloads, in-memory-session-service.</p>
     </section>
 
     <section>
-      <h2>The job is three real windows</h2>
-      <table>
-        <tr><th>Who</th><th>When</th><th>If this fails, the PoC fails</th></tr>
-        <tr><td>Tom L-002</td><td>07:40–08:15 and lunch</td><td>Lookup without a training class</td></tr>
-        <tr><td>Elena L-001</td><td>Last 8 minutes of specials</td><td>4–5 kids, 3-minute talks</td></tr>
-        <tr><td>Elena</td><td>Friday 14:20 weekend rush</td><td>Availability wins over a better-on-paper title</td></tr>
-      </table>
-      <p>Not: kids open Netflix-for-books. Not: the model talks to a child.</p>
-    </section>
-
-    <section>
-      <h2>Scale trusted conversations, not replace them</h2>
-      <p>Needs attention → Schedule → Conversation → Choose together → Checkout → Follow up → Outcomes.</p>
-      <p>The local console now connects an internal appointment or walk-in to offered books, an explicit choice, an atomic loan link, and book-specific feedback. The existing student workspace stays intact.</p>
-      <pre class="small" aria-label="Librarian journey diagram">Attention queue → Internal appointment → Conversation
-                                           ↓
-                            Available candidates → Student choice
-                                                        ↓
-Activity + reported outcomes ← Book feedback ← Linked checkout</pre>
-      <p class="note">Choosing does not reserve copies. Checkout revalidates inventory. Only an explicit action completes the conversation; borrowing is not finishing or enjoyment.</p>
-    </section>
-
-    <section>
-      <h2>Linked evidence and an honest stopping point</h2>
-      <pre class="small" aria-label="Engagement architecture diagram">Catalog + circulation → Retrieve → Policy → Optional explanation
-                                        ↓
-Calendar → Session coordinator → Offer → Choice → Loan
-                  ↓                (one inventory/link transaction)
-          Completed interaction → Structured feedback
-                  ↓
-          Pure metrics → Counts + supporting tables</pre>
-      <ul>
-        <li>Built: My day, available-slot booking and rescheduling, reserved follow-up conversations, linked checkouts, structured book feedback, and session activity tables.</li>
-        <li>Outcomes → Student trends: borrowing totals, English-grade distributions and compatible reading observations roll up from the same student records, with source-labelled drill-downs.</li>
-        <li>Exact denominators: distinct students, completed conversations, mature 14-day choice conversion, known reading/enjoyment responses and due follow-up coverage.</li>
-        <li>Outcomes → Reading changes: descriptive served-cohort pairs from isolated fictional historical contacts, with sample sizes, exclusions and supporting observations—not a causal staff score.</li>
-        <li>Deferred: historical recommendation/feedback funnels, calendar notifications, production permissions and ILS writeback.</li>
-      </ul>
-      <p class="note">A new conversation has no months-later outcomes. Pending observation windows and missing responses remain visible. Existing academic scenarios are isolated illustrations, not evidence of staff effectiveness.</p>
+      <h2>Thesis (non-negotiable)</h2>
+      <ol>
+        <li><strong>Human in the loop.</strong> Librarian speaks. No student login, no public feed.</li>
+        <li><strong>Retrieve first.</strong> Item-item CF from circulation + catalog TF-IDF. Every recommended <code>book_id</code> ∈ <code>catalog.json</code>.</li>
+        <li><strong>LLM last and optional.</strong> Talking points only. Invented IDs dropped. Kill switch: ranking unchanged.</li>
+        <li><strong>Availability is a feature.</strong> <code>copies_available == 0</code> is never a spoken rec (fixture: B-008 The Bad Guys).</li>
+        <li><strong>Privacy first.</strong> Model payloads: <code>student_id</code> + candidate metadata. Names stay on the desk.</li>
+        <li><strong>Handoff, not slideware.</strong> Binary + JSON contract + eval goldens + Graft map.</li>
+      </ol>
+      <p class="note">Product goal for the firm: scale librarian impact without scaling headcount, while reducing desk workload. Architecture must make that believable under review.</p>
     </section>
 
     <section>
       <h2>System context</h2>
-      <svg viewBox="0 0 900 420" role="img" aria-label="System context: desk laptop, ILS extract, retrieve, policy, optional model, audit">
+      <svg viewBox="0 0 900 420" role="img" aria-label="System context: librarian console, shelfmate binary, ILS extract, audit, optional Axon">
         <rect x="20" y="160" width="160" height="90" fill="#eef6f2" stroke="#2f5d50"/>
         <text x="100" y="195" text-anchor="middle" font-size="16">Librarian desk</text>
-        <text x="100" y="218" text-anchor="middle" font-size="13">localhost console</text>
-        <rect x="240" y="160" width="170" height="90" fill="#fff" stroke="#2f5d50"/>
-        <text x="325" y="195" text-anchor="middle" font-size="16">shelfmate binary</text>
-        <text x="325" y="218" text-anchor="middle" font-size="13">retrieve + policy</text>
-        <rect x="480" y="40" width="180" height="90" fill="#fff" stroke="#5c564c"/>
-        <text x="570" y="75" text-anchor="middle" font-size="16">ILS extract</text>
-        <text x="570" y="98" text-anchor="middle" font-size="13">data/json (frozen)</text>
-        <rect x="480" y="250" width="180" height="90" fill="#fff" stroke="#5c564c"/>
-        <text x="570" y="285" text-anchor="middle" font-size="16">Audit JSONL</text>
-        <text x="570" y="308" text-anchor="middle" font-size="13">opaque IDs only</text>
-        <rect x="710" y="160" width="170" height="90" fill="#f7eee8" stroke="#8a3b2d"/>
-        <text x="795" y="195" text-anchor="middle" font-size="16">Optional Axon</text>
-        <text x="795" y="218" text-anchor="middle" font-size="13">talking points</text>
-        <line x1="180" y1="205" x2="240" y2="205" stroke="#1b1b18" marker-end="url(#a)"/>
-        <line x1="410" y1="185" x2="480" y2="85" stroke="#1b1b18"/>
-        <line x1="410" y1="225" x2="480" y2="295" stroke="#1b1b18"/>
-        <line x1="580" y1="205" x2="710" y2="205" stroke="#8a3b2d" stroke-dasharray="6 4"/>
+        <text x="100" y="218" text-anchor="middle" font-size="13">web/ · localhost</text>
+        <rect x="240" y="145" width="190" height="120" fill="#fff" stroke="#2f5d50"/>
+        <text x="335" y="175" text-anchor="middle" font-size="16">shelfmate binary</text>
+        <text x="335" y="198" text-anchor="middle" font-size="13">retrieve · policy</text>
+        <text x="335" y="218" text-anchor="middle" font-size="13">session · httpapi</text>
+        <text x="335" y="238" text-anchor="middle" font-size="13">explain · audit</text>
+        <rect x="490" y="40" width="180" height="90" fill="#fff" stroke="#5c564c"/>
+        <text x="580" y="75" text-anchor="middle" font-size="16">ILS extract</text>
+        <text x="580" y="98" text-anchor="middle" font-size="13">data/json (frozen)</text>
+        <rect x="490" y="250" width="180" height="90" fill="#fff" stroke="#5c564c"/>
+        <text x="580" y="285" text-anchor="middle" font-size="16">Audit JSONL</text>
+        <text x="580" y="308" text-anchor="middle" font-size="13">opaque IDs only</text>
+        <rect x="720" y="160" width="160" height="90" fill="#f7eee8" stroke="#8a3b2d"/>
+        <text x="800" y="195" text-anchor="middle" font-size="16">Optional Axon</text>
+        <text x="800" y="218" text-anchor="middle" font-size="13">talking points</text>
+        <line x1="180" y1="205" x2="240" y2="205" stroke="#1b1b18" stroke-width="2"/>
+        <line x1="430" y1="175" x2="490" y2="85" stroke="#1b1b18"/>
+        <line x1="430" y1="235" x2="490" y2="295" stroke="#1b1b18"/>
+        <line x1="580" y1="205" x2="720" y2="205" stroke="#8a3b2d" stroke-dasharray="6 4"/>
         <text x="640" y="195" font-size="12" fill="#8a3b2d">off by default</text>
-        <text x="40" y="390" font-size="14">Kids never see this. Elena speaks. District data stays on the desk unless a privacy officer later says otherwise.</text>
+        <text x="40" y="390" font-size="14">Kids never see this. Restart clears process-local demo state; frozen extract reloads.</text>
       </svg>
+      <p class="note">Live map: <a href="http://127.0.0.1:4400/">Graft</a> → nodes <span class="mono">shelfmate-process-bootstrap</span>, <span class="mono">http-json-api</span>, <span class="mono">canonical-json-store</span>, <span class="mono">sanitized-audit-log</span>.</p>
+    </section>
+
+    <section>
+      <h2>Package layout</h2>
+<pre>cmd/shelfmate          recommend | serve | eval
+internal/
+  store                load data/json once
+  retrieve             Hybrid: CF + TF-IDF (in-process index)
+  policy               catalog-closed, copies&gt;0, grade, already-read, page cap
+  explain              TemplateExplainer default; optional Axon
+  engine               snapshot orchestration; LLM cannot reorder
+  session              process-local inventory + engagement coordinator
+  httpapi              JSON API, same-origin mutation guard
+  audit                JSONL, opaque IDs, no raw query
+  metrics              pure projections (session / portfolio / paired)
+  academics            synthetic fixtures; isolated from retrieve
+  domain               Book, Student, Recommendation contracts
+web/                   librarian console (SPA modules)
+graft/                 system + code graph (served at :4400)
+testdata/golden        demo invariants (Mateo, Aisha, Priya, Olivia)</pre>
+      <p class="note">Explore call edges in Graft Code view (<a href="http://127.0.0.1:4400/">http://127.0.0.1:4400/</a>) — ~663 nodes / 1312 links in the current map.</p>
     </section>
 
     <section>
       <h2>Request sequence</h2>
-      <svg viewBox="0 0 900 360" role="img" aria-label="Request sequence from lookup to spoken rec">
-        <text x="30" y="40" font-size="16">1 Lookup student</text>
-        <text x="30" y="90" font-size="16">2 Hybrid retrieve (CF if history≥2, else content; query vector separate)</text>
-        <text x="30" y="140" font-size="16">3 Policy: in catalog, copies&gt;0, grade/stretch, never re-loan, page cap</text>
-        <text x="30" y="190" font-size="16">4 Template talking points (or Axon drafts keyed by book_id)</text>
-        <text x="30" y="240" font-size="16">5 Audit append · librarian copies drafts · child hears Elena, not a model</text>
-        <text x="30" y="280" font-size="16">6 Optional demo checkout in this process — confirmation, loans, shelf count</text>
-        <text x="30" y="330" font-size="14">B-008 The Bad Guys may appear only as copies_available=0. It is never a spoken rec.</text>
-      </svg>
+      <ol>
+        <li>Lookup student on desk console.</li>
+        <li><code>Hybrid.Recommend</code> — item-item cosine (weight 0.55 when history ≥ 2) + TF-IDF content (0.45, or 1.0 if sparse). Query vector ≠ history vector. Cluster/series bonus additive.</li>
+        <li>Zero history / no query hit → unique-borrower popularity, <code>book_id</code> tie-break, labeled fallback.</li>
+        <li><code>policy.Filter</code> — unknown IDs out; <code>copies_available == 0</code> out; grade/stretch band; never re-loan; <code>under 150</code> = &lt;150 pages.</li>
+        <li>Explainer drafts talking points for already-ranked IDs. Ranking frozen.</li>
+        <li>Audit append (opaque IDs, dropped reasons, explain mode). Write errors surface.</li>
+        <li>Optional demo checkout under session lock; recommendation runs on immutable snapshot outside the writer lock.</li>
+      </ol>
+      <p class="note">Graft: <span class="mono">hybrid-retrieval</span>, <span class="mono">recommendation-policy-filter</span>, <span class="mono">recommendation-engine</span>, <span class="mono">llm-never-changes-ranking</span>.</p>
     </section>
 
     <section>
-      <h2>District / model data boundary</h2>
-      <svg viewBox="0 0 900 340" role="img" aria-label="What stays in the district versus optional model payload">
-        <rect x="20" y="40" width="420" height="260" fill="#eef6f2" stroke="#2f5d50"/>
-        <text x="40" y="70" font-size="18">Stays on the desk</text>
-        <text x="40" y="105" font-size="15">First name + last initial</text>
-        <text x="40" y="130" font-size="15">Anecdotes, raw NL query</text>
-        <text x="40" y="155" font-size="15">Blurbs (one fixture names Priya)</text>
-        <text x="40" y="180" font-size="15">Full student record / lexile</text>
-        <text x="40" y="205" font-size="15">Credentials, model request bodies</text>
-        <text x="40" y="230" font-size="15">Synthetic academics (desk only)</text>
-        <rect x="460" y="40" width="420" height="260" fill="#f7eee8" stroke="#8a3b2d"/>
-        <text x="480" y="70" font-size="18">If LLM is on (optional)</text>
-        <text x="480" y="105" font-size="15">student_id only</text>
-        <text x="480" y="130" font-size="15">Candidate book_id + catalog fields</text>
-        <text x="480" y="155" font-size="15">Retrieve reasons, stretch / page flags</text>
-        <text x="480" y="180" font-size="15">No names, no raw query, no blurbs</text>
-        <text x="480" y="230" font-size="14">ID check ≠ factuality. Drafts, librarian-reviewed.</text>
-      </svg>
-    </section>
-
-    <section>
-      <h2>Hybrid retrieve — what we chose and what we did not</h2>
+      <h2>Why hybrid — and what we rejected</h2>
       <table>
-        <tr><th>Signal</th><th>When</th><th>Honesty rule</th></tr>
-        <tr><td>Item-item cosine</td><td>History ≥ 2 unique titles</td><td>Do not claim CF when its weight is 0</td></tr>
-        <tr><td>Catalog TF-IDF</td><td>Always; 1.0 on sparse history</td><td>Query vector ≠ history vector</td></tr>
-        <tr><td>Cluster / series bonus</td><td>Additive</td><td>Say “same series”, never “next” without sequence metadata</td></tr>
-        <tr><td>Popularity fallback</td><td>Zero history and no query hit</td><td>Unique borrowers, book_id tie-break, labeled fallback</td></tr>
+        <tr><th>Approach</th><th>Why not alone</th></tr>
+        <tr><td>Circulation CF only</td><td>Empty for Priya (1 checkout) and Olivia (0).</td></tr>
+        <tr><td>TF-IDF only</td><td>Misses Mateo’s graphic neighborhood that co-checkout cosine catches.</td></tr>
+        <tr><td>LLM as generator</td><td>Invented titles, no shelf truth, FERPA surface area.</td></tr>
+        <tr><td><strong>Hybrid → policy → optional talk</strong></td><td>Closed catalog, availability as a feature, model killable.</td></tr>
       </table>
-      <p class="note">Alternatives rejected for v1: CF-only (Priya/Olivia empty), LLM-as-generator (invented titles), student-specific ranking rules (frozen extract, no per-id hacks).</p>
-    </section>
-
-    <section>
-      <h2>Four demo students — actual CLI this build</h2>
-      <table>
-        <tr><th>Student</th><th>Spoken top (this run)</th><th>What to point at</th></tr>
-        <tr><td>Mateo S-406</td><td>Cat Kid (B-007), Gravity in Pictures, Who Was Jackie Robinson, New Kid, Mr. Popper’s Penguins</td><td>B-008 dropped copies=0. Investigators already checked out.</td></tr>
-        <tr><td>Aisha S-402 default and stretch</td><td>Harry Potter, Endling, Gregor, Amari, Mixed-Up Files — same five either way</td><td>Gregor/Amari/Endling already grade-eligible at 4. Stretch does not fabricate a new list. Westing Game excluded without stretch.</td></tr>
-        <tr><td>Priya S-405 + under-150 query</td><td>Encyclopedia Brown 96p, I Survived 112p, Gravity 64p, Jackie Robinson 112p, Soccer Sunday 128p</td><td>CF weight 0 (one checkout). under 150 means &lt;150, not the looser “short” cap.</td></tr>
-        <tr><td>Olivia S-509</td><td>Dog Man, Wild Robot, Mr. Popper’s (7 unique borrowers), Cat Kid, Gravity (6)</td><td>Labeled popularity fallback. Honest cold start.</td></tr>
-      </table>
-    </section>
-
-    <section>
-      <h2>Bounded LLM — optional drafts</h2>
+      <h3>Hard policy</h3>
       <ul>
-        <li>Default: TemplateExplainer. No “funny enough to finish.”</li>
-        <li>On: OpenAI-compatible POST to $LLM_BASE/v1/chat/completions. Timeout, size cap, book_id keys.</li>
-        <li>Invented IDs dropped. Missing items filled from template. Ranking and scores unchanged (mock success and mock failure in tests).</li>
-        <li>Live Axon was not called from this worktree. Offline demo does not depend on it.</li>
+        <li>Recommend only <code>book_id</code> present in store (re-read membership; do not trust candidate structs).</li>
+        <li>Drop <code>copies_available == 0</code>.</li>
+        <li>Grade: <code>grade_min ≤ grade ≤ grade_max</code>; stretch: <code>grade_min ≤ grade+1</code> and <code>grade_max ≥ grade</code>.</li>
+        <li>Conservative: never re-recommend any previously borrowed title.</li>
       </ul>
-      <p>Failure demo: set SHELFMATE_LLM=on with no LLM_BASE, or stop the router. Console shows explain_mode=fallback. Recs identical.</p>
     </section>
 
     <section>
-      <h2>Eval — what it proves and what it does not</h2>
-      <p>Executable goldens in testdata/golden/cases.json (notes field; no show field). <code>go test ./...</code>, race, and vet passed on this worktree.</p>
-      <ul>
-        <li>Proves: closed catalog, B-008 never spoken, Mateo includes Cat Kid, Priya page cap, Olivia returns ≥3, payload has no first names.</li>
-        <li>Does not prove: more reading, better grades, FERPA certification, or that checkout equals reading.</li>
-      </ul>
-      <p class="note">Checkout is not completion or enjoyment. Session Outcomes now reports explicitly linked choice-to-checkout conversion within 14 days, using only choices with a full observation window; new choices remain pending. Synthetic grades are not caused by a title.</p>
-    </section>
-
-    <section>
-      <h2>Privacy controls vs later production work</h2>
+      <h2>LLM boundary</h2>
       <div class="grid">
-        <div>
-          <h3 class="small">Implemented now</h3>
-          <ul class="small">
-            <li>No last names / DOB in extract</li>
-            <li>Model payload allowlist + tests</li>
-            <li>Audit without raw query or names</li>
-            <li>Localhost bind</li>
-            <li>LLM off by default</li>
+        <div class="card">
+          <h3>Stays on the desk</h3>
+          <ul>
+            <li>First name + last initial</li>
+            <li>Raw NL query / anecdotes</li>
+            <li>Blurbs (fixture risk)</li>
+            <li>Full student record / lexile</li>
+            <li>Synthetic academics</li>
+            <li>Credentials / model bodies</li>
           </ul>
         </div>
-        <div>
-          <h3 class="small">Not this PoC</h3>
-          <ul class="small">
-            <li>Staff SSO</li>
-            <li>Destiny nightly export</li>
-            <li>Written privacy-officer approval</li>
-            <li>Retention/deletion of audit files</li>
-            <li>Network egress policy</li>
+        <div class="card">
+          <h3>If LLM is on (optional)</h3>
+          <ul>
+            <li><code>student_id</code> only</li>
+            <li>Candidate <code>book_id</code> + catalog fields</li>
+            <li>Retrieve reasons, stretch / page flags</li>
+            <li>Allowlisted themes only</li>
+            <li>No names, no raw query, no blurbs</li>
+            <li>Unknown emitted IDs dropped</li>
           </ul>
         </div>
       </div>
+      <p class="lede" style="margin-top:0.9rem;"><code>SHELFMATE_LLM=off</code> (default) → TemplateExplainer. On → Anthropic Messages or OpenAI-compatible chat completions. Timeout + size cap. Success or failure: scores unchanged (proven in <code>internal/engine</code> mocks).</p>
+      <p class="note">Graft: <span class="mono">privacy-minimized-payloads</span>, <span class="mono">explain-plane</span>, <span class="mono">llm-never-changes-ranking</span>. Tests: <code>TestPayloadPrivacy</code>.</p>
     </section>
 
     <section>
-      <h2>If this became a lighthouse — estimates, not a bid</h2>
-      <table>
-        <tr><th>Slice</th><th>Time</th><th>Assumptions</th></tr>
-        <tr><td>Retrieve + policy + eval (this skeleton)</td><td>3–5 days</td><td>Frozen 45-title extract; one engineer who already has the JSON</td></tr>
-        <tr><td>Librarian console</td><td>2–3 days</td><td>Tom 20s path; no SSO</td></tr>
-        <tr><td>Grounded LLM + audit</td><td>2–3 days</td><td>District endpoint; kill switch remains</td></tr>
-        <tr><td>Destiny export + redaction</td><td>~1 week with a media specialist</td><td>Same columns; not in this binary</td></tr>
-        <tr><td>12-week lighthouse</td><td>see engagement_schedule.json</td><td>Elena hours are the constraint; LLM off until written yes</td></tr>
-      </table>
-      <p class="note">PoC estimates above are engineering effort, not district elapsed time. A bounded district engagement is approximately 11–16 elapsed weeks: discovery/co-design 1–2, integration 3–4, onboarding 1–2, measured pilot 6–8. Assumes two engineers, fractional UX/delivery, district IT/privacy availability and protected librarian time. Re-estimate after export discovery. Library lead owns reading policy; IT owns access/imports/hosting; privacy lead owns retention/egress; a named engineering team owns defects and support. Academic connectors are separately scoped. See pilot-proposal.md.</p>
-    </section>
-
-    <section>
-      <h2>Adoption, support, approval gates</h2>
+      <h2>Session, engagement, metrics</h2>
       <ul>
-        <li>Adoption: Elena and Tom on the Maple Street desk. Teachers do not get a student-facing link.</li>
-        <li>Support: local binary + JSON extract. When the model is down, retrieve still works.</li>
-        <li>Gates: (1) privacy officer written yes before LLM on, (2) catalog-closed eval green, (3) Bad Guys fixture never spoken, (4) no student UI.</li>
+        <li><strong>Process-local <code>session.Service</code></strong> — clone-on-write books + circulation; monotonic inventory revision; restart = reset.</li>
+        <li><strong>Engagement coordinator</strong> — appointments, conversations, choices, linked checkout (atomic with inventory), structured book feedback; separate engagement revision + RetryID receipts.</li>
+        <li><strong>Calendar</strong> — district timezone, school-year bounds, DST-safe whole-minute slots; shared <code>web/slots.js</code> + server validation.</li>
+        <li><strong>Outcomes</strong> — Our work (live session) ≠ Student trends (portfolio) ≠ Reading changes (historical paired fixture). Descriptive, not causal staff scores.</li>
+        <li><strong>Academics scenarios</strong> — isolated from retrieve, ranking, support bands, explainer payloads, and audit.</li>
       </ul>
-      <p>Out of scope: student accounts, full-text generation, Battle of the Books training, replacing Destiny, patent claims from unrelated work.</p>
+      <p class="note">Graft: <span class="mono">in-memory-session-service</span>, <span class="mono">engagement-session-calendar-and-http</span>, <span class="mono">historical-vs-live-session-isolation</span>, <span class="mono">descriptive-evidence-not-causal-attribution</span>, <span class="mono">observational-metrics-invariants</span>.</p>
     </section>
 
     <section>
-      <h2>How to run it</h2>
-      <p><code>go test ./...</code></p>
-      <p><code>go run ./cmd/shelfmate serve</code> → http://127.0.0.1:8088</p>
-      <p>Docs: runbook.md, demo-script.md, architecture.md, privacy.md. LLM stays off unless you set SHELFMATE_LLM=on and LLM_BASE.</p>
-      <p class="note">PoC version 0.1.0-poc. This is a demonstration of retrieve, policy, audit, and human approve — not a claim that the district should buy it tomorrow.</p>
+      <h2>Eval — what green means</h2>
+      <p><code>go test ./internal/eval ./internal/retrieve ./internal/policy ./internal/explain</code> (and <code>go test ./...</code> for full suite).</p>
+      <ul>
+        <li>Closed catalog: every rec id ∈ catalog</li>
+        <li>Mateo top-5 includes Cat Kid (B-007) or Investigators path; B-008 never spoken</li>
+        <li>Priya page-cap + sparse-history path; Olivia returns ≥3 labeled fallback</li>
+        <li>Model payload has no first names</li>
+        <li>LLM mock success and mock failure leave ranking identical</li>
+      </ul>
+      <p class="lede">Does <strong>not</strong> prove: more reading, better grades, FERPA certification, or that checkout equals enjoyment.</p>
+      <p class="note">Graft: <span class="mono">golden-eval-and-fixture-invariance</span>, <span class="mono">closed-world-catalog-grounding</span>. Goldens: <code>testdata/golden/cases.json</code>.</p>
     </section>
+
+    <section>
+      <h2>Production boundary</h2>
+      <table>
+        <tr><th>Local PoC (now)</th><th>District pilot (gated)</th></tr>
+        <tr><td>JSON extract + process memory</td><td>Approved exports + retention</td></tr>
+        <tr><td>Staff attribution selector</td><td>SSO + role permissions</td></tr>
+        <tr><td>Internal appointment book</td><td>Validated staff calendar</td></tr>
+        <tr><td>Demo checkout</td><td>ILS integration or read-only export</td></tr>
+        <tr><td>Template explain / optional Axon</td><td>Written privacy yes before egress</td></tr>
+        <tr><td>Localhost bind</td><td>Egress policy, monitoring, named support</td></tr>
+      </table>
+      <p class="note">Staff selector ≠ authorization. Academic curves ≠ proof conversations caused improvement. See <a href="privacy.md">privacy.md</a> and <a href="pilot-proposal.md">pilot-proposal.md</a>.</p>
+    </section>
+
+    <section>
+      <h2>Estimates (engineering)</h2>
+      <table>
+        <tr><th>Slice</th><th>Time</th><th>Notes</th></tr>
+        <tr><td>Retrieve + policy + eval skeleton</td><td>3–5 eng-days</td><td>Frozen extract; already largely done in this PoC</td></tr>
+        <tr><td>Librarian console</td><td>2–3 eng-days</td><td>Tom 20s path; no SSO</td></tr>
+        <tr><td>Grounded LLM + audit</td><td>2–3 eng-days</td><td>Kill switch remains</td></tr>
+        <tr><td>Destiny export + redaction</td><td>~1 week w/ media specialist</td><td>Same columns; not in this binary</td></tr>
+        <tr><td>District lighthouse elapsed</td><td>~11–16 weeks</td><td>Discovery 1–2 · build 3–4 · onboard 1–2 · pilot 6–8</td></tr>
+      </table>
+      <p class="note">PoC effort ≠ district calendar. Elena hours constrain the pilot. Re-estimate after export discovery.</p>
+    </section>
+
+    <section>
+      <h2>How to review this architecture</h2>
+      <ol>
+        <li>Open Graft: <a href="http://127.0.0.1:4400/"><strong>http://127.0.0.1:4400/</strong></a> — Context for invariants, Code for call graph.</li>
+        <li>Run <code>go test ./...</code> and <code>go run ./cmd/shelfmate serve</code> → <code>http://127.0.0.1:8088</code>.</li>
+        <li>Trace one recommend: <span class="mono">retrieve.Hybrid</span> → <span class="mono">policy.Filter</span> → <span class="mono">explain</span> → <span class="mono">audit</span>.</li>
+        <li>Confirm LLM kill path and payload allowlist tests.</li>
+        <li>Partner / change narrative: <a href="deck-partners.html">deck-partners.html</a>.</li>
+      </ol>
+      <p class="lede" style="margin-top:1rem;">Approval gate for technical partners: closed world, availability policy, optional model that cannot invent titles or reorder scores, auditable desk path, honest metrics boundary.</p>
+      <p class="note">PoC <code>0.1.0-poc</code>. Demonstration of retrieve, policy, audit, and human approve — not a claim the district should buy tomorrow.</p>
+    </section>
+
   </div>
 </body>
 </html>

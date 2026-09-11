@@ -734,9 +734,10 @@ function renderSupport(data) {
   const labels = { check_in: "Check-in recorded", enjoyed: "Student reported enjoyment", try_another: "Student requested another option" };
   document.getElementById("support-body").replaceChildren(
     el("div", { class: "support-summary" }, [
-      el("strong", { class: `support-band band-${result.band}`, text: result.label }),
+      el("strong", { class: `support-band band-${result.grade_status || result.band}`, text: result.grade_status_label || result.label }),
       el("span", { text: result.coverage }),
     ]),
+    result.english || result.reading ? el("p", { text: [result.english ? `English ${result.english}` : null, result.reading ? `Reading ${result.reading}` : null].filter(Boolean).join(" · ") }) : null,
     el("p", { class: "hint", text: `${result.disclaimer} Evidence reviewed as of ${result.config.as_of} · ${result.config.id}.` }),
     el("details", { class: "support-evidence" }, [
       el("summary", { text: "Why this band? See evidence and missing inputs" }),
@@ -747,6 +748,16 @@ function renderSupport(data) {
     ]),
     state.deskNote ? el("details", { class: "support-evidence" }, [el("summary", { text: "Existing librarian context" }), el("p", { text: state.deskNote })]) : null,
     el("p", { text: `Strengths & interests: ${(guidance.strengths || []).join(" · ") || "Ask the student what they enjoy."}` }),
+    data.below_grade && (data.classified_themes || []).length ? el("div", { class: "note-card" }, [
+      el("strong", { text: "Classified next-book cues" }),
+      el("p", { text: `Allowlisted catalog themes for a below-grade reader: ${(data.classified_themes || []).join(", ")}. Find available books uses these terms unless you type a different query. Raw notes stay on the desk.` }),
+      el("div", { class: "card-actions" }, (data.classified_themes || []).map(theme => buttonAction(`Find ${theme} books`, () => {
+        switchTab("books");
+        document.getElementById("theme").value = theme;
+        document.getElementById("find").scrollIntoView({ behavior: "smooth", block: "start" });
+        recommend();
+      }, true))),
+    ]) : null,
     el("div", { class: "guidance-grid" }, [...notes, ...shared]),
     !notes.length && !shared.length ? el("p", { class: "hint", text: "No shared teacher or counselor guidance in this demo file. This does not mean no concerns." }) : null,
     el("h3", { text: "Check back with the student" }),

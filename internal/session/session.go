@@ -8,10 +8,12 @@ import (
 	"sync"
 	"time"
 
+	"school_district_reading/internal/academics"
 	"school_district_reading/internal/domain"
 	"school_district_reading/internal/engagement"
 	"school_district_reading/internal/engine"
 	"school_district_reading/internal/store"
+	"school_district_reading/internal/support"
 )
 
 const (
@@ -121,6 +123,8 @@ type Service struct {
 	engagement      engagement.State
 	calendar        *engagement.Calendar
 	engagementRetry map[string]engagementReceipt
+	academics       *academics.Catalog
+	support         *support.Catalog
 }
 
 func New(eng *engine.Engine) *Service {
@@ -178,7 +182,49 @@ func (s *Service) Activity() []Activity {
 	return out
 }
 
+func (s *Service) SetDeskContext(acad *academics.Catalog, guidance *support.Catalog) {
+	if s == nil {
+		return
+	}
+	s.mu.Lock()
+	s.academics = acad
+	s.support = guidance
+	s.mu.Unlock()
+}
+
+func (s *Service) classifiedQuery(studentID, query string) string {
+	if s == nil {
+		return query
+	}
+	s.mu.Lock()
+	st, ok := s.snap.Engine.Store.Student(studentID)
+	rec := academics.Record{StudentID: studentID}
+	if s.academics != nil {
+		if v, found := s.academics.ByStudent[studentID]; found {
+			rec = v
+			rec.StudentID = studentID
+		}
+	}
+	guidance := support.Record{}
+	if s.support != nil {
+		guidance = s.support.ByStudent[studentID]
+	}
+	s.mu.Unlock()
+	if !ok {
+		return query
+	}
+	if strings.TrimSpace(query) != "" {
+		return query
+	}
+	extra, _, below := support.ClassifiedInterests(st, rec, guidance)
+	if !below || extra == "" {
+		return query
+	}
+	return extra
+}
+
 func (s *Service) Recommend(ctx context.Context, req domain.Request) (domain.Recommendation, int64, error) {
+	req.Query = s.classifiedQuery(req.StudentID, req.Query)
 	snap := s.Snapshot()
 	rec, err := snap.Engine.RecommendContext(ctx, req)
 	return rec, snap.Revision, err

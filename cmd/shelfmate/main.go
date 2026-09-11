@@ -123,6 +123,7 @@ func serve(args []string) {
 		log.Fatal(err)
 	}
 	svc.SetCalendar(calendar)
+	svc.SetDeskContext(cat, guidance)
 	if err := svc.SeedLiveDesk(context.Background()); err != nil {
 		log.Printf("live desk seed skipped: %v", err)
 	}

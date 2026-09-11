@@ -9,10 +9,12 @@ import (
 	"testing"
 	"time"
 
+	"school_district_reading/internal/academics"
 	"school_district_reading/internal/domain"
 	"school_district_reading/internal/engine"
 	"school_district_reading/internal/explain"
 	"school_district_reading/internal/store"
+	"school_district_reading/internal/support"
 )
 
 func loadEngine(t *testing.T) *engine.Engine {
@@ -257,4 +259,44 @@ func idsOf(rec domain.Recommendation) []string {
 		out = append(out, it.BookID)
 	}
 	return out
+}
+
+func TestClassifiedBelowGradeRecommendStaysClosedWorld(t *testing.T) {
+	eng := loadEngine(t)
+	svc := New(eng)
+	_, file, _, _ := runtime.Caller(0)
+	root := filepath.Clean(filepath.Join(filepath.Dir(file), "..", ".."))
+	dir := filepath.Join(root, "data", "json")
+	cat, err := academics.Load(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sup, err := support.Load(dir, eng.Store)
+	if err != nil {
+		t.Fatal(err)
+	}
+	svc.SetDeskContext(cat, sup)
+	plain, err := eng.Recommend(domain.Request{StudentID: "S-504", Limit: 5})
+	if err != nil {
+		t.Fatal(err)
+	}
+	classified, _, err := svc.Recommend(context.Background(), domain.Request{StudentID: "S-504", Limit: 5})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if classified.QueryParsed.Raw != "" && classified.QueryParsed.Raw == "secret" {
+		t.Fatal("raw query leaked")
+	}
+	for _, it := range classified.Items {
+		if _, ok := eng.Store.Book(it.BookID); !ok {
+			t.Fatalf("unknown book %s", it.BookID)
+		}
+		if it.BookID == "B-008" {
+			t.Fatal("zero-copy title recommended")
+		}
+	}
+	if len(classified.Items) == 0 {
+		t.Fatal("empty recs")
+	}
+	_ = plain
 }

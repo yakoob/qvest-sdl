@@ -163,9 +163,11 @@ func (s *Service) EngagementCommand(ctx context.Context, c engagement.Command) (
 			s.mu.Unlock()
 			return EngagementResult{}, fmt.Errorf("query too long")
 		}
-		req := domain.Request{StudentID: in.StudentID, StaffID: in.Facilitator, Query: c.Query, Stretch: c.Stretch, Limit: 5}
+		studentID, staffID, q, stretch := in.StudentID, in.Facilitator, c.Query, c.Stretch
 		snap := s.snap
 		s.mu.Unlock()
+		q = s.classifiedQuery(studentID, q)
+		req := domain.Request{StudentID: studentID, StaffID: staffID, Query: q, Stretch: stretch, Limit: 5}
 		r, e := snap.Engine.RecommendContext(ctx, req)
 		if e != nil {
 			return EngagementResult{}, e

@@ -1,14 +1,862 @@
 {
   "synthetic": true,
-  "note": "Fictional shared reading guidance only. No clinical records or diagnoses. Staff roles here are provenance, not access control.",
-  "sources": {"T-4A":"teacher", "T-4B":"teacher", "T-5A":"teacher", "T-3A":"teacher", "C-001":"counselor"},
+  "note": "Fictional shared reading guidance only. No clinical records or diagnoses. Staff roles here are provenance, not access control. Below-grade readers have richer optional interests so the desk can offer a short, honest next book. Raw note text is not sent to a model.",
+  "sources": {
+    "T-4A": "teacher",
+    "T-4B": "teacher",
+    "T-5A": "teacher",
+    "T-3A": "teacher",
+    "C-001": "counselor",
+    "T-3B": "teacher",
+    "T-5B": "teacher"
+  },
   "students": [
-    {"student_id":"S-406", "strengths":["Visual storytelling", "Shares comic ideas"], "teacher_notes":[{"id":"TN-406","date":"2026-09-02","source_id":"T-4A","request":"routine","text":"Engages in discussions about illustrated stories. Offer a choice of shorter sections and invite a conversation about a favorite character."}], "guidance":[{"id":"G-406","source_id":"C-001","source_role":"counselor","approved_at":"2026-09-02","review_by":"2026-10-02","summary":"Approved reading suggestion: offer encouraging stories about persistence and creative interests. Ask whether that sounds appealing.","themes":["creativity","perseverance"]}]},
-    {"student_id":"S-402", "strengths":["Enjoys long fantasy adventures", "Asks thoughtful questions"], "teacher_notes":[{"id":"TN-402","date":"2026-09-01","source_id":"T-4A","request":"none","text":"Offer variety and space to choose. Strong classroom work does not mean every book will connect."}], "guidance":[]},
-    {"student_id":"S-405", "strengths":["Curious about animals", "Enjoys photographs"], "teacher_notes":[], "guidance":[{"id":"G-405","source_id":"C-001","source_role":"counselor","approved_at":"2026-09-01","review_by":"2026-10-01","summary":"Offer animal stories or books with photographs as optional conversation starters. Let the student set the direction.","themes":["animals","belonging"]}]},
-    {"student_id":"S-509", "strengths":["Brings new interests to the school"], "teacher_notes":[], "guidance":[]},
-    {"student_id":"S-504", "strengths":["Enjoys sports stories", "Connects with determined characters"], "teacher_notes":[{"id":"TN-504","date":"2026-09-03","source_id":"T-5A","request":"prompt","text":"Please arrange a short reading-choice conversation this visit. Offer options and ask what would make a book worth trying."}], "guidance":[{"id":"G-504","source_id":"C-001","source_role":"counselor","approved_at":"2026-09-03","review_by":"2026-10-03","summary":"Approved reading themes: underdogs, supportive teams and perseverance. These are optional reading interests, not a treatment recommendation.","themes":["sports","underdogs","perseverance"]}]},
-    {"student_id":"S-510", "strengths":["Strong classroom work", "Independent interests"], "teacher_notes":[{"id":"TN-510","date":"2026-02-01","source_id":"T-5A","request":"prompt","text":"Historical request to discuss reading choices. This old request needs review; it is not current evidence."}], "guidance":[]},
-    {"student_id":"S-301", "strengths":["Enjoys reading with a partner"], "teacher_notes":[{"id":"TN-301","date":"2026-09-02","source_id":"T-3A","request":"routine","text":"Ask about books the student would like to share with a friend."}], "guidance":[]}
+    {
+      "student_id": "S-301",
+      "strengths": [
+        "Finishes a graphic novel in one sitting",
+        "Talks about favorite characters",
+        "Prefers pictures before long prose"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-301",
+          "date": "2026-09-02",
+          "source_id": "T-3A",
+          "request": "routine",
+          "text": "Please keep offering short illustrated choices. She walks away from dense prose. Ask which character she would want to sit beside."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-301",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-02",
+          "review_by": "2026-10-03",
+          "summary": "Approved reading suggestion: short graphic stories about friendship and trying again. Let her choose the pictures first. Optional themes only, not a treatment plan.",
+          "themes": [
+            "creativity",
+            "belonging",
+            "perseverance"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-302",
+      "strengths": [
+        "Spanish at home",
+        "Uses pictures, then speech bubbles, then prose",
+        "Curious about animals"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-302",
+          "date": "2026-09-02",
+          "source_id": "T-3A",
+          "request": "routine",
+          "text": "Offer illustrated animal or comic choices. Pictures first. Do not treat missing grades as failure."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-302",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-02",
+          "review_by": "2026-10-03",
+          "summary": "Approved reading suggestion: animal stories and graphic panels. Invite him to point to a picture he likes before talking about the words.",
+          "themes": [
+            "animals",
+            "creativity",
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-303",
+      "strengths": [
+        "Asks for dogs and wildlife",
+        "Notices photographs"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-303",
+          "date": "2026-09-01",
+          "source_id": "T-3A",
+          "request": "none",
+          "text": "On-grade reader. Keep animals choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-303",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: animals. Ask the student before using them.",
+          "themes": [
+            "animals"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-304",
+      "strengths": [
+        "Follows a team",
+        "Picks a book by the cover action"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-304",
+          "date": "2026-09-01",
+          "source_id": "T-3B",
+          "request": "none",
+          "text": "On-grade reader. Keep sports choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-304",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: sports, underdogs. Ask the student before using them.",
+          "themes": [
+            "sports",
+            "underdogs"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-305",
+      "strengths": [
+        "Wants another world after the last series",
+        "Asks what happens next"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-305",
+          "date": "2026-09-01",
+          "source_id": "T-3B",
+          "request": "none",
+          "text": "Already reading ahead. Offer choice, not a harder book as a prize."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-305",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: perseverance, belonging. Ask the student before using them.",
+          "themes": [
+            "perseverance",
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-306",
+      "strengths": [
+        "Likes clues",
+        "Wants to guess the ending"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-306",
+          "date": "2026-09-01",
+          "source_id": "T-3B",
+          "request": "none",
+          "text": "On-grade reader. Keep mystery choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-306",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-307",
+      "strengths": [
+        "Prefers school and family stories",
+        "Talks about characters who feel familiar"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-307",
+          "date": "2026-09-01",
+          "source_id": "T-3A",
+          "request": "none",
+          "text": "On-grade reader. Keep realistic choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-307",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-308",
+      "strengths": [
+        "Laughs at comics",
+        "Wants something he can finish today",
+        "Cheers for underdog teams"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-308",
+          "date": "2026-09-03",
+          "source_id": "T-3B",
+          "request": "prompt",
+          "text": "Check in this week with a short funny graphic option. He stalled on a chapter book last visit."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-308",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-02",
+          "review_by": "2026-10-03",
+          "summary": "Approved reading suggestion: short comics and underdog sports stories. Keep the page count honest and let him walk with a book today.",
+          "themes": [
+            "creativity",
+            "sports",
+            "underdogs"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-401",
+      "strengths": [
+        "Wants another world after the last series",
+        "Asks what happens next"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-401",
+          "date": "2026-09-01",
+          "source_id": "T-4A",
+          "request": "none",
+          "text": "On-grade reader. Keep fantasy choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-401",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: perseverance, belonging. Ask the student before using them.",
+          "themes": [
+            "perseverance",
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-402",
+      "strengths": [
+        "Wants another world after the last series",
+        "Asks what happens next"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-402",
+          "date": "2026-09-01",
+          "source_id": "T-4A",
+          "request": "none",
+          "text": "Already reading ahead. Offer choice, not a harder book as a prize."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-402",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: perseverance, belonging. Ask the student before using them.",
+          "themes": [
+            "perseverance",
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-403",
+      "strengths": [
+        "Follows a team",
+        "Picks a book by the cover action"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-403",
+          "date": "2026-09-01",
+          "source_id": "T-4B",
+          "request": "none",
+          "text": "On-grade reader. Keep sports choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-403",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: sports, underdogs. Ask the student before using them.",
+          "themes": [
+            "sports",
+            "underdogs"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-404",
+      "strengths": [
+        "Prefers school and family stories",
+        "Talks about characters who feel familiar"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-404",
+          "date": "2026-09-01",
+          "source_id": "T-4A",
+          "request": "none",
+          "text": "On-grade reader. Keep realistic choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-404",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-405",
+      "strengths": [
+        "Still naming what they enjoy",
+        "Brings interests from a previous school"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-405",
+          "date": "2026-09-01",
+          "source_id": "T-4B",
+          "request": "none",
+          "text": "On-grade reader. Keep unknown choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-405",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-406",
+      "strengths": [
+        "Visual storytelling",
+        "Shares comic ideas",
+        "Notices panel jokes other kids miss"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-406",
+          "date": "2026-09-02",
+          "source_id": "T-4B",
+          "request": "routine",
+          "text": "Engages in discussions about illustrated stories. Offer a choice of shorter sections and invite a conversation about a favorite character."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-406",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-02",
+          "review_by": "2026-10-03",
+          "summary": "Approved reading suggestion: graphic stories about persistence and making things. Ask whether that sounds appealing. Optional reading interests, not a diagnosis.",
+          "themes": [
+            "creativity",
+            "perseverance"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-407",
+      "strengths": [
+        "Asks for dogs and wildlife",
+        "Notices photographs"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-407",
+          "date": "2026-09-01",
+          "source_id": "T-4A",
+          "request": "none",
+          "text": "On-grade reader. Keep animals choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-407",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: animals. Ask the student before using them.",
+          "themes": [
+            "animals"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-408",
+      "strengths": [
+        "Likes clues",
+        "Wants to guess the ending"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-408",
+          "date": "2026-09-01",
+          "source_id": "T-4B",
+          "request": "none",
+          "text": "On-grade reader. Keep mystery choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-408",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-409",
+      "strengths": [
+        "Wants another world after the last series",
+        "Asks what happens next"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-409",
+          "date": "2026-09-01",
+          "source_id": "T-4B",
+          "request": "none",
+          "text": "On-grade reader. Keep fantasy choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-409",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: perseverance, belonging. Ask the student before using them.",
+          "themes": [
+            "perseverance",
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-410",
+      "strengths": [
+        "Lives for recess soccer",
+        "Will try a book if the cover looks fast",
+        "Cheers for the kid who almost did not make the team"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-410",
+          "date": "2026-09-03",
+          "source_id": "T-4A",
+          "request": "prompt",
+          "text": "Please start with a short sports story he can finish. Long fantasy last visit came back unread."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-410",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-02",
+          "review_by": "2026-10-03",
+          "summary": "Approved reading suggestion: short sports and underdog stories. Offer two covers and let him pick. Not a performance plan.",
+          "themes": [
+            "sports",
+            "underdogs",
+            "perseverance"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-501",
+      "strengths": [
+        "Prefers school and family stories",
+        "Talks about characters who feel familiar"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-501",
+          "date": "2026-09-01",
+          "source_id": "T-5A",
+          "request": "none",
+          "text": "On-grade reader. Keep realistic choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-501",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-502",
+      "strengths": [
+        "Wants another world after the last series",
+        "Asks what happens next"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-502",
+          "date": "2026-09-01",
+          "source_id": "T-5A",
+          "request": "none",
+          "text": "Already reading ahead. Offer choice, not a harder book as a prize."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-502",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: perseverance, belonging. Ask the student before using them.",
+          "themes": [
+            "perseverance",
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-503",
+      "strengths": [
+        "Likes clues",
+        "Wants to guess the ending"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-503",
+          "date": "2026-09-01",
+          "source_id": "T-5B",
+          "request": "none",
+          "text": "On-grade reader. Keep mystery choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-503",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-504",
+      "strengths": [
+        "Enjoys sports stories",
+        "Connects with determined characters",
+        "Will talk if the book feels like a team"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-504",
+          "date": "2026-09-03",
+          "source_id": "T-5B",
+          "request": "prompt",
+          "text": "Please arrange a short reading-choice conversation this visit. Offer options and ask what would make a book worth trying."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-504",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-02",
+          "review_by": "2026-10-03",
+          "summary": "Approved reading themes: underdogs, supportive teams and perseverance. These are optional reading interests, not a treatment recommendation.",
+          "themes": [
+            "sports",
+            "underdogs",
+            "perseverance"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-505",
+      "strengths": [
+        "Asks for dogs and wildlife",
+        "Notices photographs"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-505",
+          "date": "2026-09-01",
+          "source_id": "T-5A",
+          "request": "none",
+          "text": "On-grade reader. Keep animals choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-505",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: animals. Ask the student before using them.",
+          "themes": [
+            "animals"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-506",
+      "strengths": [
+        "Follows a team",
+        "Picks a book by the cover action"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-506",
+          "date": "2026-09-01",
+          "source_id": "T-5B",
+          "request": "none",
+          "text": "On-grade reader. Keep sports choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-506",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: sports, underdogs. Ask the student before using them.",
+          "themes": [
+            "sports",
+            "underdogs"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-507",
+      "strengths": [
+        "Wants another world after the last series",
+        "Asks what happens next"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-507",
+          "date": "2026-09-01",
+          "source_id": "T-5B",
+          "request": "none",
+          "text": "On-grade reader. Keep fantasy choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-507",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: perseverance, belonging. Ask the student before using them.",
+          "themes": [
+            "perseverance",
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-508",
+      "strengths": [
+        "Prefers school and family stories",
+        "Talks about characters who feel familiar"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-508",
+          "date": "2026-09-01",
+          "source_id": "T-5A",
+          "request": "none",
+          "text": "On-grade reader. Keep realistic choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-508",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-509",
+      "strengths": [
+        "Still naming what they enjoy",
+        "Uses pictures while English is still new",
+        "Brings interests from a previous school"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-509",
+          "date": "2026-09-01",
+          "source_id": "T-5B",
+          "request": "none",
+          "text": "On-grade reader. Keep unknown choices available and ask before stretching."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-509",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional reading interests from shared guidance: belonging. Ask the student before using them.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    },
+    {
+      "student_id": "S-510",
+      "strengths": [
+        "Strong classroom work",
+        "Independent mystery habits",
+        "Already finishes long chapters"
+      ],
+      "teacher_notes": [
+        {
+          "id": "TN-510",
+          "date": "2026-02-01",
+          "source_id": "T-5A",
+          "request": "prompt",
+          "text": "Historical request to discuss reading choices. This old request needs review; it is not current evidence."
+        },
+        {
+          "id": "TN-510b",
+          "date": "2026-09-01",
+          "source_id": "T-5A",
+          "request": "none",
+          "text": "Current work is strong. Offer choice, not a catch-up conversation."
+        }
+      ],
+      "guidance": [
+        {
+          "id": "G-510",
+          "source_id": "C-001",
+          "source_role": "counselor",
+          "approved_at": "2026-09-01",
+          "review_by": "2026-10-01",
+          "summary": "Approved optional themes if he wants a change of pace: puzzles, friendship, and stories that let him linger.",
+          "themes": [
+            "belonging"
+          ]
+        }
+      ]
+    }
   ]
 }

@@ -2,7 +2,7 @@
   "provenance": {
     "synthetic": true,
     "label": "synthetic_demo",
-    "note": "Clearly labeled synthetic desk fixture for the PoC. Not a SIS extract, not a real state assessment, and not used for ranking or model payloads. English letter grades use scale letter_A_F. Reading checks use willow_bend_reading_1_4 (1 emerging – 4 exceeding). Current semester rows stay ungraded. Checkout does not change grades. Isolated multi-year scenarios (scenario_calendar + per-student scenario) never enter circulation, retrieve, ranking, or support. Six matched 84-day windows span three completed years (2023-24 through 2025-26). Sofia, Mateo, and Tyler are distinct improving cases; Priya and Olivia stay empty local-history newcomers. Incomplete extract coverage stays distinct.",
+    "note": "Clearly labeled synthetic desk fixture for the PoC. Not a SIS extract, not a real state assessment, and not used for model payloads. English letter grades use scale letter_A_F. Reading checks use willow_bend_reading_1_4 (1 emerging – 4 exceeding). Current semester rows stay ungraded. Checkout does not change grades. Operational English and reading checks now cover the grade 3–5 roster so Below/On/Above status can be shown; Priya, Olivia, and Luis keep explicit missing records. Isolated multi-year scenarios (scenario_calendar + per-student scenario) never enter circulation, retrieve, ranking, or support. Six matched 84-day windows span three completed years (2023-24 through 2025-26). Sofia, Mateo, and Tyler are distinct improving cases; Priya and Olivia stay empty local-history newcomers. Incomplete extract coverage stays distinct.",
     "circulation_coverage": "Circulation export covers 2026-01-13 through 2026-09-03 plus this server session. Earlier borrowing is not in the extract and is not evidence of no borrowing."
   },
   "students": [
@@ -2169,6 +2169,906 @@
       },
       "demo_case": "mid_stable_illustrative",
       "demo_note": "Synthetic: mid band, B- then B-. Illustrative only — co-timing is not causal proof."
+    },
+    {
+      "student_id": "S-303",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B+",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-303-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-303-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-304",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-304-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-304-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-306",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-306-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-306-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-307",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-307-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-307-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-308",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "C-",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-308-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 2,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-308-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "below_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-403",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-403-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-403-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-404",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-404-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-404-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-407",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-407-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-407-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-408",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-408-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-408-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-409",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-409-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-409-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-410",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "D+",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-410-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 3,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-410-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 2,
+          "band": "developing",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "below_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-501",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-501-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-501-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 5,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-502",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "A",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-502-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 4,
+          "band": "exceeding",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-502-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 5,
+          "scale": "willow_bend_reading_1_4",
+          "result": 4,
+          "band": "exceeding",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "above_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-503",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-503-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-503-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 5,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-505",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-505-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-505-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 5,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-506",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-506-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-506-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 5,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-507",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-507-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-507-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 5,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
+    },
+    {
+      "student_id": "S-508",
+      "semesters": [
+        {
+          "id": "SY25-S2",
+          "label": "2025–26 Semester 2",
+          "start": "2026-01-20",
+          "end": "2026-06-05",
+          "course": "English Language Arts",
+          "grade": "B",
+          "scale": "letter_A_F",
+          "status": "final"
+        },
+        {
+          "id": "SY26-S1",
+          "label": "2026–27 Semester 1",
+          "start": "2026-08-18",
+          "end": "2027-01-15",
+          "course": "English Language Arts",
+          "grade": null,
+          "scale": "letter_A_F",
+          "status": "in_progress",
+          "missing_note": "Current term; English grade is not posted yet."
+        }
+      ],
+      "assessments": [
+        {
+          "id": "A-508-1",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-05-12",
+          "grade": 4,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Prior grade-year form. Do not subtract from the current-grade check."
+        },
+        {
+          "id": "A-508-2",
+          "name": "Willow Bend Reading Check",
+          "date": "2026-09-02",
+          "grade": 5,
+          "scale": "willow_bend_reading_1_4",
+          "result": 3,
+          "band": "meeting",
+          "note": "Current grade form."
+        }
+      ],
+      "demo_case": "on_roster_illustrative",
+      "demo_note": "Synthetic operational grades for desk status. Isolated multi-year scenarios stay on the original demo students only."
     }
   ],
   "scenario_calendar": {

@@ -119,7 +119,16 @@ func (s Server) supportDetail(w http.ResponseWriter, r *http.Request, id string)
 		}
 	}
 	follows, rev := s.Followups.ForStudent(id)
-	writeJSON(w, 200, map[string]any{"student_id": id, "support": s.supportResult(id), "reading_guidance": record, "followups": follows, "followup_revision": rev, "revision": snap.Revision, "synthetic": true, "access_note": "Fictional localhost demo. Staff selection is not authentication or role-based access control."})
+	st, _ := snap.Engine.Store.Student(id)
+	rec := academics.Record{StudentID: id}
+	if s.Academics != nil {
+		if v, ok := s.Academics.ByStudent[id]; ok {
+			rec = v
+			rec.StudentID = id
+		}
+	}
+	_, themes, below := support.ClassifiedInterests(st, rec, record)
+	writeJSON(w, 200, map[string]any{"student_id": id, "support": s.supportResult(id), "reading_guidance": record, "classified_themes": themes, "below_grade": below, "followups": follows, "followup_revision": rev, "revision": snap.Revision, "synthetic": true, "access_note": "Fictional localhost demo. Staff selection is not authentication or role-based access control. Classified themes are allowlisted catalog terms, not raw notes."})
 }
 
 func (s Server) followup(w http.ResponseWriter, r *http.Request) {
